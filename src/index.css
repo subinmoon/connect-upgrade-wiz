@@ -34,6 +34,8 @@
 
     --radius: 0.75rem;
 
+    --mobile-bottom-nav-height: 4.5rem;
+
     --lavender: 262 60% 55%;
     --lavender-light: 262 80% 95%;
     --lavender-dark: 262 50% 45%;
@@ -85,6 +87,9 @@
     --lavender: 262 60% 60%;
     --lavender-light: 262 30% 20%;
     --lavender-dark: 262 50% 70%;
+
+    --mobile-bottom-nav-height: 4.5rem;
+
     --mint: 168 30% 20%;
     --mint-dark: 168 60% 55%;
     --peach: 25 30% 20%;
