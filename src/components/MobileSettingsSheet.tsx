@@ -76,55 +76,54 @@ const MobileSettingsSheet = ({ open, onClose, settings, onSave }: MobileSettings
 
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <SheetContent side="bottom" className="h-[90vh] rounded-t-3xl p-0 flex flex-col">
+      <SheetContent side="bottom" className="h-[85vh] rounded-t-2xl p-0 flex flex-col">
         {/* Header */}
-        <SheetHeader className="px-5 py-4 border-b border-border shrink-0">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
-              <Settings className="w-5 h-5 text-primary" />
+        <SheetHeader className="px-4 py-3 border-b border-border shrink-0">
+          <div className="flex items-center gap-2.5">
+            <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Settings className="w-4 h-4 text-primary" />
             </div>
-            <SheetTitle className="text-xl font-bold">개인화 설정</SheetTitle>
+            <SheetTitle className="text-lg font-bold">개인화 설정</SheetTitle>
           </div>
         </SheetHeader>
 
         {/* Scrollable Content */}
-        <div className="flex-1 overflow-y-auto px-5 py-5">
-          <div className="space-y-7">
+        <div className="flex-1 overflow-y-auto px-4 py-4">
+          <div className="space-y-5">
             {/* 호칭 설정 */}
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">호칭</h3>
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">호칭</h3>
               <Input
                 value={userName}
                 onChange={(e) => setUserName(e.target.value)}
                 placeholder="예: 경민님, 박과장님..."
-                className="h-12 text-base rounded-xl border-border bg-muted/30 focus:bg-background"
+                className="h-10 text-sm rounded-lg border-border bg-muted/30 focus:bg-background"
               />
-              <p className="text-xs text-muted-foreground">이수 GPT가 어떻게 불러드릴까요?</p>
             </section>
 
             {/* 검색 모드 */}
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">검색 모드</h3>
-              <div className="grid grid-cols-3 gap-2">
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">검색 모드</h3>
+              <div className="grid grid-cols-3 gap-1.5">
                 {searchModeOptions.map((option) => (
                   <button
                     key={option.id}
                     onClick={() => setSearchMode(option.id)}
                     className={cn(
-                      "relative flex flex-col items-center gap-1.5 py-4 px-2 rounded-2xl border-2 transition-all",
+                      "relative flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border transition-all",
                       searchMode === option.id
                         ? "border-primary bg-primary/5"
                         : "border-border bg-muted/20 active:bg-muted/40"
                     )}
                   >
-                    <span className="text-2xl">{option.emoji}</span>
+                    <span className="text-base">{option.emoji}</span>
                     <span className={cn(
-                      "text-sm font-medium",
+                      "text-xs font-medium",
                       searchMode === option.id ? "text-primary" : "text-foreground"
                     )}>{option.label}</span>
                     {searchMode === option.id && (
-                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary-foreground" />
+                      <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5 text-primary-foreground" />
                       </div>
                     )}
                   </button>
@@ -133,28 +132,28 @@ const MobileSettingsSheet = ({ open, onClose, settings, onSave }: MobileSettings
             </section>
 
             {/* 말투 스타일 */}
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">말투 스타일</h3>
-              <div className="grid grid-cols-3 gap-2">
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">말투 스타일</h3>
+              <div className="grid grid-cols-3 gap-1.5">
                 {toneOptions.map((option) => (
                   <button
                     key={option.id}
                     onClick={() => setToneStyle(option.id)}
                     className={cn(
-                      "relative flex flex-col items-center gap-1.5 py-4 px-2 rounded-2xl border-2 transition-all",
+                      "relative flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border transition-all",
                       toneStyle === option.id
                         ? "border-primary bg-primary/5"
                         : "border-border bg-muted/20 active:bg-muted/40"
                     )}
                   >
-                    <span className="text-2xl">{option.emoji}</span>
+                    <span className="text-base">{option.emoji}</span>
                     <span className={cn(
-                      "text-sm font-medium",
+                      "text-xs font-medium",
                       toneStyle === option.id ? "text-primary" : "text-foreground"
                     )}>{option.label}</span>
                     {toneStyle === option.id && (
-                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary-foreground" />
+                      <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5 text-primary-foreground" />
                       </div>
                     )}
                   </button>
@@ -163,28 +162,28 @@ const MobileSettingsSheet = ({ open, onClose, settings, onSave }: MobileSettings
             </section>
 
             {/* 답변 길이 */}
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">답변 길이</h3>
-              <div className="grid grid-cols-3 gap-2">
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">답변 길이</h3>
+              <div className="grid grid-cols-3 gap-1.5">
                 {lengthOptions.map((option) => (
                   <button
                     key={option.id}
                     onClick={() => setAnswerLength(option.id)}
                     className={cn(
-                      "relative flex flex-col items-center gap-1.5 py-4 px-2 rounded-2xl border-2 transition-all",
+                      "relative flex flex-col items-center gap-1 py-2.5 px-2 rounded-xl border transition-all",
                       answerLength === option.id
                         ? "border-primary bg-primary/5"
                         : "border-border bg-muted/20 active:bg-muted/40"
                     )}
                   >
-                    <span className="text-2xl">{option.emoji}</span>
+                    <span className="text-base">{option.emoji}</span>
                     <span className={cn(
-                      "text-sm font-medium",
+                      "text-xs font-medium",
                       answerLength === option.id ? "text-primary" : "text-foreground"
                     )}>{option.label}</span>
                     {answerLength === option.id && (
-                      <div className="absolute top-2 right-2 w-5 h-5 rounded-full bg-primary flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary-foreground" />
+                      <div className="absolute top-1.5 right-1.5 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                        <Check className="w-2.5 h-2.5 text-primary-foreground" />
                       </div>
                     )}
                   </button>
@@ -193,40 +192,38 @@ const MobileSettingsSheet = ({ open, onClose, settings, onSave }: MobileSettings
             </section>
 
             {/* 토글 설정 */}
-            <section className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground">추가 설정</h3>
-              <div className="rounded-2xl border border-border bg-muted/10 overflow-hidden">
-                <div className="flex items-center justify-between p-4 border-b border-border/50">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                      <Globe className="w-5 h-5 text-blue-500" />
+            <section className="space-y-2">
+              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">추가 설정</h3>
+              <div className="rounded-xl border border-border overflow-hidden">
+                <div className="flex items-center justify-between px-3 py-3 border-b border-border/50">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Globe className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <p className="text-sm font-medium">자동 웹 검색</p>
-                      <p className="text-xs text-muted-foreground">필요할 때 자동으로 검색</p>
+                      <p className="text-[11px] text-muted-foreground">필요할 때 자동으로 검색</p>
                     </div>
                   </div>
                   <Switch
                     checked={allowWebSearch}
                     onCheckedChange={setAllowWebSearch}
-                    className="scale-110"
                   />
                 </div>
 
-                <div className="flex items-center justify-between p-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
-                      <MessageCircle className="w-5 h-5 text-green-500" />
+                <div className="flex items-center justify-between px-3 py-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <MessageCircle className="w-4 h-4 text-primary" />
                     </div>
                     <div>
                       <p className="text-sm font-medium">다음 질문 추천</p>
-                      <p className="text-xs text-muted-foreground">대화에 맞는 질문 제안</p>
+                      <p className="text-[11px] text-muted-foreground">대화에 맞는 질문 제안</p>
                     </div>
                   </div>
                   <Switch
                     checked={allowFollowUpQuestions}
                     onCheckedChange={setAllowFollowUpQuestions}
-                    className="scale-110"
                   />
                 </div>
               </div>
@@ -235,18 +232,18 @@ const MobileSettingsSheet = ({ open, onClose, settings, onSave }: MobileSettings
         </div>
 
         {/* Footer Buttons */}
-        <div className="shrink-0 px-5 py-4 border-t border-border bg-background/80 backdrop-blur-sm">
-          <div className="flex gap-3">
+        <div className="shrink-0 px-4 py-3 border-t border-border bg-background">
+          <div className="flex gap-2">
             <Button 
               variant="outline" 
               onClick={onClose} 
-              className="flex-1 h-12 text-base rounded-xl"
+              className="flex-1 h-11 text-sm rounded-xl"
             >
               취소
             </Button>
             <Button 
               onClick={handleSave} 
-              className="flex-1 h-12 text-base rounded-xl font-semibold"
+              className="flex-1 h-11 text-sm rounded-xl font-medium"
             >
               저장
             </Button>
