@@ -12,6 +12,7 @@ import ChatView from "@/components/ChatView";
 import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileHeader from "@/components/MobileHeader";
 import MobileMainContent from "@/components/MobileMainContent";
+import MobileHistorySheet from "@/components/MobileHistorySheet";
 import { generateScheduleResponse } from "@/data/scheduleData";
 import logoIcon from "@/assets/logo-icon.png";
 import { PanelLeftClose, ArrowLeft, Pencil, Check, X } from "lucide-react";
@@ -106,6 +107,7 @@ const Index = () => {
   // Chatbot management state
   const [showChatbotManagement, setShowChatbotManagement] = useState(false);
   const [showChatbotCreate, setShowChatbotCreate] = useState(false);
+  const [showHistorySheet, setShowHistorySheet] = useState(false);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
     const saved = localStorage.getItem("chatbots");
@@ -527,11 +529,25 @@ const Index = () => {
             )}
           </div>
 
+          {/* Mobile History Sheet */}
+          <MobileHistorySheet
+            open={showHistorySheet}
+            onClose={() => setShowHistorySheet(false)}
+            chatHistory={chatHistory}
+            currentChatId={currentChatId}
+            onSelectChat={handleSelectChat}
+            onRenameChat={handleRenameChat}
+            onShareChat={handleShareChat}
+            onPinChat={handlePin}
+            onDeleteChat={handleDelete}
+          />
+
           {/* Mobile Bottom Navigation */}
           <MobileBottomNav
             onNewChat={handleNewChat}
             onOpenSettings={() => setShowSettingsModal(true)}
             onOpenChatbots={() => setShowChatbotManagement(true)}
+            onOpenHistory={() => setShowHistorySheet(true)}
           />
         </div>
       </>
