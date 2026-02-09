@@ -32,16 +32,18 @@ const MobileMainContent = ({
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-full pb-16">
-      {/* Welcome Header - Compact */}
-      <MobileWelcomeHeader 
-        userName={userName} 
-        onSelectAction={onSelectAction} 
-      />
+      {/* Scrollable Content Area */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Welcome Header - Compact */}
+        <MobileWelcomeHeader 
+          userName={userName} 
+          onSelectAction={onSelectAction} 
+        />
 
-      {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto px-4 space-y-3">
         {/* HR Helper Card */}
-        <HRHelper />
+        <div className="px-4 pb-3">
+          <HRHelper />
+        </div>
       </div>
 
       {/* Chat Input - Fixed at bottom above nav */}
