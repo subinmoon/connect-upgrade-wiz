@@ -15,6 +15,7 @@ import MobileMainContent from "@/components/MobileMainContent";
 import MobileHistorySheet from "@/components/MobileHistorySheet";
 import MobileChatbotsSheet from "@/components/MobileChatbotsSheet";
 import MobileArchiveSheet from "@/components/MobileArchiveSheet";
+import MobileSettingsSheet from "@/components/MobileSettingsSheet";
 import { generateScheduleResponse } from "@/data/scheduleData";
 import logoIcon from "@/assets/logo-icon.png";
 import { PanelLeftClose, ArrowLeft, Pencil, Check, X } from "lucide-react";
@@ -440,23 +441,7 @@ const Index = () => {
   if (isMobile) {
     return (
       <>
-        <TutorialModal 
-          open={showSetupModal} 
-          onComplete={handleSetupComplete} 
-          onSkip={handleSetupSkip}
-          onStartGuide={handleStartGuide}
-          userName="경민"
-          initialStep={tutorialStep}
-        />
-        
-        {showGuideOverlay && (
-          <TutorialGuideOverlay 
-            onComplete={handleGuideComplete}
-            onSkip={handleGuideSkip}
-          />
-        )}
-        
-        <SettingsModal
+        <MobileSettingsSheet
           open={showSettingsModal}
           onClose={() => setShowSettingsModal(false)}
           settings={userSettings}
