@@ -230,7 +230,10 @@ const ChatInput = ({
                   value={message}
                   onChange={(e) => handleTextareaChange(e.target.value)}
                   placeholder={placeholderText}
-                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base resize-none min-h-[24px] max-h-[200px]"
+                  className={cn(
+                    "w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
+                    isMobile ? "text-sm" : "text-base"
+                  )}
                   rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
                   onKeyDown={(e) => {
                     if (showWorkItems) {
@@ -298,7 +301,10 @@ const ChatInput = ({
             value={message}
             onChange={(e) => handleTextareaChange(e.target.value)}
             placeholder={placeholderText}
-            className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base resize-none min-h-[24px] max-h-[200px]"
+            className={cn(
+              "w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
+              isMobile ? "text-sm" : "text-base"
+            )}
             rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {

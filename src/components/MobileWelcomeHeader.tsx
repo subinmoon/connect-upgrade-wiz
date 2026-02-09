@@ -86,8 +86,8 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
     <div className="w-full px-4 pt-3 pb-2">
       {/* Welcome Message */}
       <div className="flex items-center gap-2.5 mb-3">
-        <img src={logoIcon} alt="Logo" className="w-9 h-9" />
-        <h1 className="text-base font-bold text-foreground">
+        <img src={logoIcon} alt="Logo" className="w-10 h-10" />
+        <h1 className="text-lg font-bold text-foreground">
           <span className="text-gradient-name">{userName}</span>님, {greeting}
         </h1>
       </div>
