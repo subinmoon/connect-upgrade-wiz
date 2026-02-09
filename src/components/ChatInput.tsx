@@ -45,6 +45,7 @@ interface ChatInputProps {
   userName?: string;
   searchMode?: string;
   onSearchModeChange?: (mode: string) => void;
+  isMobile?: boolean;
 }
 
 const ChatInput = ({ 
@@ -59,6 +60,7 @@ const ChatInput = ({
   userName,
   searchMode = "general",
   onSearchModeChange,
+  isMobile = false,
 }: ChatInputProps) => {
   const [message, setMessage] = useState(initialMessage || "");
   const [selectedTone, setSelectedTone] = useState(toneStyle);
@@ -271,7 +273,7 @@ const ChatInput = ({
                 className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
               >
                 <span>{currentSearchMode?.emoji}</span>
-                <span>{currentSearchMode?.label}</span>
+                {!isMobile && <span>{currentSearchMode?.label}</span>}
                 <ChevronDown className="w-3 h-3" />
               </Button>
             </DropdownMenuTrigger>
@@ -294,72 +296,78 @@ const ChatInput = ({
             className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
           >
             <Paperclip className="w-4 h-4" />
-            <span>파일첨부</span>
+            {!isMobile && <span>파일첨부</span>}
           </Button>
           
-          {/* Tone Style Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
-              >
-                <span>{currentTone?.emoji}</span>
-                <span className="hidden sm:inline">{currentTone?.label}</span>
-                <ChevronDown className="w-3 h-3" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
-              {toneOptions.map((tone) => (
-                <DropdownMenuItem 
-                  key={tone.id}
-                  onClick={() => handleToneSelect(tone.id)}
-                  className={`flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))] ${selectedTone === tone.id ? 'bg-primary/10 text-primary' : ''}`}
+          {/* Tone Style Dropdown - Hidden on mobile */}
+          {!isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
                 >
-                  <span>{tone.emoji}</span>
-                  <span>{tone.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <span>{currentTone?.emoji}</span>
+                  <span className="hidden sm:inline">{currentTone?.label}</span>
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
+                {toneOptions.map((tone) => (
+                  <DropdownMenuItem 
+                    key={tone.id}
+                    onClick={() => handleToneSelect(tone.id)}
+                    className={`flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))] ${selectedTone === tone.id ? 'bg-primary/10 text-primary' : ''}`}
+                  >
+                    <span>{tone.emoji}</span>
+                    <span>{tone.label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           
-          {/* Answer Length Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
-              >
-                <span>📏</span>
-                <span className="hidden sm:inline">{lengthOptions.find(l => l.id === selectedLength)?.label}</span>
-                <ChevronDown className="w-3 h-3" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
-              {lengthOptions.map((option) => (
-                <DropdownMenuItem 
-                  key={option.id}
-                  onClick={() => handleLengthSelect(option.id)}
-                  className={`flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))] ${selectedLength === option.id ? 'bg-primary/10 text-primary' : ''}`}
+          {/* Answer Length Dropdown - Hidden on mobile */}
+          {!isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
                 >
-                  <span>{option.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <span>📏</span>
+                  <span className="hidden sm:inline">{lengthOptions.find(l => l.id === selectedLength)?.label}</span>
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
+                {lengthOptions.map((option) => (
+                  <DropdownMenuItem 
+                    key={option.id}
+                    onClick={() => handleLengthSelect(option.id)}
+                    className={`flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))] ${selectedLength === option.id ? 'bg-primary/10 text-primary' : ''}`}
+                  >
+                    <span>{option.label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
 
-          {/* Model Selection Button */}
-          <Button
-            variant="ghost"
-            size="sm"
-            className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
-          >
-            <span className="text-xs">🌐</span>
-            Azure gpt 4o-2024-11-20
-            <ChevronDown className="w-3 h-3" />
-          </Button>
+          {/* Model Selection Button - Hidden on mobile */}
+          {!isMobile && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
+            >
+              <span className="text-xs">🌐</span>
+              Azure gpt 4o-2024-11-20
+              <ChevronDown className="w-3 h-3" />
+            </Button>
+          )}
         </div>
         <Button
           size="icon"

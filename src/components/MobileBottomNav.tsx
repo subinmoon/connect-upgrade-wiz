@@ -1,0 +1,78 @@
+import { Home, MessageSquare, FolderArchive, Settings, Bot } from "lucide-react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
+
+interface MobileBottomNavProps {
+  onNewChat?: () => void;
+  onOpenSettings?: () => void;
+  onOpenChatbots?: () => void;
+}
+
+const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots }: MobileBottomNavProps) => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const navItems = [
+    {
+      id: "home",
+      icon: Home,
+      label: "홈",
+      action: () => {
+        if (location.pathname === "/") {
+          onNewChat?.();
+        } else {
+          navigate("/");
+        }
+      },
+      isActive: location.pathname === "/" && !location.state,
+    },
+    {
+      id: "chatbots",
+      icon: Bot,
+      label: "챗봇",
+      action: () => onOpenChatbots?.(),
+      isActive: false,
+    },
+    {
+      id: "archive",
+      icon: FolderArchive,
+      label: "아카이브",
+      action: () => navigate("/archive"),
+      isActive: location.pathname === "/archive",
+    },
+    {
+      id: "settings",
+      icon: Settings,
+      label: "설정",
+      action: () => onOpenSettings?.(),
+      isActive: false,
+    },
+  ];
+
+  return (
+    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 safe-area-bottom">
+      <div className="flex items-center justify-around h-16 px-2">
+        {navItems.map((item) => (
+          <button
+            key={item.id}
+            onClick={item.action}
+            className={cn(
+              "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors",
+              item.isActive 
+                ? "text-primary" 
+                : "text-muted-foreground hover:text-foreground"
+            )}
+          >
+            <item.icon className={cn(
+              "w-5 h-5",
+              item.isActive && "fill-primary/20"
+            )} />
+            <span className="text-xs font-medium">{item.label}</span>
+          </button>
+        ))}
+      </div>
+    </nav>
+  );
+};
+
+export default MobileBottomNav;

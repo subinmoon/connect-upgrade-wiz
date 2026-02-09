@@ -22,6 +22,7 @@ interface ChatViewProps {
   onLengthChange?: (length: string) => void;
   onSearchModeChange?: (mode: string) => void;
   userName?: string;
+  isMobile?: boolean;
 }
 
 const suggestionsMap: Record<string, string[]> = {
@@ -60,6 +61,7 @@ const ChatView = ({
   onLengthChange,
   onSearchModeChange,
   userName,
+  isMobile = false,
 }: ChatViewProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isNearBottom, setIsNearBottom] = useState(true);
@@ -109,12 +111,12 @@ const ChatView = ({
   }, [messages.length, isNearBottom]);
 
   return (
-    <div className="flex flex-col h-[calc(100vh-120px)] max-h-[calc(100vh-120px)]">
+    <div className={isMobile ? "flex flex-col h-full" : "flex flex-col h-[calc(100vh-120px)] max-h-[calc(100vh-120px)]"}>
       {/* Messages */}
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto pb-4 space-y-2 min-h-0">
+        className="flex-1 overflow-y-auto pb-4 space-y-2 min-h-0 px-4">
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
@@ -142,14 +144,17 @@ const ChatView = ({
         )}
       </div>
 
-      {/* Suggestions */}
+      {/* Suggestions - Horizontal scroll on mobile */}
       {!isLoading && messages.length > 0 && (
-        <div className="flex flex-wrap gap-2 py-3">
+        <div className={isMobile 
+          ? "flex gap-2 py-2 px-4 overflow-x-auto scrollbar-hide" 
+          : "flex flex-wrap gap-2 py-3"
+        }>
           {suggestions.map((suggestion, index) => (
             <button
               key={index}
               onClick={() => onSendMessage(suggestion)}
-              className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30"
+              className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap shrink-0"
             >
               {suggestion}
             </button>
@@ -158,7 +163,7 @@ const ChatView = ({
       )}
 
       {/* Input */}
-      <div className="mt-auto pt-4">
+      <div className={isMobile ? "px-4 py-3 bg-background border-t border-border" : "mt-auto pt-4"}>
         <ChatInput 
           onSendMessage={onSendMessage} 
           disabled={isLoading}
@@ -169,6 +174,7 @@ const ChatView = ({
           onLengthChange={onLengthChange}
           onSearchModeChange={onSearchModeChange}
           userName={userName}
+          isMobile={isMobile}
         />
       </div>
     </div>
