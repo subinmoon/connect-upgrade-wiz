@@ -16,6 +16,7 @@ import MobileHistorySheet from "@/components/MobileHistorySheet";
 import MobileChatbotsSheet from "@/components/MobileChatbotsSheet";
 import MobileArchiveSheet from "@/components/MobileArchiveSheet";
 import MobileSettingsSheet from "@/components/MobileSettingsSheet";
+import MobileChatbotCreateSheet from "@/components/MobileChatbotCreateSheet";
 import { generateScheduleResponse } from "@/data/scheduleData";
 import logoIcon from "@/assets/logo-icon.png";
 import { PanelLeftClose, ArrowLeft, Pencil, Check, X } from "lucide-react";
@@ -448,21 +449,7 @@ const Index = () => {
           onSave={handleSettingsSave}
         />
 
-        <ChatbotManagementModal
-          open={showChatbotManagement}
-          onClose={() => setShowChatbotManagement(false)}
-          onCreateClick={() => {
-            setEditingChatbot(null);
-            setShowChatbotManagement(false);
-            setShowChatbotCreate(true);
-          }}
-          chatbots={chatbots}
-          onToggleFavorite={handleToggleChatbotFavorite}
-          onDelete={handleDeleteChatbot}
-          onEdit={handleEditChatbot}
-        />
-
-        <ChatbotCreateModal
+        <MobileChatbotCreateSheet
           open={showChatbotCreate}
           onClose={() => {
             setShowChatbotCreate(false);
