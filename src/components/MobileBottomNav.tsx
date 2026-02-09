@@ -59,20 +59,20 @@ const MobileBottomNav = ({
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-card border-t border-border z-50 safe-area-bottom">
-      <div className="flex items-center justify-around h-16 px-2">
+      <div className="flex items-center justify-around h-18 px-2 py-1">
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={item.action}
             className={cn(
-              "flex flex-col items-center justify-center gap-1 flex-1 h-full transition-colors",
+              "flex flex-col items-center justify-center gap-1 flex-1 py-2 transition-colors min-h-[56px]",
               item.isActive 
                 ? "text-primary" 
-                : "text-muted-foreground hover:text-foreground"
+                : "text-muted-foreground hover:text-foreground active:text-primary"
             )}
           >
             <item.icon className={cn(
-              "w-5 h-5",
+              "w-6 h-6",
               item.isActive && "fill-primary/20"
             )} />
             <span className="text-xs font-medium">{item.label}</span>
