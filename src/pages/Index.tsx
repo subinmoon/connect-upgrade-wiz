@@ -48,6 +48,11 @@ export interface ChatSession {
   createdAt: Date;
   archived?: boolean;
   pinned?: boolean;
+  chatbotId?: string;
+  chatbotInfo?: {
+    name: string;
+    icon: string;
+  };
 }
 
 interface UserSettings {
@@ -267,12 +272,20 @@ const Index = () => {
 
       const newChatId = Date.now().toString();
       setCurrentChatId(newChatId);
-      setChatHistory(prev => [{
+      
+      const newSession: ChatSession = {
         id: newChatId,
         title: newTitle,
         messages: newMessages,
-        createdAt: new Date()
-      }, ...prev]);
+        createdAt: new Date(),
+        chatbotId: selectedChatbot ? ('id' in selectedChatbot ? selectedChatbot.id : undefined) : undefined,
+        chatbotInfo: selectedChatbot ? {
+          name: selectedChatbot.name,
+          icon: selectedChatbot.icon,
+        } : undefined,
+      };
+      
+      setChatHistory(prev => [newSession, ...prev]);
     } else {
       setChatHistory(prev => prev.map(chat => chat.id === currentChatId ? {
         ...chat,
