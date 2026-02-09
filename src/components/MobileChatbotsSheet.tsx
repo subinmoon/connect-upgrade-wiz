@@ -86,7 +86,11 @@ const MobileChatbotsSheet = ({
 
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
+      <SheetContent 
+        side="bottom" 
+        className="h-[80vh] rounded-t-2xl"
+        onOpenAutoFocus={(e) => e.preventDefault()}
+      >
         <SheetHeader className="pb-3">
           <SheetTitle className="flex items-center gap-2">
             <Bot className="w-5 h-5 text-primary" />
