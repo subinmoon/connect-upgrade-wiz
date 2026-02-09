@@ -55,6 +55,9 @@ import Sidebar from "@/components/Sidebar";
 import SidebarTrigger from "@/components/SidebarTrigger";
 import HeaderNav from "@/components/HeaderNav";
 import UpcomingSchedule from "@/components/UpcomingSchedule";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import { SettingsModal } from "@/components/SettingsModal";
+import { useIsMobile } from "@/hooks/use-mobile";
 import logoIcon from "@/assets/logo-icon.png";
 
 export interface ArchiveGroup {
@@ -216,8 +219,10 @@ const DroppableGroup = ({ group, isOver, children }: DroppableGroupProps) => {
 
 const ArchivePage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [scheduleExpanded, setScheduleExpanded] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [userSettings] = useState(() => {
     const saved = localStorage.getItem("userSettings");
     return saved ? JSON.parse(saved) : null;
@@ -516,6 +521,243 @@ const ArchivePage = () => {
 
   const activeChat = getActiveChat();
 
+  // ========== MOBILE LAYOUT ==========
+  if (isMobile) {
+    return (
+      <>
+        <SettingsModal
+          open={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          settings={userSettings}
+          onSave={() => {}}
+        />
+
+        <div className="h-screen bg-background flex flex-col">
+          {/* Mobile Header */}
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-card">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => navigate("/")}
+              className="shrink-0"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-lg font-bold flex items-center gap-2">
+              <FolderArchive className="w-5 h-5 text-primary" />
+              아카이브
+            </h1>
+            <div className="flex-1" />
+            <Button size="sm" onClick={handleAddGroup} className="gap-1.5">
+              <Plus className="w-4 h-4" />
+              그룹
+            </Button>
+          </div>
+
+          {/* Archive Content */}
+          <div className="flex-1 overflow-y-auto px-4 py-3 pb-20">
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleDragStart}
+              onDragOver={handleDragOver}
+              onDragEnd={handleDragEnd}
+            >
+              <div className="space-y-3">
+                {groups.map(group => (
+                  <div
+                    key={group.id}
+                    className="border border-border rounded-xl overflow-hidden bg-card"
+                  >
+                    <Collapsible
+                      open={openGroups.has(group.id)}
+                      onOpenChange={() => toggleGroup(group.id)}
+                    >
+                      <div className="flex items-center justify-between px-4 py-3 hover:bg-muted/50 transition-colors">
+                        <CollapsibleTrigger asChild>
+                          <button className="flex items-center gap-2 flex-1 text-left">
+                            <div className={cn("w-2.5 h-2.5 rounded-full", getGroupColorClass(group.color))} />
+                            <Folder className="w-4 h-4 text-muted-foreground" />
+                            {editingGroupId === group.id ? (
+                              <Input
+                                value={editGroupName}
+                                onChange={e => setEditGroupName(e.target.value)}
+                                onBlur={() => handleSaveGroupName(group.id)}
+                                onKeyDown={e => {
+                                  if (e.key === "Enter") handleSaveGroupName(group.id);
+                                  if (e.key === "Escape") setEditingGroupId(null);
+                                }}
+                                onClick={e => e.stopPropagation()}
+                                className="h-7 w-40"
+                                autoFocus
+                              />
+                            ) : (
+                              <span className="font-medium text-foreground text-sm">
+                                {group.name}
+                              </span>
+                            )}
+                          </button>
+                        </CollapsibleTrigger>
+
+                        <div className="flex items-center gap-1">
+                          <span className="text-xs text-muted-foreground mr-1">
+                            {getChatsForGroup(group.id).length}
+                          </span>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <button
+                                className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+                                onClick={e => e.stopPropagation()}
+                              >
+                                <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                              </button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end" className="w-44">
+                              <DropdownMenuItem onClick={() => handleRenameGroup(group.id)}>
+                                <Pencil className="w-4 h-4 mr-2" />
+                                이름 변경
+                              </DropdownMenuItem>
+                              <DropdownMenuSub>
+                                <DropdownMenuSubTrigger>
+                                  <Palette className="w-4 h-4 mr-2" />
+                                  색상 변경
+                                </DropdownMenuSubTrigger>
+                                <DropdownMenuSubContent className="w-32">
+                                  {GROUP_COLORS.map(color => (
+                                    <DropdownMenuItem
+                                      key={color.id}
+                                      onClick={() => handleChangeGroupColor(group.id, color.id)}
+                                    >
+                                      <div className={cn("w-3 h-3 rounded-full mr-2", color.class)} />
+                                      {color.name}
+                                    </DropdownMenuItem>
+                                  ))}
+                                </DropdownMenuSubContent>
+                              </DropdownMenuSub>
+                              {group.id !== "default" && (
+                                <DropdownMenuItem
+                                  onClick={() => handleDeleteGroup(group.id)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  그룹 삭제
+                                </DropdownMenuItem>
+                              )}
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+
+                          <CollapsibleTrigger asChild>
+                            <button className="p-1">
+                              {openGroups.has(group.id) ? (
+                                <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                              ) : (
+                                <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                              )}
+                            </button>
+                          </CollapsibleTrigger>
+                        </div>
+                      </div>
+
+                      <CollapsibleContent>
+                        <DroppableGroup group={group} isOver={overGroupId === group.id}>
+                          {getChatsForGroup(group.id).length > 0 ? (
+                            getChatsForGroup(group.id).map(chat => (
+                              <div
+                                key={chat.id}
+                                className="flex items-center justify-between py-2.5 px-3 hover:bg-muted/30 rounded-lg transition-colors"
+                              >
+                                <button
+                                  onClick={() => handleSelectChat(chat.id)}
+                                  className="flex-1 text-left text-sm text-foreground hover:text-primary transition-colors truncate"
+                                >
+                                  {chat.title}
+                                </button>
+                                <div className="flex items-center gap-2">
+                                  <span className="text-xs text-muted-foreground">
+                                    {format(new Date(chat.createdAt), "MM.dd")}
+                                  </span>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <button className="p-1 hover:bg-muted rounded transition-all">
+                                        <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                                      </button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-44">
+                                      <DropdownMenuSub>
+                                        <DropdownMenuSubTrigger>
+                                          <FolderOutput className="w-4 h-4 mr-2" />
+                                          그룹 이동
+                                        </DropdownMenuSubTrigger>
+                                        <DropdownMenuSubContent className="w-40">
+                                          {groups.filter(g => g.id !== group.id).map(targetGroup => (
+                                            <DropdownMenuItem
+                                              key={targetGroup.id}
+                                              onClick={() => handleMoveChat(chat.id, group.id, targetGroup.id)}
+                                            >
+                                              <Folder className="w-4 h-4 mr-2" />
+                                              {targetGroup.name}
+                                            </DropdownMenuItem>
+                                          ))}
+                                        </DropdownMenuSubContent>
+                                      </DropdownMenuSub>
+                                      <DropdownMenuSeparator />
+                                      <DropdownMenuItem onClick={() => handleUnarchive(chat.id)}>
+                                        아카이브 해제
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => handleDeleteChat(chat.id)}
+                                        className="text-destructive focus:text-destructive"
+                                      >
+                                        <Trash2 className="w-4 h-4 mr-2" />
+                                        삭제
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="py-4 text-center text-xs text-muted-foreground">
+                              아카이브된 대화가 없습니다
+                            </div>
+                          )}
+                        </DroppableGroup>
+                      </CollapsibleContent>
+                    </Collapsible>
+                  </div>
+                ))}
+
+                {groups.length === 0 && (
+                  <div className="py-12 text-center text-muted-foreground">
+                    그룹이 없습니다. 새 그룹을 추가해주세요.
+                  </div>
+                )}
+              </div>
+
+              <DragOverlay>
+                {activeChat && (
+                  <div className="flex items-center gap-2 py-2 px-3 bg-card border border-border rounded-lg shadow-lg">
+                    <GripVertical className="w-4 h-4 text-muted-foreground" />
+                    <span className="text-sm text-foreground">{activeChat.title}</span>
+                  </div>
+                )}
+              </DragOverlay>
+            </DndContext>
+          </div>
+
+          {/* Mobile Bottom Navigation */}
+          <MobileBottomNav
+            onNewChat={() => navigate("/")}
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenChatbots={() => navigate("/chatbots")}
+            onOpenHistory={() => navigate("/")}
+          />
+        </div>
+      </>
+    );
+  }
+
+  // ========== DESKTOP LAYOUT ==========
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Sidebar Trigger - visible when sidebar closed */}
