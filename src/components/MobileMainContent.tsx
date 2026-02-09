@@ -31,7 +31,7 @@ const MobileMainContent = ({
   onSearchModeChange,
 }: MobileMainContentProps) => {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full pb-[calc(env(safe-area-inset-bottom,0px)+4.5rem)]">
       {/* Content Area - Top aligned */}
       <div className="flex-1 flex flex-col overflow-y-auto pb-2">
         {/* Welcome Header */}
@@ -47,7 +47,7 @@ const MobileMainContent = ({
       </div>
 
       {/* Chat Input - Above bottom nav */}
-      <div className="shrink-0 px-4 py-2 mb-16 bg-background border-t border-border">
+      <div className="shrink-0 px-4 py-2 bg-background border-t border-border">
         <ChatInput
           onSendMessage={(msg) => {
             onSendMessage(msg);

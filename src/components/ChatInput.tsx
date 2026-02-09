@@ -203,7 +203,7 @@ const ChatInput = ({
 
   return (
     <div className="chat-input-gradient bg-background shadow-lg">
-      <div className="p-4 pb-2 relative">
+      <div className={cn("relative", isMobile ? "p-3 pb-1.5" : "p-4 pb-2")}>
         {/* Selected Work Item Tag */}
         {selectedWorkItem && (
           <div className="flex items-center gap-2 mb-2">
@@ -312,7 +312,10 @@ const ChatInput = ({
           />
         )}
       </div>
-      <div className="flex items-center justify-between px-4 pb-4 pt-2">
+      <div className={cn(
+        "flex items-center justify-between",
+        isMobile ? "px-3 pb-3 pt-1.5" : "px-4 pb-4 pt-2"
+      )}>
         <div className="flex items-center gap-2 flex-wrap">
           {/* Search Mode Dropdown */}
           <DropdownMenu>
@@ -322,7 +325,7 @@ const ChatInput = ({
                 size="sm"
                 className={cn(
                   "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-                  isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+                  isMobile ? "h-9 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
                 )}
               >
                 <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
@@ -352,7 +355,7 @@ const ChatInput = ({
             size="sm"
             className={cn(
               "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-              isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+              isMobile ? "h-9 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
             )}
           >
             <Paperclip className={isMobile ? "w-5 h-5" : "w-4 h-4"} />
@@ -452,7 +455,7 @@ const ChatInput = ({
           size="icon"
           className={cn(
             "rounded-full transition-colors",
-            isMobile ? "h-12 w-12" : "h-10 w-10",
+            isMobile ? "h-11 w-11" : "h-10 w-10",
             message.trim() && !disabled
               ? "bg-primary hover:bg-lavender-dark text-primary-foreground" 
               : "bg-muted text-muted-foreground"
