@@ -88,16 +88,10 @@ const MobileChatbotsSheet = ({
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
         <SheetHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="flex items-center gap-2">
-              <Bot className="w-5 h-5 text-primary" />
-              챗봇 서비스
-            </SheetTitle>
-            <Button size="sm" onClick={() => { onCreateClick(); onClose(); }} className="gap-1.5">
-              <Plus className="w-4 h-4" />
-              생성
-            </Button>
-          </div>
+          <SheetTitle className="flex items-center gap-2">
+            <Bot className="w-5 h-5 text-primary" />
+            챗봇 서비스
+          </SheetTitle>
         </SheetHeader>
 
         {/* Search */}
@@ -111,8 +105,8 @@ const MobileChatbotsSheet = ({
           />
         </div>
 
-        {/* Filter Pills */}
-        <div className="flex gap-2 mb-3">
+        {/* Filter Pills with Create Button */}
+        <div className="flex items-center gap-2 mb-3">
           {filters.map((filter) => (
             <button
               key={filter.key}
@@ -138,6 +132,11 @@ const MobileChatbotsSheet = ({
               )}
             </button>
           ))}
+          <div className="flex-1" />
+          <Button size="sm" onClick={() => { onCreateClick(); onClose(); }} className="gap-1.5">
+            <Plus className="w-4 h-4" />
+            생성
+          </Button>
         </div>
 
         {/* Chatbot List */}
