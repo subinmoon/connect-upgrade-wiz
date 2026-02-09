@@ -70,12 +70,12 @@ const FavoriteChatbots = ({ onSelectChatbot, hasHistory = false }: FavoriteChatb
   // 즐겨찾기 없을 때
   if (favoriteChatbots.length === 0) {
     return (
-      <div className="bg-card rounded-2xl p-5 shadow-soft">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-lg bg-lavender-light flex items-center justify-center">
-            <Bot className="w-4 h-4 text-primary" />
+      <div className="bg-card rounded-2xl p-4 shadow-soft">
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+          <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+            <Bot className="w-3.5 h-3.5 text-primary" />
           </div>
-          <h2 className="text-base font-semibold text-foreground">즐겨찾는 챗봇</h2>
+          <h2 className="text-section-title text-foreground">즐겨찾는 챗봇</h2>
         </div>
         <p className="text-sm text-muted-foreground text-center py-4">
           즐겨찾는 챗봇이 없습니다. 헤더의 ⭐ 버튼에서 추가해보세요!
@@ -85,12 +85,12 @@ const FavoriteChatbots = ({ onSelectChatbot, hasHistory = false }: FavoriteChatb
   }
 
   return (
-    <div className="bg-card rounded-2xl p-5 shadow-soft">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-8 h-8 rounded-lg bg-lavender-light flex items-center justify-center">
-          <Bot className="w-4 h-4 text-primary" />
+    <div className="bg-card rounded-2xl p-4 shadow-soft">
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+          <Bot className="w-3.5 h-3.5 text-primary" />
         </div>
-        <h2 className="text-base font-semibold text-foreground">즐겨찾는 챗봇</h2>
+        <h2 className="text-section-title text-foreground">즐겨찾는 챗봇</h2>
         <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
       </div>
       
