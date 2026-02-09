@@ -35,6 +35,7 @@
     --radius: 0.75rem;
 
     --mobile-bottom-nav-height: 4.5rem;
+    --mobile-input-height: 6rem;
 
     --lavender: 262 60% 55%;
     --lavender-light: 262 80% 95%;
@@ -89,6 +90,7 @@
     --lavender-dark: 262 50% 70%;
 
     --mobile-bottom-nav-height: 4.5rem;
+    --mobile-input-height: 6rem;
 
     --mint: 168 30% 20%;
     --mint-dark: 168 60% 55%;
