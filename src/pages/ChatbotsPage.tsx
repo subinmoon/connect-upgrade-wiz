@@ -15,7 +15,11 @@ import Sidebar from "@/components/Sidebar";
 import SidebarTrigger from "@/components/SidebarTrigger";
 import HeaderNav from "@/components/HeaderNav";
 import UpcomingSchedule from "@/components/UpcomingSchedule";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import { SettingsModal } from "@/components/SettingsModal";
+import { useIsMobile } from "@/hooks/use-mobile";
 import logoIcon from "@/assets/logo-icon.png";
+
 export interface Chatbot {
   id: string;
   name: string;
@@ -61,6 +65,7 @@ const initialChatbots: Chatbot[] = [
 
 const ChatbotsPage = () => {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [chatbots, setChatbots] = useState<Chatbot[]>(initialChatbots);
   const [activeFilter, setActiveFilter] = useState<FilterType>("favorites");
@@ -68,10 +73,12 @@ const ChatbotsPage = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
   const [scheduleExpanded, setScheduleExpanded] = useState(false);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
   const [userSettings] = useState(() => {
     const saved = localStorage.getItem("userSettings");
     return saved ? JSON.parse(saved) : null;
   });
+
   // 필터별 챗봇 목록
   const getFilteredChatbots = () => {
     let filtered: Chatbot[];
@@ -149,18 +156,18 @@ const ChatbotsPage = () => {
     { key: "personal", label: "개인", icon: <User className="w-3.5 h-3.5" /> },
   ];
 
-  const renderChatbotItem = (chatbot: Chatbot) => {
+  const renderChatbotItem = (chatbot: Chatbot, compact = false) => {
     const showActions = chatbot.isOwner;
     
     return (
       <div
         key={chatbot.id}
-        className="flex items-center gap-4 p-5 bg-card rounded-xl border border-border hover:shadow-md transition-all"
+        className={`flex items-center gap-3 ${compact ? 'p-3' : 'p-5'} bg-card rounded-xl border border-border hover:shadow-md transition-all`}
       >
-        <span className="text-3xl shrink-0">{chatbot.icon}</span>
+        <span className={`${compact ? 'text-2xl' : 'text-3xl'} shrink-0`}>{chatbot.icon}</span>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-foreground text-lg">{chatbot.name}</span>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className={`font-semibold text-foreground ${compact ? 'text-base' : 'text-lg'}`}>{chatbot.name}</span>
             {chatbot.visibility === "team" && (
               <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
                 팀
@@ -177,11 +184,11 @@ const ChatbotsPage = () => {
               </span>
             )}
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className={`text-sm text-muted-foreground ${compact ? 'line-clamp-1' : ''} mt-1`}>
             {chatbot.description}
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <button
             onClick={() => handleToggleFavorite(chatbot.id)}
             className="p-2 hover:bg-muted rounded-lg transition-colors"
@@ -252,6 +259,118 @@ const ChatbotsPage = () => {
     }
   };
 
+  // ========== MOBILE LAYOUT ==========
+  if (isMobile) {
+    return (
+      <>
+        <SettingsModal
+          open={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          settings={userSettings}
+          onSave={() => {}}
+        />
+
+        <div className="h-screen bg-background flex flex-col">
+          {/* Mobile Header */}
+          <div className="flex items-center gap-3 px-4 py-3 border-b border-border bg-card">
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={() => navigate("/")}
+              className="shrink-0"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </Button>
+            <h1 className="text-lg font-bold flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-primary" />
+              챗봇 서비스
+            </h1>
+            <div className="flex-1" />
+            <Button size="sm" onClick={() => setIsCreateModalOpen(true)} className="gap-1.5">
+              <Plus className="w-4 h-4" />
+              생성
+            </Button>
+          </div>
+
+          {/* Filters + Search */}
+          <div className="px-4 py-3 space-y-3 border-b border-border">
+            {/* Search */}
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input
+                placeholder="챗봇 검색..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            {/* Filter Pills */}
+            <div className="flex gap-2">
+              {filters.map((filter) => (
+                <button
+                  key={filter.key}
+                  onClick={() => setActiveFilter(filter.key)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                    activeFilter === filter.key
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                  }`}
+                >
+                  {filter.icon}
+                  {filter.label}
+                  {counts[filter.key] > 0 && (
+                    <span
+                      className={`text-xs px-1.5 py-0.5 rounded-full ${
+                        activeFilter === filter.key
+                          ? "bg-primary-foreground/20"
+                          : "bg-background"
+                      }`}
+                    >
+                      {counts[filter.key]}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Chatbot List */}
+          <div className="flex-1 overflow-y-auto px-4 py-3 pb-20 space-y-3">
+            {filteredChatbots.length === 0 ? (
+              <div className="text-center py-12 text-muted-foreground">
+                {getEmptyMessage().icon}
+                <p className="text-base font-medium">{getEmptyMessage().title}</p>
+                <p className="text-sm mt-1">{getEmptyMessage().desc}</p>
+              </div>
+            ) : (
+              filteredChatbots.map((chatbot) => renderChatbotItem(chatbot, true))
+            )}
+          </div>
+
+          {/* Mobile Bottom Navigation */}
+          <MobileBottomNav
+            onNewChat={() => navigate("/")}
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenChatbots={() => {}}
+            onOpenHistory={() => navigate("/")}
+          />
+        </div>
+
+        {/* 챗봇 생성/수정 모달 */}
+        <ChatbotCreateModal
+          open={isCreateModalOpen}
+          onClose={() => {
+            setIsCreateModalOpen(false);
+            setEditingChatbot(null);
+          }}
+          onSave={handleSaveChatbot}
+          editingChatbot={editingChatbot}
+        />
+      </>
+    );
+  }
+
+  // ========== DESKTOP LAYOUT ==========
   return (
     <div className="min-h-screen bg-background flex flex-col">
       {/* Sidebar Trigger - visible when sidebar closed */}

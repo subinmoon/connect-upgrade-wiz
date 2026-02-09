@@ -95,7 +95,7 @@ const Index = () => {
   }, [isMobile, leftColumnHeight]);
   
   // Tutorial state
-  const [showSetupModal, setShowSetupModal] = useState(true);
+  const [showSetupModal, setShowSetupModal] = useState(!isMobile);
   const [showGuideOverlay, setShowGuideOverlay] = useState(false);
   const [tutorialStep, setTutorialStep] = useState<TutorialStep | undefined>(undefined);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
