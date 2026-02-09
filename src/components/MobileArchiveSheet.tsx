@@ -242,20 +242,22 @@ const MobileArchiveSheet = ({
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <SheetContent side="bottom" className="h-[80vh] rounded-t-2xl">
         <SheetHeader className="pb-3">
-          <div className="flex items-center justify-between">
-            <SheetTitle className="flex items-center gap-2">
-              <FolderArchive className="w-5 h-5 text-primary" />
-              아카이브
-            </SheetTitle>
-            <Button size="sm" onClick={handleAddGroup} className="gap-1.5">
-              <Plus className="w-4 h-4" />
-              그룹
-            </Button>
-          </div>
+          <SheetTitle className="flex items-center gap-2">
+            <FolderArchive className="w-5 h-5 text-primary" />
+            아카이브
+          </SheetTitle>
         </SheetHeader>
 
+        {/* Add Group Button */}
+        <div className="flex justify-end mb-3">
+          <Button size="sm" onClick={handleAddGroup} className="gap-1.5">
+            <Plus className="w-4 h-4" />
+            그룹 추가
+          </Button>
+        </div>
+
         {/* Archive Content */}
-        <div className="overflow-y-auto h-[calc(100%-60px)] -mx-6 px-6 space-y-2">
+        <div className="overflow-y-auto h-[calc(100%-100px)] -mx-6 px-6 space-y-2">
           {groups.map(group => (
             <div
               key={group.id}
