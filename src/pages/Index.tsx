@@ -751,10 +751,10 @@ const Index = () => {
                     <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
                   </div>
                   
-                  {/* Main Content Grid - 2 columns, centered */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-4 mb-4">
+                  {/* Main Content Grid - 2 columns, matched height */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                     <div ref={leftColumnRef} className="flex flex-col gap-3">
-                      <div data-guide="work-life-helper">
+                      <div data-guide="work-life-helper" className="flex-1">
                         <HRHelper />
                       </div>
                       <div data-guide="popular-questions">
