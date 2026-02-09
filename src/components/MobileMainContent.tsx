@@ -47,7 +47,7 @@ const MobileMainContent = ({
       </div>
 
       {/* Chat Input - Fixed at bottom above nav */}
-      <div className="shrink-0 px-4 py-3 bg-background border-t border-border">
+      <div className="shrink-0 px-4 py-2 bg-background border-t border-border">
         <ChatInput
           onSendMessage={(msg) => {
             onSendMessage(msg);
