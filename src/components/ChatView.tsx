@@ -11,6 +11,12 @@ interface Message {
   searchMode?: string;
 }
 
+interface SelectedChatbot {
+  name: string;
+  icon: string;
+  description: string;
+}
+
 interface ChatViewProps {
   messages: Message[];
   onSendMessage: (message: string) => void;
@@ -24,6 +30,7 @@ interface ChatViewProps {
   onSearchModeChange?: (mode: string) => void;
   userName?: string;
   isMobile?: boolean;
+  selectedChatbot?: SelectedChatbot | null;
 }
 
 const suggestionsMap: Record<string, string[]> = {
@@ -63,6 +70,7 @@ const ChatView = ({
   onSearchModeChange,
   userName,
   isMobile = false,
+  selectedChatbot,
 }: ChatViewProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isNearBottom, setIsNearBottom] = useState(true);
@@ -113,11 +121,20 @@ const ChatView = ({
 
   return (
     <div className={isMobile ? "flex flex-col h-full" : "flex flex-col h-[calc(100vh-120px)] max-h-[calc(100vh-120px)]"}>
+      {/* Chatbot Header - Only show when a chatbot is selected and no messages yet */}
+      {selectedChatbot && messages.length === 0 && (
+        <div className="flex flex-col items-center justify-center flex-1 px-4 pb-8">
+          <span className="text-5xl mb-4">{selectedChatbot.icon}</span>
+          <h2 className="text-xl font-bold text-foreground mb-2">{selectedChatbot.name}</h2>
+          <p className="text-sm text-primary text-center max-w-md">{selectedChatbot.description}</p>
+        </div>
+      )}
+      
       {/* Messages */}
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className={`flex-1 overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-4 pb-[calc(var(--mobile-input-height)+var(--mobile-bottom-nav-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pb-4'}`}>
+        className={`${selectedChatbot && messages.length === 0 ? 'hidden' : 'flex-1'} overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-4 pb-[calc(var(--mobile-input-height)+var(--mobile-bottom-nav-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pb-4'}`}>
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
@@ -182,6 +199,8 @@ const ChatView = ({
               onSearchModeChange={onSearchModeChange}
               userName={userName}
               isMobile={isMobile}
+              hideSearchMode={!!selectedChatbot}
+              chatbotName={selectedChatbot?.name}
             />
           </div>
         </div>
@@ -214,6 +233,8 @@ const ChatView = ({
               onSearchModeChange={onSearchModeChange}
               userName={userName}
               isMobile={isMobile}
+              hideSearchMode={!!selectedChatbot}
+              chatbotName={selectedChatbot?.name}
             />
           </div>
         </>

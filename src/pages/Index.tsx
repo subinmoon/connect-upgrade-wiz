@@ -28,6 +28,7 @@ import { TutorialModal, TutorialStep } from "@/components/TutorialModal";
 import { TutorialGuideOverlay } from "@/components/TutorialGuideOverlay";
 import { SettingsModal } from "@/components/SettingsModal";
 import { ChatbotManagementModal, Chatbot } from "@/components/ChatbotManagementModal";
+import { ChatbotService } from "@/data/chatbotServices";
 import { ChatbotCreateModal } from "@/components/ChatbotCreateModal";
 import { useIsMobile } from "@/hooks/use-mobile";
 import UpcomingSchedule from "@/components/UpcomingSchedule";
@@ -118,6 +119,7 @@ const Index = () => {
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
+  const [selectedChatbot, setSelectedChatbot] = useState<Chatbot | ChatbotService | null>(null);
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
     const saved = localStorage.getItem("chatbots");
     if (saved) return JSON.parse(saved);
@@ -315,6 +317,7 @@ const Index = () => {
 
   const handleBack = () => {
     setIsChatMode(false);
+    setSelectedChatbot(null);
   };
 
   const handleTitleChange = (newTitle: string) => {
@@ -439,7 +442,17 @@ const Index = () => {
     setCurrentChatId(null);
     setMessages([]);
     setChatTitle("새 대화");
+    setSelectedChatbot(null);
     setIsChatMode(false);
+  };
+
+  const handleSelectChatbot = (chatbot: Chatbot | ChatbotService) => {
+    setSelectedChatbot(chatbot);
+    setCurrentChatId(null);
+    setMessages([]);
+    setChatTitle(chatbot.name);
+    setIsChatMode(true);
+    setShowChatbotsSheet(false);
   };
 
   const isPinned = chatHistory.find(c => c.id === currentChatId)?.pinned;
@@ -509,6 +522,7 @@ const Index = () => {
                   onSearchModeChange={handleSearchModeChange}
                   userName={userSettings?.userName}
                   isMobile
+                  selectedChatbot={selectedChatbot}
                 />
               </div>
             ) : (
@@ -555,6 +569,7 @@ const Index = () => {
             onSave={handleSaveChatbot}
             editingChatbot={editingChatbot}
             onClearEditing={() => setEditingChatbot(null)}
+            onSelectChatbot={handleSelectChatbot}
           />
 
           {/* Mobile Archive Sheet */}
@@ -763,6 +778,7 @@ const Index = () => {
                   onLengthChange={handleLengthChange}
                   onSearchModeChange={handleSearchModeChange}
                   userName={userSettings?.userName}
+                  selectedChatbot={selectedChatbot}
                 />
               ) : (
                 <div className="flex flex-col h-full justify-center">
