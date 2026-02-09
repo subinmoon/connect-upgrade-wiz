@@ -1,5 +1,5 @@
-import { Home, MessageSquare, FolderArchive, Settings, Bot, History } from "lucide-react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Home, FolderArchive, Settings, Bot, History } from "lucide-react";
+import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface MobileBottomNavProps {
@@ -7,10 +7,16 @@ interface MobileBottomNavProps {
   onOpenSettings?: () => void;
   onOpenChatbots?: () => void;
   onOpenHistory?: () => void;
+  onOpenArchive?: () => void;
 }
 
-const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots, onOpenHistory }: MobileBottomNavProps) => {
-  const navigate = useNavigate();
+const MobileBottomNav = ({ 
+  onNewChat, 
+  onOpenSettings, 
+  onOpenChatbots, 
+  onOpenHistory,
+  onOpenArchive 
+}: MobileBottomNavProps) => {
   const location = useLocation();
 
   const navItems = [
@@ -18,13 +24,7 @@ const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots, onOpenHist
       id: "home",
       icon: Home,
       label: "홈",
-      action: () => {
-        if (location.pathname === "/") {
-          onNewChat?.();
-        } else {
-          navigate("/");
-        }
-      },
+      action: () => onNewChat?.(),
       isActive: location.pathname === "/" && !location.state,
     },
     {
@@ -45,8 +45,8 @@ const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots, onOpenHist
       id: "archive",
       icon: FolderArchive,
       label: "아카이브",
-      action: () => navigate("/archive"),
-      isActive: location.pathname === "/archive",
+      action: () => onOpenArchive?.(),
+      isActive: false,
     },
     {
       id: "settings",

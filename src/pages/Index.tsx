@@ -13,6 +13,8 @@ import MobileBottomNav from "@/components/MobileBottomNav";
 import MobileHeader from "@/components/MobileHeader";
 import MobileMainContent from "@/components/MobileMainContent";
 import MobileHistorySheet from "@/components/MobileHistorySheet";
+import MobileChatbotsSheet from "@/components/MobileChatbotsSheet";
+import MobileArchiveSheet from "@/components/MobileArchiveSheet";
 import { generateScheduleResponse } from "@/data/scheduleData";
 import logoIcon from "@/assets/logo-icon.png";
 import { PanelLeftClose, ArrowLeft, Pencil, Check, X } from "lucide-react";
@@ -108,6 +110,8 @@ const Index = () => {
   const [showChatbotManagement, setShowChatbotManagement] = useState(false);
   const [showChatbotCreate, setShowChatbotCreate] = useState(false);
   const [showHistorySheet, setShowHistorySheet] = useState(false);
+  const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
+  const [showArchiveSheet, setShowArchiveSheet] = useState(false);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
     const saved = localStorage.getItem("chatbots");
@@ -360,6 +364,13 @@ const Index = () => {
     }
   };
 
+  const handleUnarchive = (chatId: string) => {
+    setChatHistory(prev => prev.map(chat => chat.id === chatId ? {
+      ...chat,
+      archived: false
+    } : chat));
+  };
+
   const handlePin = (chatId?: string) => {
     const targetId = chatId || currentChatId;
     setChatHistory(prev => prev.map(chat => chat.id === targetId ? {
@@ -542,12 +553,38 @@ const Index = () => {
             onDeleteChat={handleDelete}
           />
 
+          {/* Mobile Chatbots Sheet */}
+          <MobileChatbotsSheet
+            open={showChatbotsSheet}
+            onClose={() => setShowChatbotsSheet(false)}
+            chatbots={chatbots}
+            onToggleFavorite={handleToggleChatbotFavorite}
+            onDelete={handleDeleteChatbot}
+            onEdit={handleEditChatbot}
+            onCreateClick={() => {
+              setEditingChatbot(null);
+              setShowChatbotsSheet(false);
+              setShowChatbotCreate(true);
+            }}
+          />
+
+          {/* Mobile Archive Sheet */}
+          <MobileArchiveSheet
+            open={showArchiveSheet}
+            onClose={() => setShowArchiveSheet(false)}
+            chatHistory={chatHistory}
+            onSelectChat={handleSelectChat}
+            onUnarchiveChat={handleUnarchive}
+            onDeleteChat={handleDelete}
+          />
+
           {/* Mobile Bottom Navigation */}
           <MobileBottomNav
             onNewChat={handleNewChat}
             onOpenSettings={() => setShowSettingsModal(true)}
-            onOpenChatbots={() => setShowChatbotManagement(true)}
+            onOpenChatbots={() => setShowChatbotsSheet(true)}
             onOpenHistory={() => setShowHistorySheet(true)}
+            onOpenArchive={() => setShowArchiveSheet(true)}
           />
         </div>
       </>
