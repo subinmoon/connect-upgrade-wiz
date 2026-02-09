@@ -17,14 +17,14 @@ export interface WorkItem {
 
 // 8 work items
 export const allWorkItems: WorkItem[] = [
-  { id: "1", label: "결재 목록 보여줘", icon: FileText, color: "bg-purple-100 text-purple-600" },
-  { id: "2", label: "회의실 잡아줘", icon: Calendar, color: "bg-blue-100 text-blue-600" },
-  { id: "3", label: "동료 일정 확인해줘", icon: Users, color: "bg-green-100 text-green-600" },
-  { id: "4", label: "휴가 확인할래", icon: Plane, color: "bg-orange-100 text-orange-600" },
-  { id: "5", label: "조직도 보여줘", icon: Building2, color: "bg-pink-100 text-pink-600" },
-  { id: "6", label: "직원 찾아줘", icon: UserCircle, color: "bg-cyan-100 text-cyan-600" },
-  { id: "7", label: "오늘 메뉴 뭐 나와?", icon: UtensilsCrossed, color: "bg-amber-100 text-amber-600" },
-  { id: "8", label: "메일 보내줘", icon: Mail, color: "bg-indigo-100 text-indigo-600" },
+  { id: "1", label: "결재", icon: FileText, color: "bg-purple-100 text-purple-600" },
+  { id: "2", label: "회의실", icon: Calendar, color: "bg-blue-100 text-blue-600" },
+  { id: "3", label: "동료 일정", icon: Users, color: "bg-green-100 text-green-600" },
+  { id: "4", label: "휴가", icon: Plane, color: "bg-orange-100 text-orange-600" },
+  { id: "5", label: "조직도", icon: Building2, color: "bg-pink-100 text-pink-600" },
+  { id: "6", label: "직원 검색", icon: UserCircle, color: "bg-cyan-100 text-cyan-600" },
+  { id: "7", label: "오늘 메뉴", icon: UtensilsCrossed, color: "bg-amber-100 text-amber-600" },
+  { id: "8", label: "메일", icon: Mail, color: "bg-indigo-100 text-indigo-600" },
 ];
 
 interface WorkItemSettingsModalProps {
