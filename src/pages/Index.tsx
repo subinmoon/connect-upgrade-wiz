@@ -475,20 +475,20 @@ const Index = () => {
         />
 
         <div className="h-screen bg-background flex flex-col overflow-hidden">
-          {/* Mobile Header */}
-          <MobileHeader
-            isChatMode={isChatMode}
-            chatTitle={chatTitle}
-            userName={userSettings?.assistantName}
-            onBack={handleBack}
-            onTitleChange={handleTitleChange}
-            onShare={() => currentChatId && handleShareChat(currentChatId)}
-            onPin={() => handlePin()}
-            onDelete={() => handleDelete()}
-            isPinned={isPinned}
-          />
-
-          {/* Main Content */}
+          {/* Mobile Header - Only show in chat mode for back navigation */}
+          {isChatMode && (
+            <MobileHeader
+              isChatMode={isChatMode}
+              chatTitle={chatTitle}
+              userName={userSettings?.assistantName}
+              onBack={handleBack}
+              onTitleChange={handleTitleChange}
+              onShare={() => currentChatId && handleShareChat(currentChatId)}
+              onPin={() => handlePin()}
+              onDelete={() => handleDelete()}
+              isPinned={isPinned}
+            />
+          )}
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
               <div className="h-full pb-16">
