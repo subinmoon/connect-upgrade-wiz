@@ -51,7 +51,7 @@ const RecentInterests = ({ hasHistory = false, onQuestionClick }: RecentInterest
   const icon = hasHistory ? <Star className="w-3.5 h-3.5 text-primary" /> : <TrendingUp className="w-3.5 h-3.5 text-primary" />;
 
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-soft h-full">
+    <div className="bg-card rounded-2xl p-4 shadow-soft h-full">
       <div className="flex items-center gap-2 mb-4">
         <div className="w-7 h-7 rounded-lg bg-lavender-light flex items-center justify-center">
           {icon}

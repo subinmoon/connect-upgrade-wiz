@@ -160,7 +160,7 @@ const ChatView = ({
                 <button
                   key={index}
                   onClick={() => onSendMessage(suggestion)}
-                  className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap flex-shrink-0"
+                  className="px-3 py-1.5 text-menu-label-long bg-card hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap flex-shrink-0"
                 >
                   {suggestion}
                 </button>
@@ -192,7 +192,7 @@ const ChatView = ({
                 <button
                   key={index}
                   onClick={() => onSendMessage(suggestion)}
-                  className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap flex-shrink-0"
+                  className="px-3 py-1.5 text-menu-label-long bg-card hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap flex-shrink-0"
                 >
                   {suggestion}
                 </button>

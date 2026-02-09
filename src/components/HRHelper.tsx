@@ -26,7 +26,7 @@ const HRHelper = () => {
     .slice(0, 8);
 
   return (
-    <div className="bg-white rounded-xl p-3 shadow-soft h-full">
+    <div className="bg-card rounded-xl p-3 shadow-soft h-full">
       <WorkItemSettingsModal
         open={showSettings}
         onClose={() => setShowSettings(false)}
