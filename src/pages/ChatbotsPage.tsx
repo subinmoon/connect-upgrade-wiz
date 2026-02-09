@@ -156,13 +156,28 @@ const ChatbotsPage = () => {
     { key: "personal", label: "개인", icon: <User className="w-3.5 h-3.5" /> },
   ];
 
+  const handleSelectChatbot = (chatbot: Chatbot) => {
+    // Navigate to main page with chatbot info in state
+    navigate("/", { 
+      state: { 
+        selectedChatbot: {
+          id: chatbot.id,
+          name: chatbot.name,
+          icon: chatbot.icon,
+          description: chatbot.description,
+        }
+      } 
+    });
+  };
+
   const renderChatbotItem = (chatbot: Chatbot, compact = false) => {
     const showActions = chatbot.isOwner;
     
     return (
       <div
         key={chatbot.id}
-        className={`flex items-center gap-3 ${compact ? 'p-3' : 'p-5'} bg-card rounded-xl border border-border hover:shadow-md transition-all`}
+        onClick={() => handleSelectChatbot(chatbot)}
+        className={`flex items-center gap-3 ${compact ? 'p-3' : 'p-5'} bg-card rounded-xl border border-border hover:shadow-md transition-all cursor-pointer`}
       >
         <span className={`${compact ? 'text-2xl' : 'text-3xl'} shrink-0`}>{chatbot.icon}</span>
         <div className="flex-1 min-w-0">
