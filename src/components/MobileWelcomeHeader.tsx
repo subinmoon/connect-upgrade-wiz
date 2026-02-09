@@ -83,7 +83,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
   };
 
   return (
-    <div className="w-full px-4 pt-4 pb-3">
+    <div className="w-full px-4 pt-2 pb-3">
       {/* Welcome Message */}
       <div className="flex items-center gap-2.5 mb-4">
         <img src={logoIcon} alt="Logo" className="w-10 h-10" />
