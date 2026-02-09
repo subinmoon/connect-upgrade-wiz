@@ -102,7 +102,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
         </div>
       </div>
 
-      {/* Quick Actions - Card style like HRHelper */}
+      {/* Quick Actions - Card with badge style */}
       <div className="bg-card rounded-2xl p-4 shadow-soft">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -111,17 +111,15 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
           <h2 className="text-base font-bold text-foreground">빠른 시작</h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="flex flex-wrap gap-2">
           {actions.map((action) => (
             <button
               key={action.id}
               onClick={() => handleActionClick(action)}
-              className="flex flex-col items-center gap-1 p-1.5 rounded-xl hover:bg-muted/60 transition-all group"
+              className="bg-background border border-border rounded-full py-2 px-3 flex items-center gap-1.5 transition-all duration-200 hover:shadow-soft active:scale-[0.98]"
             >
-              <div className={`w-9 h-9 rounded-xl ${action.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                <span className={action.iconColor}>{action.icon}</span>
-              </div>
-              <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center whitespace-nowrap leading-tight">
+              <span className={action.iconColor}>{action.icon}</span>
+              <span className="text-sm font-medium text-foreground whitespace-nowrap">
                 {action.label}
               </span>
             </button>
