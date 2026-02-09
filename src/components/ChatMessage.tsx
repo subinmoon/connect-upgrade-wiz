@@ -26,12 +26,12 @@ interface ChatMessageProps {
 const getSearchModeLabel = (mode?: string) => {
   switch (mode) {
     case "web":
-      return { label: "웹 검색", icon: "🌐", className: "bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800" };
+      return { label: "웹 검색", icon: "🌐" };
     case "internal":
-      return { label: "사내 규칙", icon: "📋", className: "bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800" };
+      return { label: "사내 규칙", icon: "📋" };
     case "general":
     default:
-      return { label: "일반", icon: "💬", className: "bg-secondary text-secondary-foreground border-border" };
+      return { label: "일반", icon: "💬" };
   }
 };
 
@@ -71,10 +71,7 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         {/* Search mode tag */}
         {searchMode && (
           <div className={cn("flex mb-1.5", isUser ? "justify-end" : "justify-start")}>
-            <span className={cn(
-              "inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-semibold border shadow-sm",
-              modeInfo.className
-            )}>
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-background text-muted-foreground border-2 border-border">
               <span>{modeInfo.icon}</span>
               <span>{modeInfo.label}</span>
             </span>
