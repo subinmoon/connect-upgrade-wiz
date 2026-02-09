@@ -40,8 +40,8 @@ const MobileMainContent = ({
           onSelectAction={onSelectAction} 
         />
 
-        {/* HR Helper Card */}
-        <div className="px-4 pb-3">
+        {/* HR Helper Card - Compact */}
+        <div className="px-4 pb-2">
           <HRHelper />
         </div>
       </div>
