@@ -31,9 +31,9 @@ const MobileMainContent = ({
   onSearchModeChange,
 }: MobileMainContentProps) => {
   return (
-    <div className="flex flex-col h-full pb-[calc(env(safe-area-inset-bottom,0px)+var(--mobile-bottom-nav-height)+var(--mobile-input-height))]">
+    <div className="flex flex-col h-[calc(100vh-var(--mobile-header-height))] pb-[calc(env(safe-area-inset-bottom,0px)+var(--mobile-bottom-nav-height)+var(--mobile-input-height))]">
       {/* Content Area - Centered */}
-      <div className="flex-1 flex flex-col justify-center overflow-y-auto pb-2">
+      <div className="flex-1 flex flex-col justify-center overflow-y-auto pb-2 pt-2">
         {/* Welcome Header */}
         <MobileWelcomeHeader 
           userName={userName} 
