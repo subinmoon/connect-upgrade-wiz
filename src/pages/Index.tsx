@@ -533,11 +533,9 @@ const Index = () => {
             onToggleFavorite={handleToggleChatbotFavorite}
             onDelete={handleDeleteChatbot}
             onEdit={handleEditChatbot}
-            onCreateClick={() => {
-              setEditingChatbot(null);
-              setShowChatbotsSheet(false);
-              setShowChatbotCreate(true);
-            }}
+            onSave={handleSaveChatbot}
+            editingChatbot={editingChatbot}
+            onClearEditing={() => setEditingChatbot(null)}
           />
 
           {/* Mobile Archive Sheet */}
