@@ -32,8 +32,8 @@ const MobileMainContent = ({
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-full pb-[calc(env(safe-area-inset-bottom,0px)+4.5rem)]">
-      {/* Content Area - Top aligned */}
-      <div className="flex-1 flex flex-col overflow-y-auto pb-2">
+      {/* Content Area - Centered */}
+      <div className="flex-1 flex flex-col justify-center overflow-y-auto pb-2">
         {/* Welcome Header */}
         <MobileWelcomeHeader 
           userName={userName} 
