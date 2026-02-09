@@ -15,6 +15,7 @@ import MobileMainContent from "@/components/MobileMainContent";
 import MobileHistorySheet from "@/components/MobileHistorySheet";
 import MobileChatbotsSheet from "@/components/MobileChatbotsSheet";
 import MobileArchiveSheet from "@/components/MobileArchiveSheet";
+import ArchiveGroupSelectSheet from "@/components/ArchiveGroupSelectSheet";
 import MobileSettingsSheet from "@/components/MobileSettingsSheet";
 import MobileChatbotCreateSheet from "@/components/MobileChatbotCreateSheet";
 import { generateScheduleResponse } from "@/data/scheduleData";
@@ -115,6 +116,7 @@ const Index = () => {
   const [showHistorySheet, setShowHistorySheet] = useState(false);
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
+  const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
     const saved = localStorage.getItem("chatbots");
@@ -464,6 +466,18 @@ const Index = () => {
         />
 
         <div className="h-screen bg-background flex flex-col overflow-hidden">
+          {/* Archive Group Select Sheet */}
+          <ArchiveGroupSelectSheet
+            open={showArchiveGroupSelect}
+            onClose={() => setShowArchiveGroupSelect(false)}
+            onSelect={(groupId) => {
+              handleArchive(currentChatId || undefined, groupId);
+              toast.success("아카이브에 저장되었습니다");
+              handleBack();
+            }}
+            chatTitle={chatTitle}
+          />
+
           {/* Mobile Header - Only show in chat mode for back navigation */}
           {isChatMode && (
             <MobileHeader
@@ -475,11 +489,7 @@ const Index = () => {
               onShare={() => currentChatId && handleShareChat(currentChatId)}
               onPin={() => handlePin()}
               onDelete={() => handleDelete()}
-              onArchive={() => {
-                handleArchive();
-                toast.success("아카이브에 저장되었습니다");
-                handleBack();
-              }}
+              onArchive={() => setShowArchiveGroupSelect(true)}
               isPinned={isPinned}
             />
           )}
