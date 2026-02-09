@@ -90,16 +90,13 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
   };
 
   return (
-    <div className="w-full px-4 pt-3 pb-2">
-      {/* Welcome Message - Compact */}
-      <div className="flex items-center gap-2.5 mb-3">
-        <img src={logoIcon} alt="Logo" className="w-9 h-9" />
-        <div>
-          <h1 className="text-base font-bold text-foreground leading-tight">
-            <span className="text-gradient-name">{userName}</span>님
-          </h1>
-          <p className="text-xs text-muted-foreground">{greeting}</p>
-        </div>
+    <div className="w-full px-4 pt-2 pb-1.5">
+      {/* Welcome Message - Single line */}
+      <div className="flex items-center gap-2 mb-2">
+        <img src={logoIcon} alt="Logo" className="w-8 h-8" />
+        <h1 className="text-base font-bold text-foreground">
+          <span className="text-gradient-name">{userName}</span>님, {greeting}
+        </h1>
       </div>
 
       {/* Quick Actions - Compact Card */}
