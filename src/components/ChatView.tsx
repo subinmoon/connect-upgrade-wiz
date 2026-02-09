@@ -8,6 +8,7 @@ interface Message {
   content: string;
   timestamp: Date;
   sources?: Source[];
+  searchMode?: string;
 }
 
 interface ChatViewProps {
@@ -126,6 +127,7 @@ const ChatView = ({
             isLastAssistant={index === lastAssistantIndex}
             onRegenerate={onRegenerate}
             sources={message.sources}
+            searchMode={message.searchMode}
           />
         ))}
         {isLoading && (

@@ -20,13 +20,27 @@ interface ChatMessageProps {
   onRegenerate?: () => void;
   isLastAssistant?: boolean;
   sources?: Source[];
+  searchMode?: string;
 }
 
-const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources }: ChatMessageProps) => {
+const getSearchModeLabel = (mode?: string) => {
+  switch (mode) {
+    case "web":
+      return { label: "웹 검색", icon: "🌐" };
+    case "internal":
+      return { label: "사내 규칙", icon: "📋" };
+    case "general":
+    default:
+      return { label: "일반", icon: "💬" };
+  }
+};
+
+const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources, searchMode }: ChatMessageProps) => {
   const isUser = role === "user";
   const [copied, setCopied] = useState(false);
   const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
   const [showAllSources, setShowAllSources] = useState(false);
+  const modeInfo = getSearchModeLabel(searchMode);
 
   const handleCopy = async () => {
     await navigator.clipboard.writeText(content);
@@ -54,6 +68,16 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         </div>
       )}
       <div className="flex flex-col max-w-[80%]">
+        {/* Search mode tag */}
+        {searchMode && (
+          <div className={cn("flex mb-1.5", isUser ? "justify-end" : "justify-start")}>
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium bg-secondary text-secondary-foreground">
+              <span>{modeInfo.icon}</span>
+              <span>{modeInfo.label}</span>
+            </span>
+          </div>
+        )}
+        
         <div className={cn("flex items-end gap-2", isUser && "flex-row-reverse")}>
           <div
             className={cn(
