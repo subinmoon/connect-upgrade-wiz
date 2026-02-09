@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import logoIcon from "@/assets/logo-icon.png";
-import { MessageSquare, Sparkles, Mail, TrendingUp, Languages, ListTree } from "lucide-react";
+import { MessageSquare, Sparkles, Mail, Languages, Zap } from "lucide-react";
 
 interface MobileWelcomeHeaderProps {
   userName?: string;
@@ -12,6 +12,7 @@ interface QuickAction {
   icon: React.ReactNode;
   label: string;
   iconColor: string;
+  bgColor: string;
   promptTemplate?: string;
 }
 
@@ -21,27 +22,31 @@ const actions: QuickAction[] = [
     icon: <MessageSquare className="w-4 h-4" />,
     label: "요약",
     iconColor: "text-primary",
+    bgColor: "bg-primary/10",
     promptTemplate: "다음 내용을 요약해주세요:\n\n[여기에 문서나 회의 내용을 붙여넣으세요]",
   },
   {
     id: "brainstorm",
     icon: <Sparkles className="w-4 h-4" />,
     label: "아이디어",
-    iconColor: "text-amber-500",
+    iconColor: "text-amber-600",
+    bgColor: "bg-amber-100",
     promptTemplate: "다음 주제에 대해 브레인스토밍을 도와주세요:\n\n주제: [주제를 입력하세요]\n목적: [브레인스토밍의 목적을 입력하세요]",
   },
   {
     id: "email",
     icon: <Mail className="w-4 h-4" />,
     label: "메일",
-    iconColor: "text-rose-500",
+    iconColor: "text-rose-600",
+    bgColor: "bg-rose-100",
     promptTemplate: "다음 조건에 맞는 메일 초안을 작성해주세요:\n\n받는 사람: [예: 팀장님]\n목적: [예: 회의 일정 조율]\n주요 내용: [전달하고 싶은 핵심 내용]",
   },
   {
     id: "translate",
     icon: <Languages className="w-4 h-4" />,
     label: "번역",
-    iconColor: "text-blue-500",
+    iconColor: "text-blue-600",
+    bgColor: "bg-blue-100",
     promptTemplate: "다음 내용을 번역해주세요:\n\n원본 언어: [예: 영어]\n번역할 언어: [예: 한국어]\n\n[번역할 내용을 여기에 붙여넣으세요]",
   },
 ];
@@ -81,22 +86,31 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
         </div>
       </div>
 
-      {/* Quick Actions - Horizontal scroll on mobile */}
-      <div className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 scrollbar-hide">
-        {actions.map((action) => (
-          <button
-            key={action.id}
-            onClick={() => handleActionClick(action)}
-            className="bg-card border border-border rounded-full py-2 px-4 flex items-center gap-2 transition-all duration-200 hover:shadow-soft active:scale-[0.98] shrink-0"
-          >
-            <div className={action.iconColor}>
-              {action.icon}
-            </div>
-            <span className="text-sm font-medium text-foreground whitespace-nowrap">
-              {action.label}
-            </span>
-          </button>
-        ))}
+      {/* Quick Actions - Card style like HRHelper */}
+      <div className="bg-card rounded-2xl p-4 shadow-soft">
+        <div className="flex items-center gap-2 mb-3">
+          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Zap className="w-4 h-4 text-primary" />
+          </div>
+          <h2 className="text-base font-bold text-foreground">빠른 시작</h2>
+        </div>
+
+        <div className="grid grid-cols-4 gap-2">
+          {actions.map((action) => (
+            <button
+              key={action.id}
+              onClick={() => handleActionClick(action)}
+              className="flex flex-col items-center gap-1 p-1.5 rounded-xl hover:bg-muted/60 transition-all group"
+            >
+              <div className={`w-9 h-9 rounded-xl ${action.bgColor} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                <span className={action.iconColor}>{action.icon}</span>
+              </div>
+              <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center whitespace-nowrap leading-tight">
+                {action.label}
+              </span>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
