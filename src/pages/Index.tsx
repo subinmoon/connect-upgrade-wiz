@@ -791,6 +791,7 @@ const Index = () => {
                       onLengthChange={handleLengthChange}
                       onSearchModeChange={handleSearchModeChange}
                       userName={userSettings?.userName}
+                      showWorkItemShortcut={false}
                     />
                   </div>
                 </div>

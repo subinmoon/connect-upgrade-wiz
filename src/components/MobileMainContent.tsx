@@ -62,6 +62,7 @@ const MobileMainContent = ({
           onSearchModeChange={onSearchModeChange}
           userName={userName}
           isMobile
+          showWorkItemShortcut={false}
         />
       </div>
     </div>
