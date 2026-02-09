@@ -32,16 +32,16 @@ const MobileMainContent = ({
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-full pb-16">
-      {/* Centered Content Area */}
-      <div className="flex-1 flex flex-col justify-center overflow-y-auto">
-        {/* Welcome Header - Compact */}
+      {/* Content Area - Top aligned, no excessive spacing */}
+      <div className="flex-1 flex flex-col overflow-y-auto">
+        {/* Welcome Header */}
         <MobileWelcomeHeader 
           userName={userName} 
           onSelectAction={onSelectAction} 
         />
 
-        {/* HR Helper Card - Compact */}
-        <div className="px-4 pb-1">
+        {/* HR Helper Card */}
+        <div className="px-4 pb-3">
           <HRHelper />
         </div>
       </div>
