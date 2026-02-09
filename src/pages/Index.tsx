@@ -181,8 +181,25 @@ const Index = () => {
   };
 
   useEffect(() => {
-    const state = location.state as { selectChatId?: string } | null;
-    if (state?.selectChatId) {
+    const state = location.state as { 
+      selectChatId?: string;
+      selectedChatbot?: {
+        id: string;
+        name: string;
+        icon: string;
+        description: string;
+      };
+    } | null;
+    
+    if (state?.selectedChatbot) {
+      // Enter chat mode with the selected chatbot
+      setSelectedChatbot(state.selectedChatbot as Chatbot);
+      setIsChatMode(true);
+      setMessages([]);
+      setChatTitle("새 대화");
+      setCurrentChatId(null);
+      window.history.replaceState({}, document.title);
+    } else if (state?.selectChatId) {
       const chat = chatHistory.find(c => c.id === state.selectChatId);
       if (chat) {
         setCurrentChatId(chat.id);
