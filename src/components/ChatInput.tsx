@@ -416,39 +416,37 @@ const ChatInput = ({
             </DropdownMenu>
           )}
 
-          {/* Model Selection Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-                  isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
-                )}
-              >
-                <span className={isMobile ? "text-base" : ""}>{currentModelOption?.emoji}</span>
-                <span>{currentModelOption?.label}</span>
-                <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
-              {modelOptions.map((model) => (
-                <DropdownMenuItem 
-                  key={model.id}
-                  onClick={() => handleModelSelect(model.id)}
-                  className={cn(
-                    "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
-                    isMobile && "py-3 text-base",
-                    currentModel === model.id && "bg-primary/10 text-primary"
-                  )}
+          {/* Model Selection Dropdown - Desktop only */}
+          {!isMobile && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border h-8 px-3 text-xs"
                 >
-                  <span>{model.emoji}</span>
-                  <span>{model.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <span>{currentModelOption?.emoji}</span>
+                  <span>{currentModelOption?.label}</span>
+                  <ChevronDown className="w-3 h-3" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
+                {modelOptions.map((model) => (
+                  <DropdownMenuItem 
+                    key={model.id}
+                    onClick={() => handleModelSelect(model.id)}
+                    className={cn(
+                      "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
+                      currentModel === model.id && "bg-primary/10 text-primary"
+                    )}
+                  >
+                    <span>{model.emoji}</span>
+                    <span>{model.label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <Button
           size="icon"
