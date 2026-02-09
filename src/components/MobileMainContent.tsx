@@ -1,6 +1,5 @@
 import MobileWelcomeHeader from "./MobileWelcomeHeader";
 import HRHelper from "./HRHelper";
-import RecentInterests from "./RecentInterests";
 import ChatInput from "./ChatInput";
 import type { ChatSession } from "@/pages/Index";
 
@@ -43,12 +42,6 @@ const MobileMainContent = ({
       <div className="flex-1 overflow-y-auto px-4 space-y-3">
         {/* HR Helper Card */}
         <HRHelper />
-        
-        {/* Recent Interests / Popular Questions */}
-        <RecentInterests 
-          hasHistory={chatHistory.length > 0} 
-          onQuestionClick={(question) => onSelectAction(question)} 
-        />
       </div>
 
       {/* Chat Input - Fixed at bottom above nav */}
