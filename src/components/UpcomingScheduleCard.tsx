@@ -109,11 +109,11 @@ const UpcomingScheduleCard = ({ onGetHelp }: UpcomingScheduleCardProps) => {
   if (schedules.length === 0) {
     return (
       <div className="bg-card rounded-2xl p-4 shadow-soft h-full">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-7 h-7 rounded-lg bg-lavender-light flex items-center justify-center">
-            <Calendar className="w-4 h-4 text-primary" />
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+          <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+            <Calendar className="w-3.5 h-3.5 text-primary" />
           </div>
-          <h2 className="text-base font-bold text-foreground">다가오는 일정</h2>
+          <h2 className="text-section-title text-foreground">다가오는 일정</h2>
         </div>
         <div className="flex flex-col items-center justify-center py-8 text-center">
           <span className="text-3xl mb-3">📭</span>
@@ -129,12 +129,12 @@ const UpcomingScheduleCard = ({ onGetHelp }: UpcomingScheduleCardProps) => {
 
   return (
     <div className="bg-card rounded-2xl p-4 shadow-soft h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-7 h-7 rounded-lg bg-lavender-light flex items-center justify-center">
-          <Calendar className="w-4 h-4 text-primary" />
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+          <Calendar className="w-3.5 h-3.5 text-primary" />
         </div>
-        <h2 className="text-base font-bold text-foreground">다가오는 일정</h2>
-        <span className="ml-auto text-xs text-muted-foreground">{schedules.length}개</span>
+        <h2 className="text-section-title text-foreground">다가오는 일정</h2>
+        <span className="ml-auto text-menu-label-long text-muted-foreground">{schedules.length}개</span>
       </div>
 
       <div className="flex-1 space-y-1.5 overflow-auto min-h-0 max-h-80">

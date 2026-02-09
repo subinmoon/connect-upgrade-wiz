@@ -159,11 +159,11 @@ const TodayContextCard = ({ onGetHelp, onNewsChat }: TodayContextCardProps) => {
       />
 
       {/* Header */}
-      <div className="flex items-center gap-2 mb-3 shrink-0">
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary/20 to-lavender-light flex items-center justify-center">
-          <Sparkles className="w-4 h-4 text-primary" />
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border shrink-0">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+          <Sparkles className="w-3.5 h-3.5 text-primary" />
         </div>
-        <h2 className="text-base font-bold text-foreground flex-1">AI 데일리 체크</h2>
+        <h2 className="text-section-title text-foreground flex-1">AI 데일리 체크</h2>
         {activeTab === "schedule" && (
           <button
             onClick={handleLoadSchedules}

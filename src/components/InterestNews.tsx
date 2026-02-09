@@ -35,11 +35,11 @@ const mockNews: NewsItem[] = [
 const InterestNews = () => {
   return (
     <div className="bg-card rounded-2xl p-4 shadow-soft h-full flex flex-col">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-7 h-7 rounded-lg bg-orange-100 flex items-center justify-center">
-          <Newspaper className="w-4 h-4 text-orange-600" />
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+          <Newspaper className="w-3.5 h-3.5 text-primary" />
         </div>
-        <h2 className="text-base font-bold text-foreground">관심 뉴스</h2>
+        <h2 className="text-section-title text-foreground">관심 뉴스</h2>
       </div>
 
       <div className="flex-1 space-y-3 overflow-auto min-h-0">

@@ -52,11 +52,11 @@ const RecentInterests = ({ hasHistory = false, onQuestionClick }: RecentInterest
 
   return (
     <div className="bg-card rounded-2xl p-4 shadow-soft h-full">
-      <div className="flex items-center gap-2 mb-4">
-        <div className="w-7 h-7 rounded-lg bg-lavender-light flex items-center justify-center">
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
           {icon}
         </div>
-        <h2 className="text-base font-bold text-foreground flex-1">{title}</h2>
+        <h2 className="text-section-title text-foreground flex-1">{title}</h2>
         <button
           onClick={() => window.location.reload()}
           className="p-1.5 rounded-lg hover:bg-muted transition-colors"
