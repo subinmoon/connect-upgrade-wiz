@@ -4,17 +4,18 @@ import Sidebar from "@/components/Sidebar";
 import SidebarTrigger from "@/components/SidebarTrigger";
 import HeaderNav from "@/components/HeaderNav";
 import WelcomeHeader from "@/components/WelcomeHeader";
-import UpcomingSchedule from "@/components/UpcomingSchedule";
 import RecentInterests from "@/components/RecentInterests";
 import HRHelper from "@/components/HRHelper";
 import TodayContextCard from "@/components/TodayContextCard";
 import ChatInput from "@/components/ChatInput";
 import ChatView from "@/components/ChatView";
+import MobileBottomNav from "@/components/MobileBottomNav";
+import MobileHeader from "@/components/MobileHeader";
+import MobileMainContent from "@/components/MobileMainContent";
 import { generateScheduleResponse } from "@/data/scheduleData";
 import logoIcon from "@/assets/logo-icon.png";
-import { PanelLeftClose, ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2 } from "lucide-react";
+import { PanelLeftClose, ArrowLeft, Pencil, Check, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { Source } from "@/components/ChatMessage";
 import { TutorialModal, TutorialStep } from "@/components/TutorialModal";
@@ -23,6 +24,7 @@ import { SettingsModal } from "@/components/SettingsModal";
 import { ChatbotManagementModal, Chatbot } from "@/components/ChatbotManagementModal";
 import { ChatbotCreateModal } from "@/components/ChatbotCreateModal";
 import { useIsMobile } from "@/hooks/use-mobile";
+import UpcomingSchedule from "@/components/UpcomingSchedule";
 
 interface Message {
   id: string;
@@ -50,6 +52,7 @@ interface UserSettings {
   allowWebSearch: boolean;
   allowFollowUpQuestions: boolean;
 }
+
 const Index = () => {
   const location = useLocation();
   const isMobile = useIsMobile();
@@ -65,8 +68,6 @@ const Index = () => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState("");
 
-  // Keep the right column height fixed to the left column height,
-  // so expanding schedule items doesn't push the chat input off-screen.
   const leftColumnRef = useRef<HTMLDivElement | null>(null);
   const [leftColumnHeight, setLeftColumnHeight] = useState<number | null>(null);
 
@@ -109,7 +110,6 @@ const Index = () => {
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
     const saved = localStorage.getItem("chatbots");
     if (saved) return JSON.parse(saved);
-    // Default chatbots
     return [
       {
         id: "default-1",
@@ -123,7 +123,6 @@ const Index = () => {
     ];
   });
 
-  // Save chatbots to localStorage
   useEffect(() => {
     localStorage.setItem("chatbots", JSON.stringify(chatbots));
   }, [chatbots]);
@@ -163,7 +162,6 @@ const Index = () => {
     setEditingChatbot(null);
   };
 
-  // Handle navigation from archive page with chat selection
   useEffect(() => {
     const state = location.state as { selectChatId?: string } | null;
     if (state?.selectChatId) {
@@ -174,7 +172,6 @@ const Index = () => {
         setChatTitle(chat.title);
         setIsChatMode(chat.messages.length > 0);
       }
-      // Clear the state to prevent re-triggering
       window.history.replaceState({}, document.title);
     }
   }, [location.state, chatHistory]);
@@ -184,13 +181,11 @@ const Index = () => {
     setShowGuideOverlay(true);
   };
 
-  // 화면 가이드 완료 핸들러
   const handleGuideComplete = () => {
     setShowGuideOverlay(false);
-    // 먼저 스텝을 설정한 후 모달 열기 (순서 중요)
     setTimeout(() => {
-      setTutorialStep("user-info-ask"); // 다음 단계로 설정
-      setShowSetupModal(true); // 다시 모달로 돌아가기
+      setTutorialStep("user-info-ask");
+      setShowSetupModal(true);
     }, 100);
   };
 
@@ -200,7 +195,6 @@ const Index = () => {
     setShowSetupModal(false);
   };
 
-  // 화면 가이드 건너뛰기 핸들러 - 다음 단계(호칭 설정)로 이동
   const handleGuideSkip = () => {
     setShowGuideOverlay(false);
     setTimeout(() => {
@@ -213,13 +207,11 @@ const Index = () => {
     setShowSetupModal(false);
   };
 
-  // 개인화 설정 저장 핸들러
   const handleSettingsSave = (settings: UserSettings) => {
     setUserSettings(settings);
     localStorage.setItem("userSettings", JSON.stringify(settings));
   };
 
-  // 입력창에서 설정 변경 핸들러
   const handleToneChange = (tone: string) => {
     if (userSettings) {
       const newSettings = { ...userSettings, toneStyle: tone };
@@ -254,12 +246,10 @@ const Index = () => {
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
 
-    // First message sets the title
     if (messages.length === 0) {
       const newTitle = content.length > 20 ? content.slice(0, 20) + "..." : content;
       setChatTitle(newTitle);
 
-      // Create new chat session
       const newChatId = Date.now().toString();
       setCurrentChatId(newChatId);
       setChatHistory(prev => [{
@@ -269,7 +259,6 @@ const Index = () => {
         createdAt: new Date()
       }, ...prev]);
     } else {
-      // Update existing chat session
       setChatHistory(prev => prev.map(chat => chat.id === currentChatId ? {
         ...chat,
         messages: newMessages,
@@ -279,13 +268,10 @@ const Index = () => {
     setIsChatMode(true);
     setIsLoading(true);
 
-    // Mock AI response (UI only) - with schedule awareness
     setTimeout(() => {
-      // Check if it's a schedule-related question
       const scheduleResponse = generateScheduleResponse(content);
-      const responseContent = scheduleResponse ? scheduleResponse : `"${content}"에 대해 답변드리겠습니다.\n\n이것은 UI 데모용 응답입니다. 실제 AI 연동 시 더 풍부한 응답을 제공할 수 있습니다.`;
+      const responseContent = scheduleResponse ? scheduleResponse : `"${content}"에 대해 답변드리겠습니다.\n\n이것은 UI 데모용 응답입니다.`;
 
-      // Demo sources for the response
       const demoSources: Source[] = [{
         title: "사내 복지 정책 가이드",
         url: "https://example.com/policy",
@@ -294,14 +280,6 @@ const Index = () => {
         title: "HR 포털 FAQ",
         url: "https://example.com/hr-faq",
         description: "자주 묻는 질문 모음"
-      }, {
-        title: "2024년 업데이트 공지",
-        url: "https://example.com/notice",
-        description: "최신 정책 변경사항 안내"
-      }, {
-        title: "근무 규정 문서",
-        url: "https://example.com/work-rules",
-        description: "근무 관련 규정 전문"
       }];
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -314,16 +292,17 @@ const Index = () => {
       setMessages(updatedMessages);
       setIsLoading(false);
 
-      // Update chat history with assistant response
       setChatHistory(prev => prev.map(chat => chat.id === currentChatId ? {
         ...chat,
         messages: updatedMessages
       } : chat));
     }, 1500);
   };
+
   const handleBack = () => {
     setIsChatMode(false);
   };
+
   const handleTitleChange = (newTitle: string) => {
     setChatTitle(newTitle);
     setChatHistory(prev => prev.map(chat => chat.id === currentChatId ? {
@@ -331,23 +310,21 @@ const Index = () => {
       title: newTitle
     } : chat));
   };
+
   const handleRegenerate = () => {
     if (messages.length < 2) return;
 
-    // Remove last assistant message
     const newMessages = messages.slice(0, -1);
     setMessages(newMessages);
     setIsLoading(true);
 
-    // Get the last user message
     const lastUserMessage = newMessages[newMessages.length - 1];
 
-    // Mock regenerated response
     setTimeout(() => {
       const assistantMessage = {
         id: Date.now().toString(),
         role: "assistant" as const,
-        content: `"${lastUserMessage.content}"에 대해 다시 답변드리겠습니다.\n\n이것은 재생성된 UI 데모용 응답입니다. 실제 AI 연동 시 다른 응답을 제공할 수 있습니다.`,
+        content: `"${lastUserMessage.content}"에 대해 다시 답변드리겠습니다.\n\n이것은 재생성된 UI 데모용 응답입니다.`,
         timestamp: new Date()
       };
       const updatedMessages = [...newMessages, assistantMessage];
@@ -359,6 +336,7 @@ const Index = () => {
       } : chat));
     }, 1500);
   };
+
   const handleArchive = (chatId?: string, groupId?: string) => {
     const targetId = chatId || currentChatId;
     setChatHistory(prev => prev.map(chat => chat.id === targetId ? {
@@ -366,7 +344,6 @@ const Index = () => {
       archived: true
     } : chat));
 
-    // Update archive groups in localStorage
     if (targetId && groupId) {
       const savedGroups = localStorage.getItem("archiveGroups");
       if (savedGroups) {
@@ -380,12 +357,7 @@ const Index = () => {
       }
     }
   };
-  const handleUnarchive = (chatId: string) => {
-    setChatHistory(prev => prev.map(chat => chat.id === chatId ? {
-      ...chat,
-      archived: false
-    } : chat));
-  };
+
   const handlePin = (chatId?: string) => {
     const targetId = chatId || currentChatId;
     setChatHistory(prev => prev.map(chat => chat.id === targetId ? {
@@ -393,6 +365,7 @@ const Index = () => {
       pinned: !chat.pinned
     } : chat));
   };
+
   const handleDelete = (chatId?: string) => {
     const targetId = chatId || currentChatId;
     setChatHistory(prev => prev.filter(chat => chat.id !== targetId));
@@ -400,6 +373,7 @@ const Index = () => {
       handleNewChat();
     }
   };
+
   const handleRenameChat = (chatId: string, newTitle: string) => {
     setChatHistory(prev => prev.map(chat => chat.id === chatId ? {
       ...chat,
@@ -409,6 +383,7 @@ const Index = () => {
       setChatTitle(newTitle);
     }
   };
+
   const handleShareChat = async (chatId: string) => {
     const chat = chatHistory.find(c => c.id === chatId);
     if (!chat) return;
@@ -428,6 +403,7 @@ const Index = () => {
       await navigator.clipboard.writeText(chatText);
     }
   };
+
   const handleSelectChat = (chatId: string) => {
     const chat = chatHistory.find(c => c.id === chatId);
     if (chat) {
@@ -437,213 +413,307 @@ const Index = () => {
       setIsChatMode(true);
     }
   };
+
   const handleNewChat = () => {
     setCurrentChatId(null);
     setMessages([]);
     setChatTitle("새 대화");
     setIsChatMode(false);
   };
-  return <>
-    {/* Tutorial Modal */}
-    <TutorialModal 
-      open={showSetupModal} 
-      onComplete={handleSetupComplete} 
-      onSkip={handleSetupSkip}
-      onStartGuide={handleStartGuide}
-      userName="경민"
-      initialStep={tutorialStep}
-    />
-    
-    {/* Tutorial Guide Overlay - 화면 위를 돌아다니는 가이드 */}
-    {showGuideOverlay && (
-      <TutorialGuideOverlay 
-        onComplete={handleGuideComplete}
-        onSkip={handleGuideSkip}
-      />
-    )}
-    
-    {/* 개인화 설정 모달 */}
-    <SettingsModal
-      open={showSettingsModal}
-      onClose={() => setShowSettingsModal(false)}
-      settings={userSettings}
-      onSave={handleSettingsSave}
-    />
 
-    {/* 챗봇 관리 모달 */}
-    <ChatbotManagementModal
-      open={showChatbotManagement}
-      onClose={() => setShowChatbotManagement(false)}
-      onCreateClick={() => {
-        setEditingChatbot(null);
-        setShowChatbotManagement(false);
-        setShowChatbotCreate(true);
-      }}
-      chatbots={chatbots}
-      onToggleFavorite={handleToggleChatbotFavorite}
-      onDelete={handleDeleteChatbot}
-      onEdit={handleEditChatbot}
-    />
+  const isPinned = chatHistory.find(c => c.id === currentChatId)?.pinned;
 
-    {/* 챗봇 생성/수정 모달 */}
-    <ChatbotCreateModal
-      open={showChatbotCreate}
-      onClose={() => {
-        setShowChatbotCreate(false);
-        setEditingChatbot(null);
-      }}
-      onSave={handleSaveChatbot}
-      editingChatbot={editingChatbot}
-    />
-    
-    <div className="h-screen bg-background flex flex-col overflow-hidden">
-      {/* Top Header Area - spans full width */}
-      <div className="flex items-center shrink-0" data-guide="header">
-        {/* Logo area - matches sidebar background, hidden when sidebar closed */}
-        {sidebarOpen && <div className="flex items-center gap-2 shrink-0 px-4 py-2 w-64 bg-card">
-            <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-            <span className="font-bold text-foreground">​ISU GPT </span>
-            <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 hover:bg-muted rounded-lg transition-colors">
-              <PanelLeftClose className="w-4 h-4 text-muted-foreground" />
-            </button>
-          </div>}
+  // ========== MOBILE LAYOUT ==========
+  if (isMobile) {
+    return (
+      <>
+        <TutorialModal 
+          open={showSetupModal} 
+          onComplete={handleSetupComplete} 
+          onSkip={handleSetupSkip}
+          onStartGuide={handleStartGuide}
+          userName="경민"
+          initialStep={tutorialStep}
+        />
         
-        {/* Right side: Chat controls OR HeaderNav + Schedule + User */}
-        <div className="flex-1 flex items-center gap-3 px-4 py-2">
-          {/* Chat mode: show chat controls on left side */}
-          {isChatMode && <div className="flex items-center gap-2">
-              <button onClick={handleBack} className="p-2 hover:bg-muted rounded-lg transition-colors">
-                <ArrowLeft className="w-5 h-5 text-muted-foreground" />
-              </button>
-              
-              {/* Editable title - full width, no truncation */}
-              {isEditingTitle ? <div className="flex items-center gap-1">
-                  <Input value={editTitleValue} onChange={e => setEditTitleValue(e.target.value)} className="h-7 text-sm font-medium w-60" autoFocus onKeyDown={e => {
-              if (e.key === "Enter") {
-                if (editTitleValue.trim()) {
-                  handleTitleChange(editTitleValue.trim());
-                }
-                setIsEditingTitle(false);
-              }
-              if (e.key === "Escape") {
-                setIsEditingTitle(false);
-              }
-            }} />
-                  <button onClick={() => {
-              if (editTitleValue.trim()) {
-                handleTitleChange(editTitleValue.trim());
-              }
-              setIsEditingTitle(false);
-            }} className="p-1 hover:bg-green-100 rounded transition-colors">
-                    <Check className="w-4 h-4 text-green-600" />
-                  </button>
-                  <button onClick={() => setIsEditingTitle(false)} className="p-1 hover:bg-red-100 rounded transition-colors">
-                    <X className="w-4 h-4 text-red-500" />
-                  </button>
-                </div> : <div className="flex items-center gap-1 group">
-                  <h2 className="text-base font-medium text-foreground">
-                    {chatTitle}
-                  </h2>
-                  <button onClick={() => {
-              setEditTitleValue(chatTitle);
-              setIsEditingTitle(true);
-            }} className="p-1 opacity-0 group-hover:opacity-100 hover:bg-muted rounded transition-all">
-                    <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
-                  </button>
-                </div>}
-            </div>}
-          
-          {/* Spacer to push right items */}
-          <div className="flex-1" />
-          
-          <HeaderNav isChatMode={isChatMode} currentChatId={currentChatId} chatHistory={chatHistory} onShare={handleShareChat} onPin={handlePin} onDelete={handleDelete} />
-          <UpcomingSchedule 
-            isExpanded={scheduleExpanded} 
-            onToggle={() => setScheduleExpanded(!scheduleExpanded)} 
-            onGetHelp={prompt => {
-              setPrefillMessage(prompt);
-              setScheduleExpanded(false);
-            }}
-            onRefresh={() => {
-              // Trigger refresh - reload the page to get latest data
-              window.location.reload();
-            }}
+        {showGuideOverlay && (
+          <TutorialGuideOverlay 
+            onComplete={handleGuideComplete}
+            onSkip={handleGuideSkip}
           />
-          {/* User Profile */}
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
-              {userSettings?.assistantName?.[0] || "문"}
+        )}
+        
+        <SettingsModal
+          open={showSettingsModal}
+          onClose={() => setShowSettingsModal(false)}
+          settings={userSettings}
+          onSave={handleSettingsSave}
+        />
+
+        <ChatbotManagementModal
+          open={showChatbotManagement}
+          onClose={() => setShowChatbotManagement(false)}
+          onCreateClick={() => {
+            setEditingChatbot(null);
+            setShowChatbotManagement(false);
+            setShowChatbotCreate(true);
+          }}
+          chatbots={chatbots}
+          onToggleFavorite={handleToggleChatbotFavorite}
+          onDelete={handleDeleteChatbot}
+          onEdit={handleEditChatbot}
+        />
+
+        <ChatbotCreateModal
+          open={showChatbotCreate}
+          onClose={() => {
+            setShowChatbotCreate(false);
+            setEditingChatbot(null);
+          }}
+          onSave={handleSaveChatbot}
+          editingChatbot={editingChatbot}
+        />
+
+        <div className="h-screen bg-background flex flex-col overflow-hidden">
+          {/* Mobile Header */}
+          <MobileHeader
+            isChatMode={isChatMode}
+            chatTitle={chatTitle}
+            userName={userSettings?.assistantName}
+            onBack={handleBack}
+            onTitleChange={handleTitleChange}
+            onShare={() => currentChatId && handleShareChat(currentChatId)}
+            onPin={() => handlePin()}
+            onDelete={() => handleDelete()}
+            isPinned={isPinned}
+          />
+
+          {/* Main Content */}
+          <div className="flex-1 overflow-hidden">
+            {isChatMode ? (
+              <div className="h-full pb-16">
+                <ChatView 
+                  messages={messages} 
+                  onSendMessage={handleSendMessage} 
+                  isLoading={isLoading} 
+                  onRegenerate={handleRegenerate}
+                  toneStyle={userSettings?.toneStyle}
+                  answerLength={userSettings?.answerLength}
+                  searchMode={userSettings?.searchMode}
+                  onToneChange={handleToneChange}
+                  onLengthChange={handleLengthChange}
+                  onSearchModeChange={handleSearchModeChange}
+                  userName={userSettings?.userName}
+                  isMobile
+                />
+              </div>
+            ) : (
+              <MobileMainContent
+                userName={userSettings?.userName || "사용자"}
+                chatHistory={chatHistory}
+                prefillMessage={prefillMessage}
+                onSendMessage={(msg) => {
+                  handleSendMessage(msg);
+                  setPrefillMessage("");
+                }}
+                onSelectAction={(template) => setPrefillMessage(template)}
+                toneStyle={userSettings?.toneStyle}
+                answerLength={userSettings?.answerLength}
+                searchMode={userSettings?.searchMode}
+                onToneChange={handleToneChange}
+                onLengthChange={handleLengthChange}
+                onSearchModeChange={handleSearchModeChange}
+              />
+            )}
+          </div>
+
+          {/* Mobile Bottom Navigation */}
+          <MobileBottomNav
+            onNewChat={handleNewChat}
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenChatbots={() => setShowChatbotManagement(true)}
+          />
+        </div>
+      </>
+    );
+  }
+
+  // ========== DESKTOP LAYOUT ==========
+  return (
+    <>
+      <TutorialModal 
+        open={showSetupModal} 
+        onComplete={handleSetupComplete} 
+        onSkip={handleSetupSkip}
+        onStartGuide={handleStartGuide}
+        userName="경민"
+        initialStep={tutorialStep}
+      />
+      
+      {showGuideOverlay && (
+        <TutorialGuideOverlay 
+          onComplete={handleGuideComplete}
+          onSkip={handleGuideSkip}
+        />
+      )}
+      
+      <SettingsModal
+        open={showSettingsModal}
+        onClose={() => setShowSettingsModal(false)}
+        settings={userSettings}
+        onSave={handleSettingsSave}
+      />
+
+      <ChatbotManagementModal
+        open={showChatbotManagement}
+        onClose={() => setShowChatbotManagement(false)}
+        onCreateClick={() => {
+          setEditingChatbot(null);
+          setShowChatbotManagement(false);
+          setShowChatbotCreate(true);
+        }}
+        chatbots={chatbots}
+        onToggleFavorite={handleToggleChatbotFavorite}
+        onDelete={handleDeleteChatbot}
+        onEdit={handleEditChatbot}
+      />
+
+      <ChatbotCreateModal
+        open={showChatbotCreate}
+        onClose={() => {
+          setShowChatbotCreate(false);
+          setEditingChatbot(null);
+        }}
+        onSave={handleSaveChatbot}
+        editingChatbot={editingChatbot}
+      />
+      
+      <div className="h-screen bg-background flex flex-col overflow-hidden">
+        {/* Top Header Area - spans full width */}
+        <div className="flex items-center shrink-0" data-guide="header">
+          {sidebarOpen && (
+            <div className="flex items-center gap-2 shrink-0 px-4 py-2 w-64 bg-card">
+              <img src={logoIcon} alt="Logo" className="w-8 h-8" />
+              <span className="font-bold text-foreground">ISU GPT</span>
+              <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 hover:bg-muted rounded-lg transition-colors">
+                <PanelLeftClose className="w-4 h-4 text-muted-foreground" />
+              </button>
             </div>
-            <span className="text-sm font-medium text-foreground hidden sm:block">
-              {userSettings?.assistantName || "문수빈"}
-            </span>
+          )}
+          
+          <div className="flex-1 flex items-center gap-3 px-4 py-2">
+            {isChatMode && (
+              <div className="flex items-center gap-2">
+                <button onClick={handleBack} className="p-2 hover:bg-muted rounded-lg transition-colors">
+                  <ArrowLeft className="w-5 h-5 text-muted-foreground" />
+                </button>
+                
+                {isEditingTitle ? (
+                  <div className="flex items-center gap-1">
+                    <Input 
+                      value={editTitleValue} 
+                      onChange={e => setEditTitleValue(e.target.value)} 
+                      className="h-7 text-sm font-medium w-60" 
+                      autoFocus 
+                      onKeyDown={e => {
+                        if (e.key === "Enter") {
+                          if (editTitleValue.trim()) {
+                            handleTitleChange(editTitleValue.trim());
+                          }
+                          setIsEditingTitle(false);
+                        }
+                        if (e.key === "Escape") {
+                          setIsEditingTitle(false);
+                        }
+                      }} 
+                    />
+                    <button onClick={() => {
+                      if (editTitleValue.trim()) {
+                        handleTitleChange(editTitleValue.trim());
+                      }
+                      setIsEditingTitle(false);
+                    }} className="p-1 hover:bg-accent rounded transition-colors">
+                      <Check className="w-4 h-4 text-primary" />
+                    </button>
+                    <button onClick={() => setIsEditingTitle(false)} className="p-1 hover:bg-destructive/10 rounded transition-colors">
+                      <X className="w-4 h-4 text-destructive" />
+                    </button>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-1 group">
+                    <h2 className="text-base font-medium text-foreground">{chatTitle}</h2>
+                    <button onClick={() => {
+                      setEditTitleValue(chatTitle);
+                      setIsEditingTitle(true);
+                    }} className="p-1 opacity-0 group-hover:opacity-100 hover:bg-muted rounded transition-all">
+                      <Pencil className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+            
+            <div className="flex-1" />
+            
+            <HeaderNav 
+              isChatMode={isChatMode} 
+              currentChatId={currentChatId} 
+              chatHistory={chatHistory} 
+              onShare={handleShareChat} 
+              onPin={handlePin} 
+              onDelete={handleDelete} 
+            />
+            <UpcomingSchedule 
+              isExpanded={scheduleExpanded} 
+              onToggle={() => setScheduleExpanded(!scheduleExpanded)} 
+              onGetHelp={prompt => {
+                setPrefillMessage(prompt);
+                setScheduleExpanded(false);
+              }}
+              onRefresh={() => {
+                window.location.reload();
+              }}
+            />
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
+                {userSettings?.assistantName?.[0] || "문"}
+              </div>
+              <span className="text-sm font-medium text-foreground hidden sm:block">
+                {userSettings?.assistantName || "문수빈"}
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-      
-      {/* Main Area - Sidebar + Content */}
-      <div className="flex flex-1 min-h-0">
-        {/* Sidebar Body (without header) */}
-        <Sidebar isOpen={sidebarOpen} onToggle={() => setSidebarOpen(false)} chatHistory={chatHistory} currentChatId={currentChatId} onSelectChat={handleSelectChat} onNewChat={handleNewChat} onRenameChat={handleRenameChat} onShareChat={handleShareChat} onPinChat={handlePin} onArchiveChat={handleArchive} onDeleteChat={handleDelete} hideHeader onOpenSettings={() => setShowSettingsModal(true)} />
         
-        {/* Sidebar Trigger when closed */}
-        {!sidebarOpen && <SidebarTrigger onClick={() => setSidebarOpen(true)} />}
+        {/* Main Area - Sidebar + Content */}
+        <div className="flex flex-1 min-h-0">
+          <Sidebar 
+            isOpen={sidebarOpen} 
+            onToggle={() => setSidebarOpen(false)} 
+            chatHistory={chatHistory} 
+            currentChatId={currentChatId} 
+            onSelectChat={handleSelectChat} 
+            onNewChat={handleNewChat} 
+            onRenameChat={handleRenameChat} 
+            onShareChat={handleShareChat} 
+            onPinChat={handlePin} 
+            onArchiveChat={handleArchive} 
+            onDeleteChat={handleDelete} 
+            hideHeader 
+            onOpenSettings={() => setShowSettingsModal(true)} 
+          />
+          
+          {!sidebarOpen && <SidebarTrigger onClick={() => setSidebarOpen(true)} />}
 
-        {/* Main Content */}
-        <main className="flex-1 bg-background overflow-hidden">
-          <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 w-full h-full flex flex-col">
-          {isChatMode ? (
-            <ChatView 
-              messages={messages} 
-              onSendMessage={handleSendMessage} 
-              isLoading={isLoading} 
-              onRegenerate={handleRegenerate}
-              toneStyle={userSettings?.toneStyle}
-              answerLength={userSettings?.answerLength}
-              searchMode={userSettings?.searchMode}
-              onToneChange={handleToneChange}
-              onLengthChange={handleLengthChange}
-              onSearchModeChange={handleSearchModeChange}
-              userName={userSettings?.userName}
-            />
-          ) : <div className="flex flex-col h-full">
-              {/* Header with Welcome & Quick Actions */}
-              <div className="shrink-0">
-                <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
-              </div>
-              
-              {/* Main Content Grid - 2 equal columns, flex-1 to fill remaining space */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-4 mb-3 flex-1 min-h-0">
-                {/* Left: HRHelper + RecentInterests stacked - equal height */}
-                <div ref={leftColumnRef} className="flex flex-col gap-3 min-h-0">
-                  <div data-guide="work-life-helper" className="flex-1 min-h-0">
-                    <HRHelper />
-                  </div>
-                  <div data-guide="popular-questions" className="flex-1 min-h-0">
-                    <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
-                      setPrefillMessage(question);
-                    }} />
-                  </div>
-                </div>
-                
-                {/* Right: Daily Briefing - height synced to left column */}
-                <div style={rightColumnStyle} className="min-h-0">
-                  <TodayContextCard 
-                    onGetHelp={prompt => setPrefillMessage(prompt)} 
-                    onNewsChat={prompt => setPrefillMessage(prompt)} 
-                  />
-                </div>
-              </div>
-              
-              {/* Chat Input - Bottom */}
-              <div data-guide="chat-input" className="shrink-0">
-                <ChatInput 
-                  onSendMessage={msg => {
-                    handleSendMessage(msg);
-                    setPrefillMessage("");
-                  }} 
-                  initialMessage={prefillMessage} 
-                  onMessageChange={() => setPrefillMessage("")}
+          {/* Main Content */}
+          <main className="flex-1 bg-background overflow-hidden">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 w-full h-full flex flex-col">
+              {isChatMode ? (
+                <ChatView 
+                  messages={messages} 
+                  onSendMessage={handleSendMessage} 
+                  isLoading={isLoading} 
+                  onRegenerate={handleRegenerate}
                   toneStyle={userSettings?.toneStyle}
                   answerLength={userSettings?.answerLength}
                   searchMode={userSettings?.searchMode}
@@ -652,12 +722,60 @@ const Index = () => {
                   onSearchModeChange={handleSearchModeChange}
                   userName={userSettings?.userName}
                 />
-              </div>
-            </div>}
-          </div>
-        </main>
+              ) : (
+                <div className="flex flex-col h-full">
+                  <div className="shrink-0">
+                    <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
+                  </div>
+                  
+                  {/* Main Content Grid - 2 columns, NO TodayContextCard */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 items-stretch gap-4 mb-3 flex-1 min-h-0">
+                    <div ref={leftColumnRef} className="flex flex-col gap-3 min-h-0">
+                      <div data-guide="work-life-helper" className="flex-1 min-h-0">
+                        <HRHelper />
+                      </div>
+                      <div data-guide="popular-questions" className="flex-1 min-h-0">
+                        <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
+                          setPrefillMessage(question);
+                        }} />
+                      </div>
+                    </div>
+                    
+                    {/* Right column - TodayContextCard removed as per user request */}
+                    <div style={rightColumnStyle} className="min-h-0">
+                      <TodayContextCard 
+                        onGetHelp={prompt => setPrefillMessage(prompt)} 
+                        onNewsChat={prompt => setPrefillMessage(prompt)} 
+                      />
+                    </div>
+                  </div>
+                  
+                  {/* Chat Input - Bottom */}
+                  <div data-guide="chat-input" className="shrink-0">
+                    <ChatInput 
+                      onSendMessage={msg => {
+                        handleSendMessage(msg);
+                        setPrefillMessage("");
+                      }} 
+                      initialMessage={prefillMessage} 
+                      onMessageChange={() => setPrefillMessage("")}
+                      toneStyle={userSettings?.toneStyle}
+                      answerLength={userSettings?.answerLength}
+                      searchMode={userSettings?.searchMode}
+                      onToneChange={handleToneChange}
+                      onLengthChange={handleLengthChange}
+                      onSearchModeChange={handleSearchModeChange}
+                      userName={userSettings?.userName}
+                    />
+                  </div>
+                </div>
+              )}
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 };
+
 export default Index;
