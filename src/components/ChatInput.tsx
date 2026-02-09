@@ -22,6 +22,13 @@ const searchModeOptions = [
   { id: "internal", label: "사내 규칙", emoji: "🏢" },
 ];
 
+const modelOptions = [
+  { id: "gemini-flash", label: "Gemini Flash", emoji: "⚡" },
+  { id: "gemini-pro", label: "Gemini Pro", emoji: "🧠" },
+  { id: "gpt-5", label: "GPT-5", emoji: "🤖" },
+  { id: "gpt-5-mini", label: "GPT-5 Mini", emoji: "🚀" },
+];
+
 const toneOptions = [
   { id: "professional", label: "전문적인", emoji: "👔" },
   { id: "warm", label: "따뜻한", emoji: "🤗" },
@@ -46,6 +53,8 @@ interface ChatInputProps {
   userName?: string;
   searchMode?: string;
   onSearchModeChange?: (mode: string) => void;
+  selectedModel?: string;
+  onModelChange?: (model: string) => void;
   isMobile?: boolean;
   showWorkItemShortcut?: boolean;
 }
@@ -62,6 +71,8 @@ const ChatInput = ({
   userName,
   searchMode = "general",
   onSearchModeChange,
+  selectedModel = "gemini-flash",
+  onModelChange,
   isMobile = false,
   showWorkItemShortcut = true,
 }: ChatInputProps) => {
@@ -69,6 +80,7 @@ const ChatInput = ({
   const [selectedTone, setSelectedTone] = useState(toneStyle);
   const [selectedLength, setSelectedLength] = useState(answerLength);
   const [selectedSearchMode, setSelectedSearchMode] = useState(searchMode);
+  const [currentModel, setCurrentModel] = useState(selectedModel);
   const [showWorkItems, setShowWorkItems] = useState(false);
   const [workItemFilter, setWorkItemFilter] = useState("");
   const [selectedWorkItem, setSelectedWorkItem] = useState<typeof allWorkItems[0] | null>(null);
@@ -86,6 +98,10 @@ const ChatInput = ({
   useEffect(() => {
     setSelectedSearchMode(searchMode);
   }, [searchMode]);
+
+  useEffect(() => {
+    setCurrentModel(selectedModel);
+  }, [selectedModel]);
 
   // Sync with initialMessage when it changes externally
   useEffect(() => {
@@ -114,8 +130,14 @@ const ChatInput = ({
     onSearchModeChange?.(mode);
   };
 
+  const handleModelSelect = (model: string) => {
+    setCurrentModel(model);
+    onModelChange?.(model);
+  };
+
   const currentTone = toneOptions.find(t => t.id === selectedTone);
   const currentSearchMode = searchModeOptions.find(m => m.id === selectedSearchMode);
+  const currentModelOption = modelOptions.find(m => m.id === currentModel);
 
   // Filter work items based on search after #
   const filteredWorkItems = allWorkItems.filter(item =>
@@ -394,18 +416,39 @@ const ChatInput = ({
             </DropdownMenu>
           )}
 
-          {/* Model Selection Button - Hidden on mobile */}
-          {!isMobile && (
-            <Button
-              variant="ghost"
-              size="sm"
-              className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
-            >
-              <span className="text-xs">🌐</span>
-              Azure gpt 4o-2024-11-20
-              <ChevronDown className="w-3 h-3" />
-            </Button>
-          )}
+          {/* Model Selection Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
+                  isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+                )}
+              >
+                <span className={isMobile ? "text-base" : ""}>{currentModelOption?.emoji}</span>
+                <span>{currentModelOption?.label}</span>
+                <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
+              {modelOptions.map((model) => (
+                <DropdownMenuItem 
+                  key={model.id}
+                  onClick={() => handleModelSelect(model.id)}
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
+                    isMobile && "py-3 text-base",
+                    currentModel === model.id && "bg-primary/10 text-primary"
+                  )}
+                >
+                  <span>{model.emoji}</span>
+                  <span>{model.label}</span>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
         <Button
           size="icon"
