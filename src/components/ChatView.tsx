@@ -146,15 +146,18 @@ const ChatView = ({
 
       {/* Suggestions - Horizontal scroll on mobile */}
       {!isLoading && messages.length > 0 && (
-        <div className={isMobile 
-          ? "flex gap-2 py-2 px-4 overflow-x-auto scrollbar-hide shrink-0" 
-          : "flex flex-wrap gap-2 py-3 px-4"
-        }>
+        <div 
+          className={isMobile 
+            ? "flex gap-2 py-2 px-4 overflow-x-auto scrollbar-hide shrink-0 max-w-full" 
+            : "flex flex-wrap gap-2 py-3 px-4"
+          }
+          style={isMobile ? { WebkitOverflowScrolling: 'touch' } : undefined}
+        >
           {suggestions.map((suggestion, index) => (
             <button
               key={index}
               onClick={() => onSendMessage(suggestion)}
-              className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap shrink-0"
+              className="px-3 py-1.5 text-xs bg-muted hover:bg-primary/10 text-muted-foreground hover:text-primary rounded-full transition-colors border border-border hover:border-primary/30 whitespace-nowrap flex-shrink-0"
             >
               {suggestion}
             </button>
