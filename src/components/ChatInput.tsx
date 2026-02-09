@@ -57,6 +57,8 @@ interface ChatInputProps {
   onModelChange?: (model: string) => void;
   isMobile?: boolean;
   showWorkItemShortcut?: boolean;
+  hideSearchMode?: boolean;
+  chatbotName?: string;
 }
 
 const ChatInput = ({ 
@@ -75,6 +77,8 @@ const ChatInput = ({
   onModelChange,
   isMobile = false,
   showWorkItemShortcut = true,
+  hideSearchMode = false,
+  chatbotName,
 }: ChatInputProps) => {
   const [message, setMessage] = useState(initialMessage || "");
   const [selectedTone, setSelectedTone] = useState(toneStyle);
@@ -188,6 +192,9 @@ const ChatInput = ({
   };
 
   const getPlaceholderText = () => {
+    if (chatbotName) {
+      return `${chatbotName}에게 질문하세요...`;
+    }
     const namePrefix = userName ? `${userName}님, ` : "";
     switch (selectedSearchMode) {
       case "web":
@@ -323,39 +330,41 @@ const ChatInput = ({
         isMobile ? "px-3 pb-3 pt-1.5" : "px-4 pb-4 pt-2"
       )}>
         <div className="flex items-center gap-2 flex-wrap">
-          {/* Search Mode Dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className={cn(
-                  "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-                  isMobile ? "h-9 px-3 text-chip-label min-w-[44px]" : "h-8 px-3 text-xs"
-                )}
-              >
-                <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
-                <span>{currentSearchMode?.label}</span>
-                <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
-              {searchModeOptions.map((mode) => (
-                <DropdownMenuItem 
-                  key={mode.id}
-                  onClick={() => handleSearchModeSelect(mode.id)}
+          {/* Search Mode Dropdown - Hidden when chatbot is selected */}
+          {!hideSearchMode && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="sm"
                   className={cn(
-                    "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
-                    isMobile && "py-3 text-base",
-                    selectedSearchMode === mode.id && "bg-primary/10 text-primary"
+                    "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
+                    isMobile ? "h-9 px-3 text-chip-label min-w-[44px]" : "h-8 px-3 text-xs"
                   )}
                 >
-                  <span>{mode.emoji}</span>
-                  <span>{mode.label}</span>
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+                  <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
+                  <span>{currentSearchMode?.label}</span>
+                  <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
+                {searchModeOptions.map((mode) => (
+                  <DropdownMenuItem 
+                    key={mode.id}
+                    onClick={() => handleSearchModeSelect(mode.id)}
+                    className={cn(
+                      "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
+                      isMobile && "py-3 text-base",
+                      selectedSearchMode === mode.id && "bg-primary/10 text-primary"
+                    )}
+                  >
+                    <span>{mode.emoji}</span>
+                    <span>{mode.label}</span>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <Button
             variant="ghost"
             size="sm"

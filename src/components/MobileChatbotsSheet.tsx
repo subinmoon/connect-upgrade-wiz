@@ -110,6 +110,7 @@ interface MobileChatbotsSheetProps {
   onSave: (chatbot: Omit<Chatbot, "id" | "isFavorite" | "isOwner">) => void;
   editingChatbot?: Chatbot | null;
   onClearEditing?: () => void;
+  onSelectChatbot?: (chatbot: Chatbot) => void;
 }
 
 const MobileChatbotsSheet = ({
@@ -122,6 +123,7 @@ const MobileChatbotsSheet = ({
   onSave,
   editingChatbot,
   onClearEditing,
+  onSelectChatbot,
 }: MobileChatbotsSheetProps) => {
   const [activeFilter, setActiveFilter] = useState<FilterType>("favorites");
   const [searchQuery, setSearchQuery] = useState("");
@@ -347,7 +349,8 @@ const MobileChatbotsSheet = ({
                 filteredChatbots.map((chatbot) => (
                   <div
                     key={chatbot.id}
-                    className="flex items-center gap-3 p-3 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors"
+                    onClick={() => onSelectChatbot?.(chatbot)}
+                    className="flex items-center gap-3 p-3 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors cursor-pointer"
                   >
                     <span className="text-2xl shrink-0">{chatbot.icon}</span>
                     <div className="flex-1 min-w-0">
