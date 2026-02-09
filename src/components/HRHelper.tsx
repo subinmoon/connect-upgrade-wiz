@@ -38,16 +38,9 @@ const HRHelper = () => {
         <div className="w-7 h-7 rounded-lg bg-lavender-light flex items-center justify-center">
           <MessageCircle className="w-4 h-4 text-primary" />
         </div>
-        <h2 className="text-base font-bold text-foreground flex-1">
+        <h2 className="text-base font-bold text-foreground">
           대화로 업무 시작하기
         </h2>
-        <button
-          onClick={() => setShowSettings(true)}
-          className="p-1.5 rounded-lg hover:bg-muted transition-colors"
-          title="업무 바로가기 설정"
-        >
-          <Settings className="w-4 h-4 text-muted-foreground" />
-        </button>
       </div>
 
       <div className="grid grid-cols-4 gap-2">
