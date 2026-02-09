@@ -1,4 +1,4 @@
-import { Home, MessageSquare, FolderArchive, Settings, Bot } from "lucide-react";
+import { Home, MessageSquare, FolderArchive, Settings, Bot, History } from "lucide-react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -6,9 +6,10 @@ interface MobileBottomNavProps {
   onNewChat?: () => void;
   onOpenSettings?: () => void;
   onOpenChatbots?: () => void;
+  onOpenHistory?: () => void;
 }
 
-const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots }: MobileBottomNavProps) => {
+const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots, onOpenHistory }: MobileBottomNavProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -25,6 +26,13 @@ const MobileBottomNav = ({ onNewChat, onOpenSettings, onOpenChatbots }: MobileBo
         }
       },
       isActive: location.pathname === "/" && !location.state,
+    },
+    {
+      id: "history",
+      icon: History,
+      label: "히스토리",
+      action: () => onOpenHistory?.(),
+      isActive: false,
     },
     {
       id: "chatbots",
