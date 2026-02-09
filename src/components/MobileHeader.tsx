@@ -1,4 +1,4 @@
-import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell } from "lucide-react";
+import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell, FolderArchive } from "lucide-react";
 import { useState } from "react";
 import logoIcon from "@/assets/logo-icon.png";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ interface MobileHeaderProps {
   onShare?: () => void;
   onPin?: () => void;
   onDelete?: () => void;
+  onArchive?: () => void;
   isPinned?: boolean;
   onNotificationClick?: () => void;
 }
@@ -31,6 +32,7 @@ const MobileHeader = ({
   onShare,
   onPin,
   onDelete,
+  onArchive,
   isPinned,
   onNotificationClick,
 }: MobileHeaderProps) => {
@@ -102,6 +104,10 @@ const MobileHeader = ({
             <DropdownMenuItem onClick={onPin}>
               <Pin className="w-4 h-4 mr-2" />
               {isPinned ? "고정 해제" : "채팅 고정"}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onArchive}>
+              <FolderArchive className="w-4 h-4 mr-2" />
+              아카이브 저장
             </DropdownMenuItem>
             <DropdownMenuItem onClick={onDelete} className="text-destructive focus:text-destructive">
               <Trash2 className="w-4 h-4 mr-2" />

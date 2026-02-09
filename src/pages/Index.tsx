@@ -475,6 +475,11 @@ const Index = () => {
               onShare={() => currentChatId && handleShareChat(currentChatId)}
               onPin={() => handlePin()}
               onDelete={() => handleDelete()}
+              onArchive={() => {
+                handleArchive();
+                toast.success("아카이브에 저장되었습니다");
+                handleBack();
+              }}
               isPinned={isPinned}
             />
           )}
