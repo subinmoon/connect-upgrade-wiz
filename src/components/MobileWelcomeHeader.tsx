@@ -87,7 +87,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
       {/* Welcome Message */}
       <div className="flex items-center gap-2.5 mb-4">
         <img src={logoIcon} alt="Logo" className="w-10 h-10" />
-        <h1 className="text-lg font-bold text-foreground">
+        <h1 className="text-title text-foreground">
           <span className="text-gradient-name">{userName}</span>님, {greeting}
         </h1>
       </div>
@@ -96,7 +96,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
       <div className="bg-card rounded-xl p-3 shadow-soft">
         <div className="flex items-center gap-1.5 mb-2">
           <Zap className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-bold text-foreground">빠른 시작</h2>
+          <h2 className="text-section-title text-foreground">빠른 시작</h2>
         </div>
 
         <div className="grid grid-cols-3 gap-2">
@@ -107,7 +107,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
               className="bg-[hsl(var(--background))] rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 active:scale-[0.97]"
             >
               <span className={action.iconColor}>{action.icon}</span>
-              <span className="text-xs font-medium text-foreground whitespace-nowrap">
+              <span className="text-menu-label text-foreground whitespace-nowrap">
                 {action.label}
               </span>
             </button>

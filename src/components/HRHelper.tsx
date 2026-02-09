@@ -36,7 +36,7 @@ const HRHelper = () => {
 
       <div className="flex items-center gap-1.5 mb-2">
         <MessageCircle className="w-4 h-4 text-primary" />
-        <h2 className="text-sm font-bold text-foreground">
+        <h2 className="text-section-title text-foreground">
           대화로 업무 시작하기
         </h2>
       </div>
@@ -59,7 +59,7 @@ const HRHelper = () => {
                   <Star className="absolute -top-1 -right-1 w-3 h-3 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
                 )}
               </div>
-              <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center whitespace-nowrap leading-tight">
+              <span className="text-menu-label-long text-muted-foreground group-hover:text-foreground transition-colors text-center leading-tight">
                 {item.label}
               </span>
             </button>
