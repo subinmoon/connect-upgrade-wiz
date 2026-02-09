@@ -231,8 +231,8 @@ const ChatInput = ({
                   onChange={(e) => handleTextareaChange(e.target.value)}
                   placeholder={placeholderText}
                   className={cn(
-                    "w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
-                    isMobile ? "text-sm" : "text-base"
+                    "w-full bg-transparent text-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
+                    isMobile ? "text-input-placeholder placeholder:text-muted-foreground" : "text-base placeholder:text-muted-foreground"
                   )}
                   rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
                   onKeyDown={(e) => {
@@ -302,8 +302,8 @@ const ChatInput = ({
             onChange={(e) => handleTextareaChange(e.target.value)}
             placeholder={placeholderText}
             className={cn(
-              "w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
-              isMobile ? "text-sm" : "text-base"
+              "w-full bg-transparent text-foreground outline-none resize-none min-h-[24px] max-h-[200px]",
+              isMobile ? "text-input-placeholder placeholder:text-muted-foreground" : "text-base placeholder:text-muted-foreground"
             )}
             rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
             onKeyDown={(e) => {
@@ -331,7 +331,7 @@ const ChatInput = ({
                 size="sm"
                 className={cn(
                   "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-                  isMobile ? "h-9 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+                  isMobile ? "h-9 px-3 text-chip-label min-w-[44px]" : "h-8 px-3 text-xs"
                 )}
               >
                 <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
@@ -361,7 +361,7 @@ const ChatInput = ({
             size="sm"
             className={cn(
               "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
-              isMobile ? "h-9 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+              isMobile ? "h-9 px-3 text-chip-label min-w-[44px]" : "h-8 px-3 text-xs"
             )}
           >
             <Paperclip className={isMobile ? "w-5 h-5" : "w-4 h-4"} />

@@ -75,7 +75,7 @@ const MobileBottomNav = ({
               "w-6 h-6",
               item.isActive && "fill-primary/20"
             )} />
-            <span className="text-xs font-medium">{item.label}</span>
+            <span className="text-tab-label">{item.label}</span>
           </button>
         ))}
       </div>
