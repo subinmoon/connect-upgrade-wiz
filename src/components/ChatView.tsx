@@ -116,7 +116,7 @@ const ChatView = ({
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto pb-4 space-y-2 min-h-0 px-4">
+        className={`flex-1 overflow-y-auto pb-4 space-y-2 min-h-0 px-4 ${isMobile ? 'pt-4' : ''}`}>
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
@@ -147,8 +147,8 @@ const ChatView = ({
       {/* Suggestions - Horizontal scroll on mobile */}
       {!isLoading && messages.length > 0 && (
         <div className={isMobile 
-          ? "flex gap-2 py-2 px-4 overflow-x-auto scrollbar-hide" 
-          : "flex flex-wrap gap-2 py-3"
+          ? "flex gap-2 py-2 px-4 overflow-x-auto scrollbar-hide shrink-0" 
+          : "flex flex-wrap gap-2 py-3 px-4"
         }>
           {suggestions.map((suggestion, index) => (
             <button
