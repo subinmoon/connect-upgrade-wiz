@@ -102,7 +102,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
         </div>
       </div>
 
-      {/* Quick Actions - Card with badge style */}
+      {/* Quick Actions - Card with grid style */}
       <div className="bg-card rounded-2xl p-4 shadow-soft">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -111,15 +111,15 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
           <h2 className="text-base font-bold text-foreground">빠른 시작</h2>
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="grid grid-cols-3 gap-2">
           {actions.map((action) => (
             <button
               key={action.id}
               onClick={() => handleActionClick(action)}
-              className="bg-background border border-border rounded-full py-2 px-3 flex items-center gap-1.5 transition-all duration-200 hover:shadow-soft active:scale-[0.98]"
+              className={`${action.bgColor} rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 hover:shadow-soft active:scale-[0.97]`}
             >
-              <span className={action.iconColor}>{action.icon}</span>
-              <span className="text-sm font-medium text-foreground whitespace-nowrap">
+              <span className={`${action.iconColor}`}>{action.icon}</span>
+              <span className="text-xs font-medium text-foreground whitespace-nowrap">
                 {action.label}
               </span>
             </button>
