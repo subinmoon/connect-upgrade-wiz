@@ -47,6 +47,7 @@ interface ChatInputProps {
   searchMode?: string;
   onSearchModeChange?: (mode: string) => void;
   isMobile?: boolean;
+  showWorkItemShortcut?: boolean;
 }
 
 const ChatInput = ({ 
@@ -62,6 +63,7 @@ const ChatInput = ({
   searchMode = "general",
   onSearchModeChange,
   isMobile = false,
+  showWorkItemShortcut = true,
 }: ChatInputProps) => {
   const [message, setMessage] = useState(initialMessage || "");
   const [selectedTone, setSelectedTone] = useState(toneStyle);
@@ -141,6 +143,11 @@ const ChatInput = ({
   const handleTextareaChange = (value: string) => {
     setMessage(value);
     onMessageChange?.(value);
+
+    // Only show work items if enabled
+    if (!showWorkItemShortcut) {
+      return;
+    }
 
     const lastHashIndex = value.lastIndexOf('#');
     if (lastHashIndex >= 0) {
