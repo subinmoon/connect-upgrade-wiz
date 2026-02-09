@@ -60,10 +60,10 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
               "rounded-2xl px-4 py-3",
               isUser
                 ? "bg-primary text-primary-foreground"
-                : "bg-muted text-foreground"
+                : "bg-card text-foreground border border-border shadow-soft"
             )}
           >
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">{content}</p>
+            <p className="text-body whitespace-pre-wrap">{content}</p>
           </div>
           <span className="text-[10px] text-muted-foreground mb-1 flex-shrink-0">
             {formattedTime}
@@ -75,9 +75,9 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
           <div className="mt-2">
             <button
               onClick={() => setShowAllSources(!showAllSources)}
-              className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors group/toggle"
+              className="flex items-center gap-1.5 text-menu-label-long text-muted-foreground hover:text-foreground transition-colors group/toggle"
             >
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-muted/60 hover:bg-muted transition-colors">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-card border border-border hover:bg-muted transition-colors">
                 <FileText className="w-3 h-3" />
                 <span className="font-medium">{sources.length}개 출처</span>
                 <ChevronDown className={cn(
@@ -97,14 +97,14 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
                   href={source.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group/source flex items-start gap-2.5 px-3 py-2 bg-gradient-to-r from-muted/60 to-muted/30 hover:from-primary/10 hover:to-primary/5 rounded-xl transition-all duration-200 hover:shadow-sm border border-transparent hover:border-primary/20"
+                  className="group/source flex items-start gap-2.5 px-3 py-2 bg-card hover:bg-primary/5 rounded-xl transition-all duration-200 hover:shadow-sm border border-border hover:border-primary/20"
                 >
                   <span className="w-5 h-5 rounded-full bg-primary/15 text-primary flex items-center justify-center text-[10px] font-bold flex-shrink-0 mt-0.5">
                     {index + 1}
                   </span>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-medium text-foreground truncate">
+                      <span className="text-menu-label-long font-medium text-foreground truncate">
                         {source.title}
                       </span>
                       <ExternalLink className="w-3 h-3 text-muted-foreground group-hover/source:text-primary transition-colors flex-shrink-0" />
