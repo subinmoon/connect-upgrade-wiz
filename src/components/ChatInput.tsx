@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { allWorkItems } from "@/components/WorkItemSettingsModal";
+import { cn } from "@/lib/utils";
 
 const searchModeOptions = [
   { id: "general", label: "일반", emoji: "🌐" },
@@ -263,18 +264,21 @@ const ChatInput = ({
         </Popover>
       </div>
       <div className="flex items-center justify-between px-4 pb-4 pt-2">
-        <div className="flex items-center gap-1.5 flex-wrap">
+        <div className="flex items-center gap-2 flex-wrap">
           {/* Search Mode Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
                 variant="ghost"
                 size="sm"
-                className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
+                className={cn(
+                  "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
+                  isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+                )}
               >
-                <span>{currentSearchMode?.emoji}</span>
+                <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
                 {!isMobile && <span>{currentSearchMode?.label}</span>}
-                <ChevronDown className="w-3 h-3" />
+                <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="bg-background border shadow-lg z-50">
@@ -282,7 +286,11 @@ const ChatInput = ({
                 <DropdownMenuItem 
                   key={mode.id}
                   onClick={() => handleSearchModeSelect(mode.id)}
-                  className={`flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))] ${selectedSearchMode === mode.id ? 'bg-primary/10 text-primary' : ''}`}
+                  className={cn(
+                    "flex items-center gap-2 cursor-pointer hover:bg-[hsl(var(--border))]",
+                    isMobile && "py-3 text-base",
+                    selectedSearchMode === mode.id && "bg-primary/10 text-primary"
+                  )}
                 >
                   <span>{mode.emoji}</span>
                   <span>{mode.label}</span>
@@ -293,9 +301,12 @@ const ChatInput = ({
           <Button
             variant="ghost"
             size="sm"
-            className="rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground h-8 px-3 text-xs border border-border"
+            className={cn(
+              "rounded-full gap-1.5 hover:bg-[hsl(var(--border))] text-muted-foreground border border-border",
+              isMobile ? "h-10 px-3 text-sm min-w-[44px]" : "h-8 px-3 text-xs"
+            )}
           >
-            <Paperclip className="w-4 h-4" />
+            <Paperclip className={isMobile ? "w-5 h-5" : "w-4 h-4"} />
             {!isMobile && <span>파일첨부</span>}
           </Button>
           
@@ -371,11 +382,13 @@ const ChatInput = ({
         </div>
         <Button
           size="icon"
-          className={`rounded-full h-10 w-10 transition-colors ${
+          className={cn(
+            "rounded-full transition-colors",
+            isMobile ? "h-12 w-12" : "h-10 w-10",
             message.trim() && !disabled
               ? "bg-primary hover:bg-lavender-dark text-primary-foreground" 
               : "bg-muted text-muted-foreground"
-          }`}
+          )}
           disabled={!message.trim() || disabled}
           onClick={() => {
             if (message.trim() && onSendMessage) {
@@ -388,7 +401,7 @@ const ChatInput = ({
             }
           }}
         >
-          <Send className="w-4 h-4" />
+          <Send className={isMobile ? "w-5 h-5" : "w-4 h-4"} />
         </Button>
       </div>
     </div>

@@ -43,25 +43,25 @@ const HRHelper = () => {
         </h2>
       </div>
 
-      <div className="grid grid-cols-4 gap-2">
+      <div className="grid grid-cols-4 gap-2.5">
         {displayItems.map((item) => {
           const Icon = item.icon;
           const isFavorite = favoriteIds.includes(item.id);
           return (
             <button 
               key={item.id} 
-              className="flex flex-col items-center gap-1 p-1.5 rounded-xl hover:bg-muted/60 transition-all group"
+              className="flex flex-col items-center gap-1.5 p-2 rounded-xl hover:bg-muted/60 transition-all group min-h-[68px]"
             >
               {/* Icon with favorite star overlay */}
               <div className="relative">
-                <div className={`w-9 h-9 rounded-xl ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  <Icon className="w-4 h-4" />
+                <div className={`w-11 h-11 rounded-xl ${item.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                  <Icon className="w-5 h-5" />
                 </div>
                 {isFavorite && (
                   <Star className="absolute -top-1 -right-1 w-3 h-3 fill-yellow-400 text-yellow-400 drop-shadow-sm" />
                 )}
               </div>
-              <span className="text-[10px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center whitespace-nowrap leading-tight">
+              <span className="text-[11px] font-medium text-muted-foreground group-hover:text-foreground transition-colors text-center whitespace-nowrap leading-tight">
                 {item.label}
               </span>
             </button>

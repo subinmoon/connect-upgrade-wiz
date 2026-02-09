@@ -19,7 +19,7 @@ interface QuickAction {
 const actions: QuickAction[] = [
   {
     id: "summary",
-    icon: <MessageSquare className="w-4 h-4" />,
+    icon: <MessageSquare className="w-5 h-5" />,
     label: "요약",
     iconColor: "text-primary",
     bgColor: "bg-primary/10",
@@ -27,7 +27,7 @@ const actions: QuickAction[] = [
   },
   {
     id: "brainstorm",
-    icon: <Sparkles className="w-4 h-4" />,
+    icon: <Sparkles className="w-5 h-5" />,
     label: "아이디어",
     iconColor: "text-amber-600",
     bgColor: "bg-amber-100",
@@ -35,7 +35,7 @@ const actions: QuickAction[] = [
   },
   {
     id: "email",
-    icon: <Mail className="w-4 h-4" />,
+    icon: <Mail className="w-5 h-5" />,
     label: "메일",
     iconColor: "text-rose-600",
     bgColor: "bg-rose-100",
@@ -43,7 +43,7 @@ const actions: QuickAction[] = [
   },
   {
     id: "market",
-    icon: <TrendingUp className="w-4 h-4" />,
+    icon: <TrendingUp className="w-5 h-5" />,
     label: "시장조사",
     iconColor: "text-emerald-600",
     bgColor: "bg-emerald-100",
@@ -51,7 +51,7 @@ const actions: QuickAction[] = [
   },
   {
     id: "translate",
-    icon: <Languages className="w-4 h-4" />,
+    icon: <Languages className="w-5 h-5" />,
     label: "번역",
     iconColor: "text-blue-600",
     bgColor: "bg-blue-100",
@@ -59,7 +59,7 @@ const actions: QuickAction[] = [
   },
   {
     id: "structure",
-    icon: <ListTree className="w-4 h-4" />,
+    icon: <ListTree className="w-5 h-5" />,
     label: "구조화",
     iconColor: "text-violet-600",
     bgColor: "bg-violet-100",
@@ -105,18 +105,18 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
       {/* Quick Actions - Card with grid style */}
       <div className="bg-card rounded-2xl p-4 shadow-soft">
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-7 h-7 rounded-lg bg-primary/10 flex items-center justify-center">
-            <Zap className="w-4 h-4 text-primary" />
+          <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center">
+            <Zap className="w-5 h-5 text-primary" />
           </div>
           <h2 className="text-base font-bold text-foreground">빠른 시작</h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-3 gap-2.5">
           {actions.map((action) => (
             <button
               key={action.id}
               onClick={() => handleActionClick(action)}
-              className={`${action.bgColor} rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 hover:shadow-soft active:scale-[0.97]`}
+              className={`${action.bgColor} rounded-xl py-4 px-2 flex flex-col items-center gap-2 transition-all duration-200 hover:shadow-soft active:scale-[0.97] min-h-[72px]`}
             >
               <span className={`${action.iconColor}`}>{action.icon}</span>
               <span className="text-xs font-medium text-foreground whitespace-nowrap">
