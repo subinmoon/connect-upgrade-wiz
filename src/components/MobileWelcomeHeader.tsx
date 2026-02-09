@@ -94,8 +94,10 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
 
       {/* Quick Actions Card */}
       <div className="bg-card rounded-xl p-3 shadow-soft">
-        <div className="flex items-center gap-1.5 mb-2">
-          <Zap className="w-4 h-4 text-primary" />
+        <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+          <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+            <Zap className="w-3.5 h-3.5 text-primary" />
+          </div>
           <h2 className="text-section-title text-foreground">빠른 시작</h2>
         </div>
 

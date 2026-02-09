@@ -34,8 +34,10 @@ const HRHelper = () => {
         onFavoriteIdsChange={setFavoriteIds}
       />
 
-      <div className="flex items-center gap-1.5 mb-2">
-        <MessageCircle className="w-4 h-4 text-primary" />
+      <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border">
+        <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+          <MessageCircle className="w-3.5 h-3.5 text-primary" />
+        </div>
         <h2 className="text-section-title text-foreground">
           대화로 업무 시작하기
         </h2>
