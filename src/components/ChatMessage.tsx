@@ -71,7 +71,7 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         {/* Search mode tag */}
         {searchMode && (
           <div className={cn("flex mb-1.5", isUser ? "justify-end" : "justify-start")}>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-background text-muted-foreground border-2 border-border">
+            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
               <span>{modeInfo.icon}</span>
               <span>{modeInfo.label}</span>
             </span>
