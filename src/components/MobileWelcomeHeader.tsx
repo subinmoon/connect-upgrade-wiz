@@ -100,21 +100,21 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
       </div>
 
       {/* Quick Actions - Compact Card */}
-      <div className="bg-card rounded-xl p-3 shadow-soft">
-        <div className="flex items-center gap-1.5 mb-2">
-          <Zap className="w-4 h-4 text-primary" />
-          <h2 className="text-sm font-bold text-foreground">빠른 시작</h2>
+      <div className="bg-card rounded-xl p-2.5 shadow-soft">
+        <div className="flex items-center gap-1.5 mb-1.5">
+          <Zap className="w-3.5 h-3.5 text-primary" />
+          <h2 className="text-xs font-bold text-foreground">빠른 시작</h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-1.5">
+        <div className="grid grid-cols-3 gap-1">
           {actions.map((action) => (
             <button
               key={action.id}
               onClick={() => handleActionClick(action)}
-              className={`${action.bgColor} rounded-lg py-2.5 px-1.5 flex flex-col items-center gap-1 transition-all duration-200 active:scale-[0.97]`}
+              className={`${action.bgColor} rounded-lg py-2 px-1 flex flex-col items-center gap-0.5 transition-all duration-200 active:scale-[0.97]`}
             >
               <span className={`${action.iconColor}`}>{action.icon}</span>
-              <span className="text-[11px] font-medium text-foreground whitespace-nowrap">
+              <span className="text-[10px] font-medium text-foreground whitespace-nowrap">
                 {action.label}
               </span>
             </button>
