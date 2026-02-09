@@ -304,7 +304,7 @@ const ChatInput = ({
                 )}
               >
                 <span className={isMobile ? "text-base" : ""}>{currentSearchMode?.emoji}</span>
-                {!isMobile && <span>{currentSearchMode?.label}</span>}
+                <span>{currentSearchMode?.label}</span>
                 <ChevronDown className={isMobile ? "w-4 h-4" : "w-3 h-3"} />
               </Button>
             </DropdownMenuTrigger>
