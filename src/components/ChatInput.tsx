@@ -199,76 +199,96 @@ const ChatInput = ({
             </div>
           </div>
         )}
-        <Popover open={showWorkItems} onOpenChange={setShowWorkItems}>
-          <PopoverTrigger asChild>
-            <div className="w-full">
-              <textarea
-                ref={textareaRef}
-                value={message}
-                onChange={(e) => handleTextareaChange(e.target.value)}
-                placeholder={placeholderText}
-                className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base resize-none min-h-[24px] max-h-[200px]"
-                rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
-                onKeyDown={(e) => {
-                  if (showWorkItems) {
-                    if (e.key === 'Escape') {
-                      e.preventDefault();
-                      setShowWorkItems(false);
-                      setWorkItemFilter("");
-                    } else if (e.key === 'Enter' && filteredWorkItems.length > 0) {
-                      e.preventDefault();
-                      handleWorkItemSelect(filteredWorkItems[0]);
+        {showWorkItemShortcut ? (
+          <Popover open={showWorkItems} onOpenChange={setShowWorkItems}>
+            <PopoverTrigger asChild>
+              <div className="w-full">
+                <textarea
+                  ref={textareaRef}
+                  value={message}
+                  onChange={(e) => handleTextareaChange(e.target.value)}
+                  placeholder={placeholderText}
+                  className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base resize-none min-h-[24px] max-h-[200px]"
+                  rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
+                  onKeyDown={(e) => {
+                    if (showWorkItems) {
+                      if (e.key === 'Escape') {
+                        e.preventDefault();
+                        setShowWorkItems(false);
+                        setWorkItemFilter("");
+                      } else if (e.key === 'Enter' && filteredWorkItems.length > 0) {
+                        e.preventDefault();
+                        handleWorkItemSelect(filteredWorkItems[0]);
+                      }
+                      return;
                     }
-                    return;
-                  }
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault();
-                    if (message.trim() && onSendMessage) {
-                      onSendMessage(message.trim());
-                      setMessage("");
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault();
+                      if (message.trim() && onSendMessage) {
+                        onSendMessage(message.trim());
+                        setMessage("");
+                      }
                     }
-                  }
-                }}
-              />
-            </div>
-          </PopoverTrigger>
-          <PopoverContent 
-            align="start" 
-            side="top"
-            sideOffset={8}
-            className="w-72 p-0 bg-background border shadow-lg z-50"
-            onOpenAutoFocus={(e) => e.preventDefault()}
-          >
-            <div className="p-2 border-b">
-              <p className="text-xs text-muted-foreground font-medium">업무 바로가기</p>
-            </div>
-            <ScrollArea className="max-h-64">
-              <div className="p-1">
-                {filteredWorkItems.length > 0 ? (
-                  filteredWorkItems.map((item) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <button
-                        key={item.id}
-                        onClick={() => handleWorkItemSelect(item)}
-                        className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent text-left transition-colors"
-                      >
-                        <div className={`p-1.5 rounded-md ${item.color}`}>
-                          <IconComponent className="w-4 h-4" />
-                        </div>
-                        <span className="text-sm">{item.label}</span>
-                      </button>
-                    );
-                  })
-                ) : (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    검색 결과가 없습니다
-                  </p>
-                )}
+                  }}
+                />
               </div>
-            </ScrollArea>
-          </PopoverContent>
-        </Popover>
+            </PopoverTrigger>
+            <PopoverContent 
+              align="start" 
+              side="top"
+              sideOffset={8}
+              className="w-72 p-0 bg-background border shadow-lg z-50"
+              onOpenAutoFocus={(e) => e.preventDefault()}
+            >
+              <div className="p-2 border-b">
+                <p className="text-xs text-muted-foreground font-medium">업무 바로가기</p>
+              </div>
+              <ScrollArea className="max-h-64">
+                <div className="p-1">
+                  {filteredWorkItems.length > 0 ? (
+                    filteredWorkItems.map((item) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => handleWorkItemSelect(item)}
+                          className="w-full flex items-center gap-2 px-2 py-2 rounded-md hover:bg-accent text-left transition-colors"
+                        >
+                          <div className={`p-1.5 rounded-md ${item.color}`}>
+                            <IconComponent className="w-4 h-4" />
+                          </div>
+                          <span className="text-sm">{item.label}</span>
+                        </button>
+                      );
+                    })
+                  ) : (
+                    <p className="text-sm text-muted-foreground text-center py-4">
+                      검색 결과가 없습니다
+                    </p>
+                  )}
+                </div>
+              </ScrollArea>
+            </PopoverContent>
+          </Popover>
+        ) : (
+          <textarea
+            ref={textareaRef}
+            value={message}
+            onChange={(e) => handleTextareaChange(e.target.value)}
+            placeholder={placeholderText}
+            className="w-full bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base resize-none min-h-[24px] max-h-[200px]"
+            rows={message.split('\n').length > 5 ? 5 : message.split('\n').length || 1}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                if (message.trim() && onSendMessage) {
+                  onSendMessage(message.trim());
+                  setMessage("");
+                }
+              }
+            }}
+          />
+        )}
       </div>
       <div className="flex items-center justify-between px-4 pb-4 pt-2">
         <div className="flex items-center gap-2 flex-wrap">
