@@ -37,7 +37,7 @@ const MobileBottomNav = ({
     {
       id: "chatbots",
       icon: Bot,
-      label: "챗봇",
+      label: "나만의 챗봇",
       action: () => onOpenChatbots?.(),
       isActive: false,
     },
