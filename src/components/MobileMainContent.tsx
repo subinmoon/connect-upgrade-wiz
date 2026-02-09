@@ -32,8 +32,8 @@ const MobileMainContent = ({
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-full pb-16">
-      {/* Scrollable Content Area */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Centered Content Area */}
+      <div className="flex-1 flex flex-col justify-center overflow-y-auto">
         {/* Welcome Header - Compact */}
         <MobileWelcomeHeader 
           userName={userName} 
