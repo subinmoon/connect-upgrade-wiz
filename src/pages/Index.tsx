@@ -37,6 +37,7 @@ interface Message {
   content: string;
   timestamp: Date;
   sources?: Source[];
+  searchMode?: string;
 }
 export interface ChatSession {
   id: string;
@@ -245,11 +246,13 @@ const Index = () => {
   };
 
   const handleSendMessage = (content: string) => {
+    const currentSearchMode = userSettings?.searchMode || "general";
     const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content,
-      timestamp: new Date()
+      timestamp: new Date(),
+      searchMode: currentSearchMode
     };
     const newMessages = [...messages, userMessage];
     setMessages(newMessages);
@@ -294,7 +297,8 @@ const Index = () => {
         role: "assistant",
         content: responseContent,
         timestamp: new Date(),
-        sources: demoSources
+        sources: demoSources,
+        searchMode: currentSearchMode
       };
       const updatedMessages = [...newMessages, assistantMessage];
       setMessages(updatedMessages);
