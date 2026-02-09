@@ -85,7 +85,7 @@ const WelcomeHeader = ({ userName = "현민", onSelectAction }: WelcomeHeaderPro
   };
 
   return (
-    <div className="w-full mb-4">
+    <div className="w-full">
       {/* Welcome Message */}
       <div className="flex items-center gap-4 mb-4">
         <img src={logoIcon} alt="Logo" className="w-12 h-12" />
