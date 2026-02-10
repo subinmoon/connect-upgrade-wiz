@@ -224,6 +224,8 @@ const Index = () => {
     setEditingChatbot(null);
   };
 
+  const processedStateRef = useRef<string | null>(null);
+
   useEffect(() => {
     const state = location.state as { 
       selectChatId?: string;
@@ -234,16 +236,25 @@ const Index = () => {
         description: string;
       };
     } | null;
+
+    // Generate a unique key for this state to avoid processing it multiple times
+    const stateKey = state?.selectedChatbot 
+      ? `chatbot-${state.selectedChatbot.id}` 
+      : state?.selectChatId 
+        ? `chat-${state.selectChatId}` 
+        : null;
+
+    if (stateKey && processedStateRef.current === stateKey) return;
     
     if (state?.selectedChatbot) {
-      // Enter chat mode with the selected chatbot
+      processedStateRef.current = stateKey;
       setSelectedChatbot(state.selectedChatbot as Chatbot);
       setIsChatMode(true);
       setMessages([]);
       setChatTitle("새 대화");
       setCurrentChatId(null);
-      window.history.replaceState({}, document.title);
     } else if (state?.selectChatId) {
+      processedStateRef.current = stateKey;
       const chat = chatHistory.find(c => c.id === state.selectChatId);
       if (chat) {
         setCurrentChatId(chat.id);
@@ -251,7 +262,6 @@ const Index = () => {
         setChatTitle(chat.title);
         setIsChatMode(chat.messages.length > 0);
       }
-      window.history.replaceState({}, document.title);
     }
   }, [location.state, chatHistory]);
 

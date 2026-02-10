@@ -205,7 +205,7 @@ const ChatbotsPage = () => {
         </div>
         <div className="flex items-center gap-1">
           <button
-            onClick={() => handleToggleFavorite(chatbot.id)}
+            onClick={(e) => { e.stopPropagation(); handleToggleFavorite(chatbot.id); }}
             className="p-2 hover:bg-muted rounded-lg transition-colors"
           >
             <Star
