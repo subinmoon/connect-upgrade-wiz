@@ -88,6 +88,7 @@ const Sidebar = ({
   const [editTitle, setEditTitle] = useState("");
   const [favoriteServices, setFavoriteServices] = useState<ChatbotService[]>([]);
   const [archiveGroups, setArchiveGroups] = useState<{id: string; name: string; color?: string}[]>([]);
+  const [chatbotHistoryOpen, setChatbotHistoryOpen] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     // Load favorites from localStorage
@@ -110,16 +111,31 @@ const Sidebar = ({
       setArchiveGroups([{ id: "default", name: "기본 그룹" }]);
     }
   }, []);
-  const displayHistory = chatHistory.length > 0 
+  const displayHistory: ChatSession[] = chatHistory.length > 0 
     ? chatHistory.filter(c => !c.archived)
-    : defaultChatHistory.map((title, i) => ({ id: `default-${i}`, title, messages: [], createdAt: new Date(), pinned: false, archived: false }));
+    : defaultChatHistory.map((title, i) => ({ id: `default-${i}`, title, messages: [], createdAt: new Date(), pinned: false, archived: false } as ChatSession));
+
+  // Split into general and chatbot histories
+  const generalHistory = displayHistory.filter(c => !c.chatbotId);
+  const chatbotHistory = displayHistory.filter(c => !!c.chatbotId);
+
+  // Group chatbot history by chatbot name
+  const chatbotGroups = chatbotHistory.reduce((groups, chat) => {
+    const key = chat.chatbotInfo?.name || "알 수 없는 챗봇";
+    if (!groups[key]) {
+      groups[key] = { icon: chat.chatbotInfo?.icon || "🤖", chats: [] };
+    }
+    groups[key].chats.push(chat);
+    return groups;
+  }, {} as Record<string, { icon: string; chats: typeof chatbotHistory }>);
 
   // Sort: pinned first
-  const sortedHistory = [...displayHistory].sort((a, b) => {
+  const sortGeneral = [...generalHistory].sort((a, b) => {
     if (a.pinned && !b.pinned) return -1;
     if (!a.pinned && b.pinned) return 1;
     return 0;
   });
+
 
   const handleStartEdit = (id: string, title: string) => {
     setEditingId(id);
@@ -207,8 +223,9 @@ const Sidebar = ({
               {historyOpen ? <ChevronDown className="w-3 h-3 ml-auto" /> : <ChevronRight className="w-3 h-3 ml-auto" />}
             </button>
             {historyOpen && (
-              <div className="ml-4 mt-1 space-y-0.5 max-h-48 overflow-y-auto">
-                {sortedHistory.map((item) => (
+              <div className="ml-4 mt-1 space-y-0.5 max-h-64 overflow-y-auto">
+                {/* General chats */}
+                {sortGeneral.map((item) => (
                   <div key={item.id} className="group flex items-center gap-1">
                     {editingId === item.id ? (
                       <Input
@@ -261,30 +278,25 @@ const Sidebar = ({
                                 아카이브 저장
                               </DropdownMenuSubTrigger>
                               <DropdownMenuSubContent className="w-40">
-                                {archiveGroups.map(group => {
-                                  const colorClass = group.color 
-                                    ? `bg-${group.color}-500`
-                                    : "bg-muted-foreground";
-                                  return (
-                                    <DropdownMenuItem
-                                      key={group.id}
-                                      onClick={() => handleArchive(item.id, group.id)}
-                                    >
-                                      <div className={cn(
-                                        "w-2.5 h-2.5 rounded-full mr-2",
-                                        group.color === "red" && "bg-red-500",
-                                        group.color === "orange" && "bg-orange-500",
-                                        group.color === "yellow" && "bg-yellow-500",
-                                        group.color === "green" && "bg-green-500",
-                                        group.color === "blue" && "bg-blue-500",
-                                        group.color === "purple" && "bg-purple-500",
-                                        group.color === "pink" && "bg-pink-500",
-                                        !group.color && "bg-muted-foreground"
-                                      )} />
-                                      {group.name}
-                                    </DropdownMenuItem>
-                                  );
-                                })}
+                                {archiveGroups.map(group => (
+                                  <DropdownMenuItem
+                                    key={group.id}
+                                    onClick={() => handleArchive(item.id, group.id)}
+                                  >
+                                    <div className={cn(
+                                      "w-2.5 h-2.5 rounded-full mr-2",
+                                      group.color === "red" && "bg-red-500",
+                                      group.color === "orange" && "bg-orange-500",
+                                      group.color === "yellow" && "bg-yellow-500",
+                                      group.color === "green" && "bg-green-500",
+                                      group.color === "blue" && "bg-blue-500",
+                                      group.color === "purple" && "bg-purple-500",
+                                      group.color === "pink" && "bg-pink-500",
+                                      !group.color && "bg-muted-foreground"
+                                    )} />
+                                    {group.name}
+                                  </DropdownMenuItem>
+                                ))}
                               </DropdownMenuSubContent>
                             </DropdownMenuSub>
                             <DropdownMenuItem 
@@ -300,6 +312,93 @@ const Sidebar = ({
                     )}
                   </div>
                 ))}
+
+                {/* Chatbot groups */}
+                {Object.entries(chatbotGroups).map(([botName, group]) => {
+                  const isGroupOpen = chatbotHistoryOpen[botName] ?? false;
+                  const sortedChats = [...group.chats].sort((a, b) => {
+                    if (a.pinned && !b.pinned) return -1;
+                    if (!a.pinned && b.pinned) return 1;
+                    return 0;
+                  });
+                  return (
+                    <div key={botName} className="mt-1">
+                      <button
+                        onClick={() => setChatbotHistoryOpen(prev => ({ ...prev, [botName]: !prev[botName] }))}
+                        className="w-full flex items-center gap-2 px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+                      >
+                        <span className="text-sm shrink-0">{group.icon}</span>
+                        <span className="truncate font-medium">{botName}</span>
+                        <span className="text-xs text-muted-foreground ml-auto mr-1">{sortedChats.length}</span>
+                        {isGroupOpen ? <ChevronDown className="w-3 h-3 shrink-0" /> : <ChevronRight className="w-3 h-3 shrink-0" />}
+                      </button>
+                      {isGroupOpen && (
+                        <div className="ml-4 mt-0.5 space-y-0.5">
+                          {sortedChats.map((item) => (
+                            <div key={item.id} className="group flex items-center gap-1">
+                              {editingId === item.id ? (
+                                <Input
+                                  value={editTitle}
+                                  onChange={(e) => setEditTitle(e.target.value)}
+                                  onBlur={() => handleSaveEdit(item.id)}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") handleSaveEdit(item.id);
+                                    if (e.key === "Escape") setEditingId(null);
+                                  }}
+                                  className="h-7 text-sm flex-1"
+                                  autoFocus
+                                />
+                              ) : (
+                                <>
+                                  <button
+                                    onClick={() => onSelectChat?.(item.id)}
+                                    className={cn(
+                                      "flex-1 text-left px-3 py-1.5 text-sm hover:bg-muted rounded-lg transition-colors truncate flex items-center gap-1.5",
+                                      currentChatId === item.id
+                                        ? "bg-primary/10 text-primary font-medium"
+                                        : "text-muted-foreground hover:text-foreground"
+                                    )}
+                                  >
+                                    {item.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                                    <span className="truncate">{item.title}</span>
+                                  </button>
+                                  <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                      <button className="p-1 opacity-0 group-hover:opacity-100 hover:bg-muted rounded transition-all">
+                                        <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                                      </button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end" className="w-40">
+                                      <DropdownMenuItem onClick={() => handleStartEdit(item.id, item.title)}>
+                                        <Pencil className="w-4 h-4 mr-2" />
+                                        이름변경
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handleShare(item.id)}>
+                                        <Share2 className="w-4 h-4 mr-2" />
+                                        공유
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem onClick={() => handlePin(item.id)}>
+                                        <Pin className="w-4 h-4 mr-2" />
+                                        {item.pinned ? "고정 해제" : "채팅 고정"}
+                                      </DropdownMenuItem>
+                                      <DropdownMenuItem
+                                        onClick={() => handleDelete(item.id)}
+                                        className="text-destructive focus:text-destructive"
+                                      >
+                                        <Trash2 className="w-4 h-4 mr-2" />
+                                        삭제
+                                      </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                  </DropdownMenu>
+                                </>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

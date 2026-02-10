@@ -39,26 +39,26 @@ const MobileHistorySheet = ({
 
   const displayHistory = chatHistory.filter((c) => !c.archived);
 
-  // Filter by type
-  const getFilteredHistory = () => {
-    switch (activeFilter) {
-      case "general":
-        return displayHistory.filter((c) => !c.chatbotId);
-      case "chatbot":
-        return displayHistory.filter((c) => !!c.chatbotId);
-      default:
-        return displayHistory;
-    }
-  };
+  // General (non-chatbot) chats
+  const generalChats = displayHistory.filter((c) => !c.chatbotId);
+  const chatbotChats = displayHistory.filter((c) => !!c.chatbotId);
 
-  const filteredHistory = getFilteredHistory();
-
-  // Sort: pinned first, then by date
-  const sortedHistory = [...filteredHistory].sort((a, b) => {
+  const sortedGeneral = [...generalChats].sort((a, b) => {
     if (a.pinned && !b.pinned) return -1;
     if (!a.pinned && b.pinned) return 1;
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
+
+  // Group chatbot chats by chatbot name
+  const chatbotGroups = chatbotChats.reduce((acc, chat) => {
+    const key = chat.chatbotInfo?.name || "알 수 없는 챗봇";
+    if (!acc[key]) acc[key] = { icon: chat.chatbotInfo?.icon || "🤖", chats: [] };
+    acc[key].chats.push(chat);
+    return acc;
+  }, {} as Record<string, { icon: string; chats: ChatSession[] }>);
+
+  // For "all" and "general" filters, use sortedGeneral
+  const sortedHistory = activeFilter === "chatbot" ? [] : sortedGeneral;
 
   // Counts for filter badges
   const counts = {
@@ -120,14 +120,80 @@ const MobileHistorySheet = ({
         </div>
 
         <div className="overflow-y-auto h-[calc(100%-100px)] -mx-6 px-6">
-          {sortedHistory.length === 0 ? (
+          {activeFilter === "chatbot" ? (
+            // Chatbot filter: group by chatbot name
+            (() => {
+              const chatbotChats = displayHistory.filter(c => !!c.chatbotId);
+              if (chatbotChats.length === 0) {
+                return (
+                  <div className="flex flex-col items-center justify-center h-40 text-muted-foreground">
+                    <Bot className="w-10 h-10 mb-2 opacity-50" />
+                    <p className="text-sm">챗봇 대화 기록이 없습니다</p>
+                  </div>
+                );
+              }
+              const groups = chatbotChats.reduce((acc, chat) => {
+                const key = chat.chatbotInfo?.name || "알 수 없는 챗봇";
+                if (!acc[key]) acc[key] = { icon: chat.chatbotInfo?.icon || "🤖", chats: [] };
+                acc[key].chats.push(chat);
+                return acc;
+              }, {} as Record<string, { icon: string; chats: ChatSession[] }>);
+              return (
+                <div className="space-y-3">
+                  {Object.entries(groups).map(([botName, group]) => (
+                    <div key={botName}>
+                      <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground">
+                        <span className="text-base">{group.icon}</span>
+                        {botName}
+                        <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
+                      </div>
+                      <div className="space-y-1 ml-1">
+                        {[...group.chats].sort((a, b) => {
+                          if (a.pinned && !b.pinned) return -1;
+                          if (!a.pinned && b.pinned) return 1;
+                          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                        }).map(chat => (
+                          <div
+                            key={chat.id}
+                            className={cn(
+                              "flex items-center gap-2 p-3 rounded-xl transition-colors",
+                              currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
+                            )}
+                          >
+                            <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
+                              <div className="flex items-center gap-2">
+                                {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                                <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
+                                  {chat.title}
+                                </span>
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                              </p>
+                            </button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
+                                  <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-36 bg-card">
+                                <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              );
+            })()
+          ) : (sortedHistory.length === 0 && (activeFilter !== "all" || Object.keys(chatbotGroups).length === 0)) ? (
             <div className="flex flex-col items-center justify-center h-40 text-muted-foreground">
-              {activeFilter === "chatbot" ? (
-                <>
-                  <Bot className="w-10 h-10 mb-2 opacity-50" />
-                  <p className="text-sm">챗봇 대화 기록이 없습니다</p>
-                </>
-              ) : activeFilter === "general" ? (
+              {activeFilter === "general" ? (
                 <>
                   <MessageCircle className="w-10 h-10 mb-2 opacity-50" />
                   <p className="text-sm">일반 대화 기록이 없습니다</p>
@@ -140,56 +206,27 @@ const MobileHistorySheet = ({
               )}
             </div>
           ) : (
-            <div className="space-y-1">
+            <div className="space-y-3">
+              {/* General chats */}
               {sortedHistory.map((chat) => (
                 <div
                   key={chat.id}
                   className={cn(
                     "flex items-center gap-2 p-3 rounded-xl transition-colors",
-                    currentChatId === chat.id
-                      ? "bg-primary/10"
-                      : "hover:bg-muted/50 active:bg-muted"
+                    currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
                   )}
                 >
-                  <button
-                    onClick={() => handleSelect(chat.id)}
-                    className="flex-1 text-left min-w-0"
-                  >
+                  <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
                     <div className="flex items-center gap-2">
-                      {chat.chatbotInfo && (
-                        <span className="text-base shrink-0">{chat.chatbotInfo.icon}</span>
-                      )}
-                      {chat.pinned && (
-                        <Pin className="w-3 h-3 text-primary shrink-0" />
-                      )}
-                      <span
-                        className={cn(
-                          "text-sm truncate",
-                          currentChatId === chat.id
-                            ? "text-primary font-medium"
-                            : "text-foreground"
-                        )}
-                      >
+                      {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                      <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
                         {chat.title}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 mt-0.5">
-                      {chat.chatbotInfo && (
-                        <span className="text-xs text-primary/70 bg-primary/10 px-1.5 py-0.5 rounded">
-                          {chat.chatbotInfo.name}
-                        </span>
-                      )}
-                      <p className="text-xs text-muted-foreground">
-                        {new Date(chat.createdAt).toLocaleDateString("ko-KR", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </p>
-                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </p>
                   </button>
-
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
@@ -197,23 +234,61 @@ const MobileHistorySheet = ({
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-36 bg-card">
-                      <DropdownMenuItem onClick={() => onShareChat(chat.id)}>
-                        <Share2 className="w-4 h-4 mr-2" />
-                        공유
-                      </DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onPinChat(chat.id)}>
-                        <Pin className="w-4 h-4 mr-2" />
-                        {chat.pinned ? "고정 해제" : "고정"}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        onClick={() => onDeleteChat(chat.id)}
-                        className="text-destructive focus:text-destructive"
-                      >
-                        <Trash2 className="w-4 h-4 mr-2" />
-                        삭제
-                      </DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
+                </div>
+              ))}
+
+              {/* Chatbot groups (shown in "all" filter) */}
+              {activeFilter === "all" && Object.entries(chatbotGroups).map(([botName, group]) => (
+                <div key={botName}>
+                  <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground">
+                    <span className="text-base">{group.icon}</span>
+                    {botName}
+                    <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
+                  </div>
+                  <div className="space-y-1 ml-1">
+                    {[...group.chats].sort((a, b) => {
+                      if (a.pinned && !b.pinned) return -1;
+                      if (!a.pinned && b.pinned) return 1;
+                      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+                    }).map(chat => (
+                      <div
+                        key={chat.id}
+                        className={cn(
+                          "flex items-center gap-2 p-3 rounded-xl transition-colors",
+                          currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
+                        )}
+                      >
+                        <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
+                          <div className="flex items-center gap-2">
+                            {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                            <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
+                              {chat.title}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                          </p>
+                        </button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
+                              <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-36 bg-card">
+                            <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
