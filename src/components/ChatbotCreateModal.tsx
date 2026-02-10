@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -121,6 +121,21 @@ export const ChatbotCreateModal = ({
   const [systemPrompt, setSystemPrompt] = useState("");
   const [visibility] = useState<VisibilityType>("personal");
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // editingChatbot이 변경되면 폼 필드 동기화
+  useEffect(() => {
+    if (editingChatbot) {
+      setName(editingChatbot.name || "");
+      setDescription(editingChatbot.description || "");
+      setIcon(editingChatbot.icon || "🤖");
+    } else if (open) {
+      setName("");
+      setDescription("");
+      setIcon("🤖");
+      setGenerationPrompt("");
+      setSystemPrompt("");
+    }
+  }, [editingChatbot, open]);
 
   const handleAIGenerate = () => {
     if (!generationPrompt.trim()) {
