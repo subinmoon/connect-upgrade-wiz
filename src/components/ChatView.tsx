@@ -178,6 +178,7 @@ const ChatView = ({
             sources={message.sources}
             searchMode={message.searchMode}
             workItemLabel={message.workItemLabel}
+            isChatbotMode={!!selectedChatbot}
           />
         ))}
         {isLoading && (
