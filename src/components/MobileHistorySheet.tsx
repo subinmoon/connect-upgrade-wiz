@@ -144,13 +144,13 @@ const MobileHistorySheet = ({
         </SheetHeader>
 
         {/* Filter Pills */}
-        <div className="flex gap-2 mb-3">
+        <div className="flex gap-2 mb-3 overflow-x-auto no-scrollbar">
           {filters.map((filter) => (
             <button
               key={filter.key}
               onClick={() => setActiveFilter(filter.key)}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors",
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap shrink-0",
                 activeFilter === filter.key
                   ? "bg-primary text-primary-foreground"
                   : "bg-muted hover:bg-muted/80 text-muted-foreground"
