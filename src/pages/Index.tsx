@@ -682,12 +682,6 @@ const Index = () => {
             onOpenChatbots={() => setShowChatbotsSheet(true)}
             onOpenHistory={() => setShowHistorySheet(true)}
             onOpenArchive={() => setShowArchiveSheet(true)}
-            activeTab={
-              showSettingsModal ? "settings" :
-              showChatbotsSheet ? "chatbots" :
-              showHistorySheet ? "history" :
-              showArchiveSheet ? "archive" : "home"
-            }
           />
         </div>
       </>
