@@ -39,7 +39,7 @@ const MobileHistorySheet = ({
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
-  const [searchMode, setSearchMode] = useState(false);
+  
   const [searchQuery, setSearchQuery] = useState("");
 
   const toggleGroup = (name: string) => {
@@ -102,44 +102,8 @@ const MobileHistorySheet = ({
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl">
         <SheetHeader className="pb-3">
           <SheetTitle className="flex items-center gap-2">
-            {searchMode ? (
-              <>
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="대화 검색"
-                    className="pl-9 pr-9 h-9 text-sm font-normal"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute right-3 top-1/2 -translate-y-1/2"
-                    >
-                      <X className="w-3.5 h-3.5 text-muted-foreground" />
-                    </button>
-                  )}
-                </div>
-                <button
-                  onClick={() => { setSearchMode(false); setSearchQuery(""); }}
-                  className="text-sm text-muted-foreground hover:text-foreground shrink-0"
-                >
-                  취소
-                </button>
-              </>
-            ) : (
-              <>
-                <History className="w-5 h-5 text-primary" />
-                채팅 히스토리
-                <button
-                  onClick={() => setSearchMode(true)}
-                  className="ml-auto p-2 hover:bg-muted rounded-lg transition-colors"
-                >
-                  <Search className="w-4.5 h-4.5 text-muted-foreground" />
-                </button>
-              </>
-            )}
+            <History className="w-5 h-5 text-primary" />
+            채팅 히스토리
           </SheetTitle>
         </SheetHeader>
 
@@ -365,6 +329,27 @@ const MobileHistorySheet = ({
             <p className="text-sm">검색 결과가 없습니다</p>
           </div>
         )}
+
+        {/* Bottom Search Bar */}
+        <div className="pt-3 border-t border-border">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="대화 검색"
+              className="pl-9 pr-9 h-9 text-sm"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                <X className="w-3.5 h-3.5 text-muted-foreground" />
+              </button>
+            )}
+          </div>
+        </div>
       </SheetContent>
     </Sheet>
   );
