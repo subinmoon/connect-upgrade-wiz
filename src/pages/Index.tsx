@@ -74,7 +74,16 @@ const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [chatTitle, setChatTitle] = useState("새 대화");
-  const [chatHistory, setChatHistory] = useState<ChatSession[]>([]);
+  const [chatHistory, setChatHistory] = useState<ChatSession[]>([
+    { id: "ex-1", title: "인사 관련 요청", messages: [], createdAt: new Date(Date.now() - 3600000), pinned: true },
+    { id: "ex-2", title: "보고서 초안 작성 도와줘", messages: [], createdAt: new Date(Date.now() - 7200000) },
+    { id: "ex-3", title: "회의록 요약해줘", messages: [], createdAt: new Date(Date.now() - 10800000) },
+    { id: "ex-4", title: "마케팅 전략 분석", messages: [], createdAt: new Date(Date.now() - 86400000), chatbotId: "bot-1", chatbotInfo: { name: "마케팅 도우미", icon: "📊" } },
+    { id: "ex-5", title: "SNS 콘텐츠 아이디어", messages: [], createdAt: new Date(Date.now() - 90000000), chatbotId: "bot-1", chatbotInfo: { name: "마케팅 도우미", icon: "📊" } },
+    { id: "ex-6", title: "코드 리뷰 요청", messages: [], createdAt: new Date(Date.now() - 43200000), chatbotId: "bot-2", chatbotInfo: { name: "코딩 어시스턴트", icon: "💻" } },
+    { id: "ex-7", title: "React 최적화 방법", messages: [], createdAt: new Date(Date.now() - 50000000), chatbotId: "bot-2", chatbotInfo: { name: "코딩 어시스턴트", icon: "💻" }, pinned: true },
+    { id: "ex-8", title: "영어 이메일 작성", messages: [], createdAt: new Date(Date.now() - 172800000), chatbotId: "bot-3", chatbotInfo: { name: "영어 번역기", icon: "🌐" } },
+  ]);
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [prefillMessage, setPrefillMessage] = useState("");
   const [scheduleExpanded, setScheduleExpanded] = useState(false);
