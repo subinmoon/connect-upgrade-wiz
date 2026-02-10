@@ -78,29 +78,46 @@ const Index = () => {
   const [chatHistory, setChatHistory] = useState<ChatSession[]>([
     { id: "ex-1", title: "인사 관련 요청", messages: [
       { id: "m1", role: "user", content: "복지카드 발급 방법에 대한 궁금증이 다 해결되었나요?", timestamp: new Date(Date.now() - 3600000), searchMode: "internal" },
-      { id: "m2", role: "assistant", content: "복지카드는 인사팀에서 발급받으실 수 있습니다.", timestamp: new Date(Date.now() - 3500000), searchMode: "internal" },
+      { id: "m2", role: "assistant", content: "복지카드는 인사팀에서 발급받으실 수 있습니다. 사내 포털에서 신청서를 작성해주세요.", timestamp: new Date(Date.now() - 3500000), searchMode: "internal" },
+      { id: "m1b", role: "user", content: "연차 사용 규정이 어떻게 되나요?", timestamp: new Date(Date.now() - 3400000), searchMode: "internal" },
+      { id: "m2b", role: "assistant", content: "연차는 입사 1년 후 15일이 부여되며, 사규 제42조에 따라 사용하시면 됩니다.", timestamp: new Date(Date.now() - 3300000), searchMode: "internal" },
     ], createdAt: new Date(Date.now() - 3600000), pinned: true },
     { id: "ex-2", title: "보고서 초안 작성 도와줘", messages: [
       { id: "m3", role: "user", content: "분기별 매출 보고서 초안을 작성해줘", timestamp: new Date(Date.now() - 7200000), searchMode: "general" },
+      { id: "m3b", role: "assistant", content: "2026년 1분기 매출 보고서 초안을 작성해드리겠습니다.", timestamp: new Date(Date.now() - 7100000), searchMode: "general" },
     ], createdAt: new Date(Date.now() - 7200000) },
     { id: "ex-3", title: "회의록 요약해줘", messages: [
-      { id: "m4", role: "user", content: "오늘 회의록을 요약해줘", timestamp: new Date(Date.now() - 10800000), searchMode: "general" },
+      { id: "m4", role: "user", content: "오늘 회의록을 요약해줘. 주요 안건 위주로 정리 부탁해", timestamp: new Date(Date.now() - 10800000), searchMode: "general" },
     ], createdAt: new Date(Date.now() - 10800000) },
+    { id: "ex-9", title: "출장 신청 방법", messages: [
+      { id: "m10", role: "user", content: "출장 신청 절차가 어떻게 되나요?", timestamp: new Date(Date.now() - 14400000), searchMode: "internal" },
+      { id: "m11", role: "assistant", content: "출장 신청은 사내 포털 > 근태관리 > 출장신청에서 가능합니다.", timestamp: new Date(Date.now() - 14300000), searchMode: "internal" },
+    ], createdAt: new Date(Date.now() - 14400000) },
+    { id: "ex-10", title: "AI 트렌드 조사", messages: [
+      { id: "m12", role: "user", content: "2026년 AI 시장 동향과 주요 트렌드를 조사해줘", timestamp: new Date(Date.now() - 18000000), searchMode: "web" },
+      { id: "m13", role: "assistant", content: "2026년 AI 시장은 에이전트 기반 AI와 멀티모달 모델이 주요 트렌드입니다.", timestamp: new Date(Date.now() - 17900000), searchMode: "web" },
+    ], createdAt: new Date(Date.now() - 18000000) },
     { id: "ex-4", title: "마케팅 전략 분석", messages: [
       { id: "m5", role: "user", content: "조예은 작가의 대표작을 조회한 웹 출처 알려달라고", timestamp: new Date(Date.now() - 86400000), searchMode: "web" },
+      { id: "m5b", role: "assistant", content: "조예은 작가의 대표작으로는 '저주토끼', '우리가 빛의 속도로 갈 수 없다면' 등이 있습니다.", timestamp: new Date(Date.now() - 86300000), searchMode: "web" },
     ], createdAt: new Date(Date.now() - 86400000), chatbotId: "bot-1", chatbotInfo: { name: "마케팅 도우미", icon: "📊" } },
     { id: "ex-5", title: "손석구의 대표작", messages: [
       { id: "m6", role: "user", content: "손석구 배우의 대표작 목록을 알려줘", timestamp: new Date(Date.now() - 90000000), searchMode: "web" },
     ], createdAt: new Date(Date.now() - 90000000), chatbotId: "bot-1", chatbotInfo: { name: "마케팅 도우미", icon: "📊" } },
     { id: "ex-6", title: "코드 리뷰 요청", messages: [
-      { id: "m7", role: "user", content: "React 컴포넌트 코드 리뷰 부탁해", timestamp: new Date(Date.now() - 43200000), searchMode: "general" },
+      { id: "m7", role: "user", content: "React 컴포넌트 코드 리뷰 부탁해. 성능 개선 포인트도 같이 확인해줘", timestamp: new Date(Date.now() - 43200000), searchMode: "general" },
     ], createdAt: new Date(Date.now() - 43200000), chatbotId: "bot-2", chatbotInfo: { name: "코딩 어시스턴트", icon: "💻" } },
     { id: "ex-7", title: "React 최적화 방법", messages: [
-      { id: "m8", role: "user", content: "React 렌더링 최적화 방법을 알려줘", timestamp: new Date(Date.now() - 50000000), searchMode: "web" },
+      { id: "m8", role: "user", content: "React 렌더링 최적화 방법을 알려줘. useMemo와 useCallback 활용법도 포함해서", timestamp: new Date(Date.now() - 50000000), searchMode: "web" },
     ], createdAt: new Date(Date.now() - 50000000), chatbotId: "bot-2", chatbotInfo: { name: "코딩 어시스턴트", icon: "💻" }, pinned: true },
     { id: "ex-8", title: "영어 이메일 작성", messages: [
-      { id: "m9", role: "user", content: "출장 신청은 잘 되었나요? 더 궁금한게 있으신가요?", timestamp: new Date(Date.now() - 172800000), searchMode: "general" },
+      { id: "m9", role: "user", content: "해외 파트너사에 보낼 영어 이메일 초안을 작성해줘", timestamp: new Date(Date.now() - 172800000), searchMode: "general" },
+      { id: "m9b", role: "assistant", content: "Dear Partner, I hope this email finds you well. 이메일 초안을 작성해드리겠습니다.", timestamp: new Date(Date.now() - 172700000), searchMode: "general" },
     ], createdAt: new Date(Date.now() - 172800000), chatbotId: "bot-3", chatbotInfo: { name: "영어 번역기", icon: "🌐" } },
+    { id: "ex-11", title: "사내 규정 문의", messages: [
+      { id: "m14", role: "user", content: "재택근무 신청 규정과 절차를 알려주세요", timestamp: new Date(Date.now() - 200000000), searchMode: "internal" },
+      { id: "m15", role: "assistant", content: "재택근무는 부서장 승인 후 주 2회까지 가능합니다. 사규 제55조를 참고해주세요.", timestamp: new Date(Date.now() - 199900000), searchMode: "internal" },
+    ], createdAt: new Date(Date.now() - 200000000) },
   ]);
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [prefillMessage, setPrefillMessage] = useState("");
