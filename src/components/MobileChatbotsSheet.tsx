@@ -375,7 +375,7 @@ const MobileChatbotsSheet = ({
                     </div>
                     <div className="flex items-center gap-1">
                       <button
-                        onClick={() => handleFavorite(chatbot.id)}
+                        onClick={(e) => { e.stopPropagation(); handleFavorite(chatbot.id); }}
                         className="p-2 hover:bg-muted rounded-lg transition-colors"
                       >
                         <Star
@@ -389,7 +389,7 @@ const MobileChatbotsSheet = ({
                       {chatbot.isOwner && (
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
-                            <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+                            <button className="p-2 hover:bg-muted rounded-lg transition-colors" onClick={(e) => e.stopPropagation()}>
                               <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
                             </button>
                           </DropdownMenuTrigger>
