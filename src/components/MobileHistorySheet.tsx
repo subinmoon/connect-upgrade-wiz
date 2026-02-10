@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search, X } from "lucide-react";
+import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search, X, FolderArchive } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
@@ -24,6 +24,7 @@ interface MobileHistorySheetProps {
   onShareChat: (chatId: string) => void;
   onPinChat: (chatId: string) => void;
   onDeleteChat: (chatId: string) => void;
+  onArchiveChat?: (chatId: string, chatTitle: string) => void;
 }
 
 const MobileHistorySheet = ({
@@ -36,6 +37,7 @@ const MobileHistorySheet = ({
   onShareChat,
   onPinChat,
   onDeleteChat,
+  onArchiveChat,
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
@@ -222,6 +224,7 @@ const MobileHistorySheet = ({
                               <DropdownMenuContent align="end" className="w-36 bg-card">
                                 <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
                                 <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -276,9 +279,10 @@ const MobileHistorySheet = ({
                       </button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end" className="w-36 bg-card">
-                      <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
-                      <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -327,9 +331,10 @@ const MobileHistorySheet = ({
                             </button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-36 bg-card">
-                            <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
