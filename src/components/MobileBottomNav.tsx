@@ -1,5 +1,4 @@
 import { Home, FolderArchive, Settings, Bot, History } from "lucide-react";
-import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
 interface MobileBottomNavProps {
@@ -8,6 +7,7 @@ interface MobileBottomNavProps {
   onOpenChatbots?: () => void;
   onOpenHistory?: () => void;
   onOpenArchive?: () => void;
+  activeTab?: "home" | "history" | "chatbots" | "archive" | "settings";
 }
 
 const MobileBottomNav = ({ 
@@ -15,45 +15,39 @@ const MobileBottomNav = ({
   onOpenSettings, 
   onOpenChatbots, 
   onOpenHistory,
-  onOpenArchive 
+  onOpenArchive,
+  activeTab = "home",
 }: MobileBottomNavProps) => {
-  const location = useLocation();
-
   const navItems = [
     {
       id: "home",
       icon: Home,
       label: "홈",
       action: () => onNewChat?.(),
-      isActive: location.pathname === "/" && !location.state,
     },
     {
       id: "history",
       icon: History,
       label: "히스토리",
       action: () => onOpenHistory?.(),
-      isActive: false,
     },
     {
       id: "chatbots",
       icon: Bot,
       label: "나만의 챗봇",
       action: () => onOpenChatbots?.(),
-      isActive: false,
     },
     {
       id: "archive",
       icon: FolderArchive,
       label: "아카이브",
       action: () => onOpenArchive?.(),
-      isActive: false,
     },
     {
       id: "settings",
       icon: Settings,
       label: "설정",
       action: () => onOpenSettings?.(),
-      isActive: false,
     },
   ];
 
@@ -66,14 +60,14 @@ const MobileBottomNav = ({
             onClick={item.action}
             className={cn(
               "flex flex-col items-center justify-center gap-1 flex-1 py-2 transition-colors min-h-[56px]",
-              item.isActive 
+              activeTab === item.id 
                 ? "text-primary" 
                 : "text-muted-foreground hover:text-foreground active:text-primary"
             )}
           >
             <item.icon className={cn(
               "w-6 h-6",
-              item.isActive && "fill-primary/20"
+              activeTab === item.id && "fill-primary/20"
             )} />
             <span className="text-tab-label">{item.label}</span>
           </button>
