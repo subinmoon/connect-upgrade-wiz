@@ -120,7 +120,7 @@ const MobileHeader = ({
   }
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-card border-b border-border">
+    <header className="flex items-center justify-between px-4 py-3 bg-transparent">
       <div className="flex items-center gap-2">
         <img src={logoIcon} alt="Logo" className="w-8 h-8" />
         <span className="font-bold text-foreground">ISU GPT</span>
