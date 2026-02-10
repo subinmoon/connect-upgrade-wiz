@@ -145,18 +145,12 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
                 </span>
 
                 {result.type === "content" && result.searchMode && (
-                  <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30">
+                  <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1.5">
                     {searchModeLabel[result.searchMode] || result.searchMode}
                   </span>
                 )}
                 {result.type === "title" && (
-                  <span
-                    className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${
-                      result.isChatbot
-                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400"
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                  >
+                  <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1.5">
                     {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "일반 채팅"}
                   </span>
                 )}
