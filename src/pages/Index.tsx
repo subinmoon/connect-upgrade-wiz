@@ -202,6 +202,7 @@ const Index = () => {
   const handleEditChatbot = (chatbot: Chatbot) => {
     setEditingChatbot(chatbot);
     setShowChatbotManagement(false);
+    setShowChatbotsSheet(false);
     setShowChatbotCreate(true);
   };
 
@@ -660,7 +661,6 @@ const Index = () => {
             onDelete={handleDeleteChatbot}
             onEdit={handleEditChatbot}
             onSave={handleSaveChatbot}
-            editingChatbot={editingChatbot}
             onClearEditing={() => setEditingChatbot(null)}
             onSelectChatbot={handleSelectChatbot}
           />
