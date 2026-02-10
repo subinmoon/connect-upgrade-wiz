@@ -194,8 +194,8 @@ const DroppableGroup = ({ groupId, isOver, children }: DroppableGroupProps) => {
     <div
       ref={setNodeRef}
       className={cn(
-        "px-3 pb-2 space-y-1 min-h-[40px] transition-colors rounded-lg",
-        isOver && "bg-primary/10 ring-2 ring-primary/30"
+        "transition-colors rounded-xl",
+        isOver && "ring-2 ring-primary/30 bg-primary/5"
       )}
     >
       {children}
@@ -489,127 +489,128 @@ const MobileArchiveSheet = ({
         >
           <div className="overflow-y-auto h-[calc(100%-100px)] -mx-6 px-6 space-y-2">
             {groups.map(group => (
-              <div
-                key={group.id}
-                className="border border-border rounded-xl overflow-hidden bg-card"
-              >
-                <Collapsible
-                  open={openGroups.has(group.id)}
-                  onOpenChange={() => toggleGroup(group.id)}
+              <DroppableGroup key={group.id} groupId={group.id} isOver={overGroupId === group.id}>
+                <div
+                  className="border border-border rounded-xl overflow-hidden bg-card"
                 >
-                  <div className="flex items-center justify-between px-3 py-2.5 hover:bg-muted/50 transition-colors">
-                    <CollapsibleTrigger asChild>
-                      <button className="flex items-center gap-2 flex-1 text-left">
-                        <div className={cn("w-2.5 h-2.5 rounded-full", getGroupColorClass(group.color))} />
-                        <Folder className="w-4 h-4 text-muted-foreground" />
-                        {editingGroupId === group.id ? (
-                          <Input
-                            value={editGroupName}
-                            onChange={e => setEditGroupName(e.target.value)}
-                            onBlur={() => handleSaveGroupName(group.id)}
-                            onKeyDown={e => {
-                              if (e.key === "Enter") handleSaveGroupName(group.id);
-                              if (e.key === "Escape") setEditingGroupId(null);
-                            }}
-                            onClick={e => e.stopPropagation()}
-                            className="h-7 w-32"
-                            autoFocus
-                          />
-                        ) : (
-                          <span className="font-medium text-foreground text-sm">
-                            {group.name}
-                          </span>
-                        )}
-                      </button>
-                    </CollapsibleTrigger>
-
-                    <div className="flex items-center gap-1">
-                      <span className="text-xs text-muted-foreground mr-1">
-                        {getChatsForGroup(group.id).length}
-                      </span>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <button
-                            className="p-1.5 hover:bg-muted rounded-lg transition-colors"
-                            onClick={e => e.stopPropagation()}
-                          >
-                            <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
-                          </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44 bg-card">
-                          <DropdownMenuItem onClick={() => handleRenameGroup(group.id)}>
-                            <Pencil className="w-4 h-4 mr-2" />
-                            이름 변경
-                          </DropdownMenuItem>
-                          <DropdownMenuSub>
-                            <DropdownMenuSubTrigger>
-                              <Palette className="w-4 h-4 mr-2" />
-                              색상 변경
-                            </DropdownMenuSubTrigger>
-                            <DropdownMenuSubContent className="w-32 bg-card">
-                              {GROUP_COLORS.map(color => (
-                                <DropdownMenuItem
-                                  key={color.id}
-                                  onClick={() => handleChangeGroupColor(group.id, color.id)}
-                                >
-                                  <div className={cn("w-3 h-3 rounded-full mr-2", color.class)} />
-                                  {color.name}
-                                </DropdownMenuItem>
-                              ))}
-                            </DropdownMenuSubContent>
-                          </DropdownMenuSub>
-                          {group.id !== "default" && (
-                            <DropdownMenuItem
-                              onClick={() => handleDeleteGroup(group.id)}
-                              className="text-destructive focus:text-destructive"
-                            >
-                              <Trash2 className="w-4 h-4 mr-2" />
-                              그룹 삭제
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-
+                  <Collapsible
+                    open={openGroups.has(group.id)}
+                    onOpenChange={() => toggleGroup(group.id)}
+                  >
+                    <div className="flex items-center justify-between px-3 py-2.5 hover:bg-muted/50 transition-colors">
                       <CollapsibleTrigger asChild>
-                        <button className="p-1">
-                          {openGroups.has(group.id) ? (
-                            <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                        <button className="flex items-center gap-2 flex-1 text-left">
+                          <div className={cn("w-2.5 h-2.5 rounded-full", getGroupColorClass(group.color))} />
+                          <Folder className="w-4 h-4 text-muted-foreground" />
+                          {editingGroupId === group.id ? (
+                            <Input
+                              value={editGroupName}
+                              onChange={e => setEditGroupName(e.target.value)}
+                              onBlur={() => handleSaveGroupName(group.id)}
+                              onKeyDown={e => {
+                                if (e.key === "Enter") handleSaveGroupName(group.id);
+                                if (e.key === "Escape") setEditingGroupId(null);
+                              }}
+                              onClick={e => e.stopPropagation()}
+                              className="h-7 w-32"
+                              autoFocus
+                            />
                           ) : (
-                            <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                            <span className="font-medium text-foreground text-sm">
+                              {group.name}
+                            </span>
                           )}
                         </button>
                       </CollapsibleTrigger>
-                    </div>
-                  </div>
 
-                  <CollapsibleContent>
-                    <DroppableGroup groupId={group.id} isOver={overGroupId === group.id}>
-                      {getChatsForGroup(group.id).length > 0 ? (
-                        getChatsForGroup(group.id).map(chat => (
-                          <DraggableChatItem
-                            key={chat.id}
-                            chat={chat}
-                            groupId={group.id}
-                            groups={groups}
-                            onSelectChat={handleSelect}
-                            onMoveChat={handleMoveChat}
-                            onUnarchive={handleUnarchive}
-                            onDeleteChat={handleDelete}
-                          />
-                        ))
-                      ) : (
-                        <div className="py-3 text-center text-xs text-muted-foreground">
-                          {overGroupId === group.id ? (
-                            <span className="text-primary font-medium">여기에 놓으세요</span>
-                          ) : (
-                            "아카이브된 대화가 없습니다"
-                          )}
-                        </div>
-                      )}
-                    </DroppableGroup>
-                  </CollapsibleContent>
-                </Collapsible>
-              </div>
+                      <div className="flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground mr-1">
+                          {getChatsForGroup(group.id).length}
+                        </span>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button
+                              className="p-1.5 hover:bg-muted rounded-lg transition-colors"
+                              onClick={e => e.stopPropagation()}
+                            >
+                              <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-44 bg-card">
+                            <DropdownMenuItem onClick={() => handleRenameGroup(group.id)}>
+                              <Pencil className="w-4 h-4 mr-2" />
+                              이름 변경
+                            </DropdownMenuItem>
+                            <DropdownMenuSub>
+                              <DropdownMenuSubTrigger>
+                                <Palette className="w-4 h-4 mr-2" />
+                                색상 변경
+                              </DropdownMenuSubTrigger>
+                              <DropdownMenuSubContent className="w-32 bg-card">
+                                {GROUP_COLORS.map(color => (
+                                  <DropdownMenuItem
+                                    key={color.id}
+                                    onClick={() => handleChangeGroupColor(group.id, color.id)}
+                                  >
+                                    <div className={cn("w-3 h-3 rounded-full mr-2", color.class)} />
+                                    {color.name}
+                                  </DropdownMenuItem>
+                                ))}
+                              </DropdownMenuSubContent>
+                            </DropdownMenuSub>
+                            {group.id !== "default" && (
+                              <DropdownMenuItem
+                                onClick={() => handleDeleteGroup(group.id)}
+                                className="text-destructive focus:text-destructive"
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                그룹 삭제
+                              </DropdownMenuItem>
+                            )}
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+
+                        <CollapsibleTrigger asChild>
+                          <button className="p-1">
+                            {openGroups.has(group.id) ? (
+                              <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                            )}
+                          </button>
+                        </CollapsibleTrigger>
+                      </div>
+                    </div>
+
+                    <CollapsibleContent>
+                      <div className="px-3 pb-2 space-y-1 min-h-[40px]">
+                        {getChatsForGroup(group.id).length > 0 ? (
+                          getChatsForGroup(group.id).map(chat => (
+                            <DraggableChatItem
+                              key={chat.id}
+                              chat={chat}
+                              groupId={group.id}
+                              groups={groups}
+                              onSelectChat={handleSelect}
+                              onMoveChat={handleMoveChat}
+                              onUnarchive={handleUnarchive}
+                              onDeleteChat={handleDelete}
+                            />
+                          ))
+                        ) : (
+                          <div className="py-3 text-center text-xs text-muted-foreground">
+                            {overGroupId === group.id ? (
+                              <span className="text-primary font-medium">여기에 놓으세요</span>
+                            ) : (
+                              "아카이브된 대화가 없습니다"
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </CollapsibleContent>
+                  </Collapsible>
+                </div>
+              </DroppableGroup>
             ))}
 
             {groups.length === 0 && (
