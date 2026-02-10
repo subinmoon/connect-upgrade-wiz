@@ -599,6 +599,12 @@ const Index = () => {
                   userName={userSettings?.userName}
                   isMobile
                   selectedChatbot={selectedChatbot}
+                  onChatbotSettings={() => {
+                    if (selectedChatbot && 'isOwner' in selectedChatbot) {
+                      setEditingChatbot(selectedChatbot as Chatbot);
+                      setShowChatbotCreate(true);
+                    }
+                  }}
                 />
               </div>
             ) : (
@@ -856,6 +862,12 @@ const Index = () => {
                   onSearchModeChange={handleSearchModeChange}
                   userName={userSettings?.userName}
                   selectedChatbot={selectedChatbot}
+                  onChatbotSettings={() => {
+                    if (selectedChatbot && 'isOwner' in selectedChatbot) {
+                      setEditingChatbot(selectedChatbot as Chatbot);
+                      setShowChatbotCreate(true);
+                    }
+                  }}
                 />
               ) : (
                 <div className="flex flex-col h-full">
