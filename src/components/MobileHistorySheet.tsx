@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search } from "lucide-react";
-import ChatSearchModal from "@/components/ChatSearchModal";
+import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,7 +39,8 @@ const MobileHistorySheet = ({
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
-  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const toggleGroup = (name: string) => {
     setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
@@ -46,7 +48,15 @@ const MobileHistorySheet = ({
 
   const isGroupOpen = (name: string) => openGroups[name] !== false; // default open
 
-  const displayHistory = chatHistory.filter((c) => !c.archived);
+  const q = searchQuery.trim().toLowerCase();
+
+  const displayHistory = chatHistory.filter((c) => {
+    if (c.archived) return false;
+    if (!q) return true;
+    // Search in title and messages
+    if (c.title.toLowerCase().includes(q)) return true;
+    return c.messages.some((m) => m.content.toLowerCase().includes(q));
+  });
 
   // General (non-chatbot) chats
   const generalChats = displayHistory.filter((c) => !c.chatbotId);
@@ -92,14 +102,44 @@ const MobileHistorySheet = ({
       <SheetContent side="bottom" className="h-[70vh] rounded-t-2xl">
         <SheetHeader className="pb-3">
           <SheetTitle className="flex items-center gap-2">
-            <History className="w-5 h-5 text-primary" />
-            채팅 히스토리
-            <button
-              onClick={() => setSearchOpen(true)}
-              className="ml-auto p-2 hover:bg-muted rounded-lg transition-colors"
-            >
-              <Search className="w-4.5 h-4.5 text-muted-foreground" />
-            </button>
+            {searchMode ? (
+              <>
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="대화 검색"
+                    className="pl-9 pr-9 h-9 text-sm font-normal"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2"
+                    >
+                      <X className="w-3.5 h-3.5 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+                <button
+                  onClick={() => { setSearchMode(false); setSearchQuery(""); }}
+                  className="text-sm text-muted-foreground hover:text-foreground shrink-0"
+                >
+                  취소
+                </button>
+              </>
+            ) : (
+              <>
+                <History className="w-5 h-5 text-primary" />
+                채팅 히스토리
+                <button
+                  onClick={() => setSearchMode(true)}
+                  className="ml-auto p-2 hover:bg-muted rounded-lg transition-colors"
+                >
+                  <Search className="w-4.5 h-4.5 text-muted-foreground" />
+                </button>
+              </>
+            )}
           </SheetTitle>
         </SheetHeader>
 
@@ -318,15 +358,13 @@ const MobileHistorySheet = ({
           )}
         </div>
 
-        <ChatSearchModal
-          open={searchOpen}
-          onClose={() => setSearchOpen(false)}
-          chatHistory={chatHistory}
-          onSelectChat={(chatId) => {
-            setSearchOpen(false);
-            handleSelect(chatId);
-          }}
-        />
+        {/* Search empty state */}
+        {q && displayHistory.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-40 text-muted-foreground -mt-40">
+            <Search className="w-10 h-10 mb-2 opacity-50" />
+            <p className="text-sm">검색 결과가 없습니다</p>
+          </div>
+        )}
       </SheetContent>
     </Sheet>
   );
