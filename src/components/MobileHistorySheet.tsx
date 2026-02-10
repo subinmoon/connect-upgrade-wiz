@@ -81,7 +81,7 @@ const MobileHistorySheet = ({
 
   const filters: { key: HistoryFilter; label: string; icon: React.ReactNode }[] = [
     { key: "all", label: "전체", icon: <History className="w-3.5 h-3.5" /> },
-    { key: "general", label: "일반", icon: <MessageCircle className="w-3.5 h-3.5" /> },
+    { key: "general", label: "기본 모델", icon: <MessageCircle className="w-3.5 h-3.5" /> },
     { key: "chatbot", label: "챗봇", icon: <Bot className="w-3.5 h-3.5" /> },
   ];
 
@@ -207,7 +207,7 @@ const MobileHistorySheet = ({
               {activeFilter === "general" ? (
                 <>
                   <MessageCircle className="w-10 h-10 mb-2 opacity-50" />
-                  <p className="text-sm">일반 대화 기록이 없습니다</p>
+                  <p className="text-sm">기본 모델 대화 기록이 없습니다</p>
                 </>
               ) : (
                 <>

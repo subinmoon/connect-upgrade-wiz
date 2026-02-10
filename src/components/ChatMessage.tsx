@@ -32,7 +32,7 @@ const getSearchModeLabel = (mode?: string) => {
       return { label: "사내 규칙", icon: "📋" };
     case "general":
     default:
-      return { label: "일반", icon: "💬" };
+      return { label: "기본 모델", icon: "💬" };
   }
 };
 

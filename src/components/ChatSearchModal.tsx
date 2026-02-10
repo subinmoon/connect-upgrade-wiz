@@ -23,7 +23,7 @@ interface SearchResult {
 }
 
 const searchModeLabel: Record<string, string> = {
-  general: "일반",
+  general: "기본 모델",
   web: "웹 검색",
   "web-search": "웹 검색",
   internal: "사규",
@@ -151,7 +151,7 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
                 )}
                 {result.type === "title" && (
                   <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1.5">
-                    {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "일반 채팅"}
+                    {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "기본 모델 채팅"}
                   </span>
                 )}
 
