@@ -167,6 +167,7 @@ const Index = () => {
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
+  const [archiveTargetChat, setArchiveTargetChat] = useState<{ id: string; title: string } | null>(null);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
   const [selectedChatbot, setSelectedChatbot] = useState<Chatbot | ChatbotService | null>(null);
   const [chatbots, setChatbots] = useState<Chatbot[]>(() => {
@@ -569,13 +570,18 @@ const Index = () => {
           {/* Archive Group Select Sheet */}
           <ArchiveGroupSelectSheet
             open={showArchiveGroupSelect}
-            onClose={() => setShowArchiveGroupSelect(false)}
-            onSelect={(groupId) => {
-              handleArchive(currentChatId || undefined, groupId);
-              toast.success("아카이브에 저장되었습니다");
-              handleBack();
+            onClose={() => {
+              setShowArchiveGroupSelect(false);
+              setArchiveTargetChat(null);
             }}
-            chatTitle={chatTitle}
+            onSelect={(groupId) => {
+              const targetId = archiveTargetChat?.id || currentChatId || undefined;
+              handleArchive(targetId, groupId);
+              toast.success("아카이브에 저장되었습니다");
+              setArchiveTargetChat(null);
+              if (!archiveTargetChat) handleBack();
+            }}
+            chatTitle={archiveTargetChat?.title || chatTitle}
           />
 
           {/* Mobile Header - Only show in chat mode for back navigation */}
@@ -650,6 +656,11 @@ const Index = () => {
             onShareChat={handleShareChat}
             onPinChat={handlePin}
             onDeleteChat={handleDelete}
+            onArchiveChat={(chatId, chatTitleStr) => {
+              setArchiveTargetChat({ id: chatId, title: chatTitleStr });
+              setShowHistorySheet(false);
+              setShowArchiveGroupSelect(true);
+            }}
           />
 
           {/* Mobile Chatbots Sheet */}
