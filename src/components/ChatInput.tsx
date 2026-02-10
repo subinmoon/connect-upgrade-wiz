@@ -42,7 +42,7 @@ const lengthOptions = [
 ];
 
 interface ChatInputProps {
-  onSendMessage?: (message: string) => void;
+  onSendMessage?: (message: string, workItemLabel?: string) => void;
   disabled?: boolean;
   initialMessage?: string;
   onMessageChange?: (message: string) => void;
@@ -257,8 +257,9 @@ const ChatInput = ({
                     if (e.key === 'Enter' && !e.shiftKey) {
                       e.preventDefault();
                       if (message.trim() && onSendMessage) {
-                        onSendMessage(message.trim());
+                        onSendMessage(message.trim(), selectedWorkItem?.label);
                         setMessage("");
+                        setSelectedWorkItem(null);
                       }
                     }
                   }}
@@ -478,10 +479,7 @@ const ChatInput = ({
           disabled={!message.trim() || disabled}
           onClick={() => {
             if (message.trim() && onSendMessage) {
-              const finalMessage = selectedWorkItem 
-                ? `[${selectedWorkItem.label}] ${message.trim()}`
-                : message.trim();
-              onSendMessage(finalMessage);
+              onSendMessage(message.trim(), selectedWorkItem?.label);
               setMessage("");
               setSelectedWorkItem(null);
             }

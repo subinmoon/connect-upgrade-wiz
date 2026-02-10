@@ -9,6 +9,7 @@ interface Message {
   timestamp: Date;
   sources?: Source[];
   searchMode?: string;
+  workItemLabel?: string;
 }
 
 interface SelectedChatbot {
@@ -19,7 +20,7 @@ interface SelectedChatbot {
 
 interface ChatViewProps {
   messages: Message[];
-  onSendMessage: (message: string) => void;
+  onSendMessage: (message: string, workItemLabel?: string) => void;
   isLoading?: boolean;
   onRegenerate?: () => void;
   toneStyle?: string;
@@ -145,6 +146,7 @@ const ChatView = ({
             onRegenerate={onRegenerate}
             sources={message.sources}
             searchMode={message.searchMode}
+            workItemLabel={message.workItemLabel}
           />
         ))}
         {isLoading && (

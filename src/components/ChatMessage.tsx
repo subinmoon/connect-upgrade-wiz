@@ -21,6 +21,7 @@ interface ChatMessageProps {
   isLastAssistant?: boolean;
   sources?: Source[];
   searchMode?: string;
+  workItemLabel?: string;
 }
 
 const getSearchModeLabel = (mode?: string) => {
@@ -35,7 +36,7 @@ const getSearchModeLabel = (mode?: string) => {
   }
 };
 
-const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources, searchMode }: ChatMessageProps) => {
+const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources, searchMode, workItemLabel }: ChatMessageProps) => {
   const isUser = role === "user";
   const [copied, setCopied] = useState(false);
   const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
@@ -68,13 +69,21 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         </div>
       )}
       <div className="flex flex-col max-w-[80%]">
-        {/* Search mode tag */}
-        {searchMode && (
-          <div className={cn("flex mb-1.5", isUser ? "justify-end" : "justify-start")}>
-            <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
-              <span>{modeInfo.icon}</span>
-              <span>{modeInfo.label}</span>
-            </span>
+        {/* Tags: search mode + work item */}
+        {(searchMode || workItemLabel) && (
+          <div className={cn("flex gap-1.5 mb-1.5 flex-wrap", isUser ? "justify-end" : "justify-start")}>
+            {searchMode && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
+                <span>{modeInfo.icon}</span>
+                <span>{modeInfo.label}</span>
+              </span>
+            )}
+            {workItemLabel && (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
+                <span>📌</span>
+                <span>{workItemLabel}</span>
+              </span>
+            )}
           </div>
         )}
         
