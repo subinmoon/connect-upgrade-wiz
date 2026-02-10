@@ -130,50 +130,46 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
                 onSelectChat(result.chatId);
                 onClose();
               }}
-              className="w-full flex items-start gap-3 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left border border-border"
+              className="w-full flex flex-col gap-1.5 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left border border-border"
             >
-              {/* Type badge */}
-              <span
-                className={`shrink-0 mt-0.5 text-xs font-medium px-2.5 py-1 rounded-md ${
-                  result.type === "content"
-                    ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400"
-                    : "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400"
-                }`}
-              >
-                {result.type === "content" ? "내용" : "제목"}
-              </span>
+              {/* First line: tags + date */}
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={`shrink-0 text-xs font-medium px-2.5 py-0.5 rounded-md ${
+                    result.type === "content"
+                      ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400"
+                      : "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400"
+                  }`}
+                >
+                  {result.type === "content" ? "내용" : "제목"}
+                </span>
 
-              {/* Text */}
-              <div className="flex-1 min-w-0">
-                <p className="text-sm text-foreground truncate">
-                  <HighlightedText text={result.text} query={query} />
-                </p>
+                {result.type === "content" && result.searchMode && (
+                  <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30">
+                    {searchModeLabel[result.searchMode] || result.searchMode}
+                  </span>
+                )}
+                {result.type === "title" && (
+                  <span
+                    className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${
+                      result.isChatbot
+                        ? "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400"
+                        : "bg-muted text-muted-foreground"
+                    }`}
+                  >
+                    {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "일반 채팅"}
+                  </span>
+                )}
 
-                {/* Sub-tags */}
-                <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
-                  {result.type === "content" && result.searchMode && (
-                    <span className="text-[11px] font-medium px-2 py-0.5 rounded-full bg-primary/10 text-primary border border-primary/30">
-                      {searchModeLabel[result.searchMode] || result.searchMode}
-                    </span>
-                  )}
-                  {result.type === "title" && (
-                    <span
-                      className={`text-[11px] font-medium px-2 py-0.5 rounded-full ${
-                        result.isChatbot
-                          ? "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400"
-                          : "bg-muted text-muted-foreground"
-                      }`}
-                    >
-                      {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "일반 채팅"}
-                    </span>
-                  )}
-                </div>
+                <span className="text-[11px] text-muted-foreground ml-auto shrink-0">
+                  {format(result.date, "yyyy.MM.dd")}
+                </span>
               </div>
 
-              {/* Date */}
-              <span className="text-[11px] text-muted-foreground shrink-0 mt-0.5">
-                {format(result.date, "yyyy.MM.dd")}
-              </span>
+              {/* Second line: text */}
+              <p className="text-sm text-foreground truncate pl-0.5">
+                <HighlightedText text={result.text} query={query} />
+              </p>
             </button>
           ))}
         </div>
