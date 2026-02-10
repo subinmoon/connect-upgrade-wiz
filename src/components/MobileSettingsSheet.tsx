@@ -20,7 +20,7 @@ interface MobileSettingsSheetProps {
 }
 
 const searchModeOptions = [
-  { id: "general", label: "일반", emoji: "🌐" },
+  { id: "general", label: "기본 모델", emoji: "🌐" },
   { id: "web", label: "웹 검색", emoji: "🔍" },
   { id: "internal", label: "사내 규칙", emoji: "🏢" },
 ];
