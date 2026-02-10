@@ -41,7 +41,7 @@ const MobileMainContent = ({
         />
 
         {/* HR Helper Card */}
-        <div className="px-4 pt-3 pb-3">
+        <div className="px-4 pt-1 pb-3">
           <HRHelper />
         </div>
       </div>
