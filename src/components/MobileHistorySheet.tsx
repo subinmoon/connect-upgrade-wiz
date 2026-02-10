@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot } from "lucide-react";
+import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -36,6 +36,13 @@ const MobileHistorySheet = ({
   onDeleteChat,
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+
+  const toggleGroup = (name: string) => {
+    setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
+  };
+
+  const isGroupOpen = (name: string) => openGroups[name] !== false; // default open
 
   const displayHistory = chatHistory.filter((c) => !c.archived);
 
@@ -142,12 +149,16 @@ const MobileHistorySheet = ({
                 <div className="space-y-3">
                   {Object.entries(groups).map(([botName, group]) => (
                     <div key={botName}>
-                      <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground">
+                      <button
+                        onClick={() => toggleGroup(botName)}
+                        className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground w-full"
+                      >
+                        {isGroupOpen(botName) ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                         <span className="text-base">{group.icon}</span>
                         {botName}
                         <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
-                      </div>
-                      <div className="space-y-1 ml-1">
+                      </button>
+                      {isGroupOpen(botName) && <div className="space-y-1 ml-1">
                         {[...group.chats].sort((a, b) => {
                           if (a.pinned && !b.pinned) return -1;
                           if (!a.pinned && b.pinned) return 1;
@@ -185,7 +196,7 @@ const MobileHistorySheet = ({
                             </DropdownMenu>
                           </div>
                         ))}
-                      </div>
+                      </div>}
                     </div>
                   ))}
                 </div>
@@ -245,12 +256,16 @@ const MobileHistorySheet = ({
               {/* Chatbot groups (shown in "all" filter) */}
               {activeFilter === "all" && Object.entries(chatbotGroups).map(([botName, group]) => (
                 <div key={botName}>
-                  <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground">
+                  <button
+                    onClick={() => toggleGroup(botName)}
+                    className="flex items-center gap-2 px-2 py-1.5 text-sm font-semibold text-foreground w-full"
+                  >
+                    {isGroupOpen(botName) ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                     <span className="text-base">{group.icon}</span>
                     {botName}
                     <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
-                  </div>
-                  <div className="space-y-1 ml-1">
+                  </button>
+                  {isGroupOpen(botName) && <div className="space-y-1 ml-1">
                     {[...group.chats].sort((a, b) => {
                       if (a.pinned && !b.pinned) return -1;
                       if (!a.pinned && b.pinned) return 1;
@@ -288,7 +303,7 @@ const MobileHistorySheet = ({
                         </DropdownMenu>
                       </div>
                     ))}
-                  </div>
+                  </div>}
                 </div>
               ))}
             </div>
