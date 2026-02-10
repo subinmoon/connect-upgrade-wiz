@@ -329,7 +329,7 @@ const Sidebar = ({
                       >
                         <span className="text-sm shrink-0">{group.icon}</span>
                         <span className="truncate font-medium">{botName}</span>
-                        <span className="text-xs text-primary-foreground bg-primary/70 rounded-full w-5 h-5 flex items-center justify-center font-medium ml-auto mr-1">{sortedChats.length}</span>
+                        <span className="text-xs text-primary bg-primary/15 rounded-full w-5 h-5 flex items-center justify-center font-medium ml-auto mr-1">{sortedChats.length}</span>
                         {isGroupOpen ? <ChevronDown className="w-3 h-3 shrink-0" /> : <ChevronRight className="w-3 h-3 shrink-0" />}
                       </button>
                       {isGroupOpen && (
