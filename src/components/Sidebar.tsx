@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import ChatSearchModal from "./ChatSearchModal";
 import { 
   MessageSquarePlus, 
   Search, 
@@ -82,6 +83,7 @@ const Sidebar = ({
 }: SidebarProps) => {
   const navigate = useNavigate();
   const [historyOpen, setHistoryOpen] = useState(true);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [myChatbotOpen, setMyChatbotOpen] = useState(true);
   const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -172,6 +174,7 @@ const Sidebar = ({
   };
 
   return (
+    <>
     <aside 
       data-guide="sidebar"
       className={`${
@@ -207,7 +210,10 @@ const Sidebar = ({
           </button>
 
           {/* Search */}
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-xl transition-colors">
+          <button 
+            onClick={() => setSearchOpen(true)}
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-xl transition-colors"
+          >
             <Search className="w-4 h-4" />
             채팅 검색
           </button>
@@ -480,6 +486,17 @@ const Sidebar = ({
         </div>
       </div>
     </aside>
+
+    <ChatSearchModal
+      open={searchOpen}
+      onClose={() => setSearchOpen(false)}
+      chatHistory={chatHistory}
+      onSelectChat={(chatId) => {
+        onSelectChat?.(chatId);
+        setSearchOpen(false);
+      }}
+    />
+    </>
   );
 };
 
