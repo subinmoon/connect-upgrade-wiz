@@ -343,7 +343,8 @@ const Index = () => {
         content: responseContent,
         timestamp: new Date(),
         sources: demoSources,
-        searchMode: currentSearchMode
+        searchMode: currentSearchMode,
+        workItemLabel,
       };
       const updatedMessages = [...newMessages, assistantMessage];
       setMessages(updatedMessages);
