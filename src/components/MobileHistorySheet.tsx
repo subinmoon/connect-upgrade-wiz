@@ -156,7 +156,7 @@ const MobileHistorySheet = ({
                         {isGroupOpen(botName) ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                         <span className="text-base">{group.icon}</span>
                         {botName}
-                        <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
+                        <span className="text-xs text-primary-foreground bg-primary/70 rounded-full w-5 h-5 flex items-center justify-center font-medium">{group.chats.length}</span>
                       </button>
                       {isGroupOpen(botName) && <div className="space-y-1 ml-1">
                         {[...group.chats].sort((a, b) => {
@@ -263,7 +263,7 @@ const MobileHistorySheet = ({
                     {isGroupOpen(botName) ? <ChevronDown className="w-4 h-4 text-muted-foreground" /> : <ChevronRight className="w-4 h-4 text-muted-foreground" />}
                     <span className="text-base">{group.icon}</span>
                     {botName}
-                    <span className="text-xs text-muted-foreground font-normal">({group.chats.length})</span>
+                    <span className="text-xs text-primary-foreground bg-primary/70 rounded-full w-5 h-5 flex items-center justify-center font-medium">{group.chats.length}</span>
                   </button>
                   {isGroupOpen(botName) && <div className="space-y-1 ml-1">
                     {[...group.chats].sort((a, b) => {
