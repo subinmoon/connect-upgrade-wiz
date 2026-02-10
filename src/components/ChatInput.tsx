@@ -17,7 +17,7 @@ import { allWorkItems } from "@/components/WorkItemSettingsModal";
 import { cn } from "@/lib/utils";
 
 const searchModeOptions = [
-  { id: "general", label: "일반", emoji: "🌐" },
+  { id: "general", label: "일반 검색", emoji: "🌐" },
   { id: "web", label: "웹 검색", emoji: "🔍" },
   { id: "internal", label: "사내 규칙", emoji: "🏢" },
 ];
