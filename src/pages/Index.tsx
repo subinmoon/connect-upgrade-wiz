@@ -823,30 +823,32 @@ const Index = () => {
                   selectedChatbot={selectedChatbot}
                 />
               ) : (
-                <div className="flex flex-col h-full justify-center">
-                  <div className="shrink-0 mb-4">
-                    <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
-                  </div>
-                  
-                  {/* Main Content Grid - 2 columns, matched height */}
-                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
-                    <div ref={leftColumnRef} className="flex flex-col gap-3">
-                      <div data-guide="work-life-helper" className="flex-1">
-                        <HRHelper />
-                      </div>
-                      <div data-guide="popular-questions">
-                        <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
-                          setPrefillMessage(question);
-                        }} />
-                      </div>
+                <div className="flex flex-col h-full">
+                  <div className="flex-1 flex flex-col justify-center min-h-0 overflow-y-auto">
+                    <div className="shrink-0 mb-4">
+                      <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
                     </div>
                     
-                    {/* Right column - TodayContextCard */}
-                    <div style={rightColumnStyle}>
-                      <TodayContextCard 
-                        onGetHelp={prompt => setPrefillMessage(prompt)} 
-                        onNewsChat={prompt => setPrefillMessage(prompt)} 
-                      />
+                    {/* Main Content Grid - 2 columns, matched height */}
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 shrink-0">
+                      <div ref={leftColumnRef} className="flex flex-col gap-3">
+                        <div data-guide="work-life-helper" className="flex-1">
+                          <HRHelper />
+                        </div>
+                        <div data-guide="popular-questions">
+                          <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
+                            setPrefillMessage(question);
+                          }} />
+                        </div>
+                      </div>
+                      
+                      {/* Right column - TodayContextCard */}
+                      <div style={rightColumnStyle}>
+                        <TodayContextCard 
+                          onGetHelp={prompt => setPrefillMessage(prompt)} 
+                          onNewsChat={prompt => setPrefillMessage(prompt)} 
+                        />
+                      </div>
                     </div>
                   </div>
                   
