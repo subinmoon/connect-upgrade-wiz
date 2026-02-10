@@ -126,11 +126,11 @@ const ChatView = ({
   return (
     <div className={isMobile ? "flex flex-col h-full" : "flex flex-col h-[calc(100vh-120px)] max-h-[calc(100vh-120px)]"}>
       {/* Chatbot Header - Always show at top when chatbot is selected */}
-      {selectedChatbot && (
-        <div className={`flex items-center gap-3 px-4 py-3 border-b border-border shrink-0 ${messages.length === 0 ? 'hidden' : ''}`}>
+      {selectedChatbot && messages.length > 0 && (
+        <div className="flex items-center gap-3 px-4 py-3 border-b border-border shrink-0">
           <span className="text-2xl">{selectedChatbot.icon}</span>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm font-bold text-foreground">{selectedChatbot.name}</h3>
+            <h3 className="text-sm font-semibold text-foreground">{selectedChatbot.name}</h3>
             <p className="text-xs text-muted-foreground truncate">{selectedChatbot.description}</p>
           </div>
           {onChatbotSettings && (
