@@ -107,6 +107,25 @@ const MobileHistorySheet = ({
           </SheetTitle>
         </SheetHeader>
 
+        {/* Search Bar */}
+        <div className="relative mb-3">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="대화 검색"
+            className="pl-9 pr-9 h-9 text-sm"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2"
+            >
+              <X className="w-3.5 h-3.5 text-muted-foreground" />
+            </button>
+          )}
+        </div>
+
         {/* Filter Pills */}
         <div className="flex gap-2 mb-3 overflow-x-auto no-scrollbar">
           {filters.map((filter) => (
@@ -330,26 +349,6 @@ const MobileHistorySheet = ({
           </div>
         )}
 
-        {/* Bottom Search Bar */}
-        <div className="pt-3 border-t border-border">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-            <Input
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="대화 검색"
-              className="pl-9 pr-9 h-9 text-sm"
-            />
-            {searchQuery && (
-              <button
-                onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
-              >
-                <X className="w-3.5 h-3.5 text-muted-foreground" />
-              </button>
-            )}
-          </div>
-        </div>
       </SheetContent>
     </Sheet>
   );
