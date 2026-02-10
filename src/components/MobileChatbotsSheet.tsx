@@ -291,34 +291,37 @@ const MobileChatbotsSheet = ({
             </div>
 
             {/* Filter Pills with Create Button */}
+            {/* Filter Pills with Create Button */}
             <div className="flex items-center gap-2 mb-3">
-              {filters.map((filter) => (
-                <button
-                  key={filter.key}
-                  onClick={() => setActiveFilter(filter.key)}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                    activeFilter === filter.key
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted hover:bg-muted/80 text-muted-foreground"
-                  }`}
-                >
-                  {filter.icon}
-                  {filter.label}
-                  {counts[filter.key] > 0 && (
-                    <span
-                      className={`text-xs px-1.5 py-0.5 rounded-full ${
-                        activeFilter === filter.key
-                          ? "bg-primary-foreground/20"
-                          : "bg-background"
-                      }`}
-                    >
-                      {counts[filter.key]}
-                    </span>
-                  )}
-                </button>
-              ))}
+              <div className="flex gap-2 overflow-x-auto no-scrollbar">
+                {filters.map((filter) => (
+                  <button
+                    key={filter.key}
+                    onClick={() => setActiveFilter(filter.key)}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap shrink-0 ${
+                      activeFilter === filter.key
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted hover:bg-muted/80 text-muted-foreground"
+                    }`}
+                  >
+                    {filter.icon}
+                    {filter.label}
+                    {counts[filter.key] > 0 && (
+                      <span
+                        className={`text-xs px-1.5 py-0.5 rounded-full ${
+                          activeFilter === filter.key
+                            ? "bg-primary-foreground/20"
+                            : "bg-background"
+                        }`}
+                      >
+                        {counts[filter.key]}
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
               <div className="flex-1" />
-              <Button size="sm" onClick={handleCreateClick} className="gap-1.5">
+              <Button size="sm" onClick={handleCreateClick} className="gap-1.5 shrink-0">
                 <Plus className="w-4 h-4" />
                 생성
               </Button>
