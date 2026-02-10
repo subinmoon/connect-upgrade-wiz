@@ -69,21 +69,20 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         </div>
       )}
       <div className="flex flex-col max-w-[80%]">
-        {/* Tags: search mode + work item */}
+        {/* Tags: search mode or work item (work item takes priority) */}
         {(searchMode || workItemLabel) && (
           <div className={cn("flex gap-1.5 mb-1.5 flex-wrap", isUser ? "justify-end" : "justify-start")}>
-            {searchMode && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
-                <span>{modeInfo.icon}</span>
-                <span>{modeInfo.label}</span>
-              </span>
-            )}
-            {workItemLabel && (
+            {workItemLabel ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
                 <span>📌</span>
                 <span>업무 바로가기</span>
               </span>
-            )}
+            ) : searchMode ? (
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
+                <span>{modeInfo.icon}</span>
+                <span>{modeInfo.label}</span>
+              </span>
+            ) : null}
           </div>
         )}
         
