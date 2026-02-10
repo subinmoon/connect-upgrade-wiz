@@ -166,7 +166,7 @@ const ChatView = ({
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className={`${selectedChatbot && messages.length === 0 ? 'hidden' : 'flex-1'} overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-4 pb-[calc(var(--mobile-input-height)+var(--mobile-bottom-nav-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pb-4'}`}>
+        className={`${selectedChatbot && messages.length === 0 ? 'hidden' : 'flex-1'} overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-6 pb-[calc(var(--mobile-input-height)+var(--mobile-bottom-nav-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pt-2 pb-4'}`}>
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
