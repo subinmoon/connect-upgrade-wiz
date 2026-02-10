@@ -7,7 +7,7 @@ interface MobileMainContentProps {
   userName?: string;
   chatHistory: ChatSession[];
   prefillMessage: string;
-  onSendMessage: (msg: string) => void;
+  onSendMessage: (msg: string, workItemLabel?: string) => void;
   onSelectAction: (template: string) => void;
   toneStyle?: string;
   answerLength?: string;
@@ -15,6 +15,7 @@ interface MobileMainContentProps {
   onToneChange?: (tone: string) => void;
   onLengthChange?: (length: string) => void;
   onSearchModeChange?: (mode: string) => void;
+  onClearPrefill?: () => void;
 }
 
 const MobileMainContent = ({
@@ -29,6 +30,7 @@ const MobileMainContent = ({
   onToneChange,
   onLengthChange,
   onSearchModeChange,
+  onClearPrefill,
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-var(--mobile-header-height))] pb-[calc(env(safe-area-inset-bottom,0px)+var(--mobile-bottom-nav-height)+var(--mobile-input-height))]">
@@ -42,7 +44,12 @@ const MobileMainContent = ({
 
         {/* HR Helper Card */}
         <div className="px-4 pt-1 pb-3">
-          <HRHelper />
+          <HRHelper onItemClick={(label) => {
+            const currentInput = prefillMessage.trim();
+            const msg = currentInput ? `[${label}] ${currentInput}` : `[${label}]`;
+            onSendMessage(msg, label);
+            onClearPrefill?.();
+          }} />
         </div>
       </div>
 

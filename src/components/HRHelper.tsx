@@ -2,7 +2,11 @@ import { useState, useEffect } from "react";
 import { MessageCircle, Star } from "lucide-react";
 import { WorkItemSettingsModal, allWorkItems } from "./WorkItemSettingsModal";
 
-const HRHelper = () => {
+interface HRHelperProps {
+  onItemClick?: (label: string) => void;
+}
+
+const HRHelper = ({ onItemClick }: HRHelperProps = {}) => {
   const [showSettings, setShowSettings] = useState(false);
   const [favoriteIds, setFavoriteIds] = useState<string[]>(() => {
     const saved = localStorage.getItem("workItemFavorites");
@@ -50,6 +54,7 @@ const HRHelper = () => {
           return (
             <button 
               key={item.id} 
+              onClick={() => onItemClick?.(item.label)}
               className="flex flex-col items-center gap-1 py-1.5 rounded-lg hover:bg-muted/60 transition-all group"
             >
               {/* Icon with favorite star overlay */}

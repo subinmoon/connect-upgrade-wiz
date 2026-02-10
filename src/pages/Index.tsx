@@ -606,11 +606,12 @@ const Index = () => {
                 userName={userSettings?.userName || "사용자"}
                 chatHistory={chatHistory}
                 prefillMessage={prefillMessage}
-                onSendMessage={(msg) => {
-                  handleSendMessage(msg);
+                onSendMessage={(msg, workItemLabel) => {
+                  handleSendMessage(msg, workItemLabel);
                   setPrefillMessage("");
                 }}
                 onSelectAction={(template) => setPrefillMessage(template)}
+                onClearPrefill={() => setPrefillMessage("")}
                 toneStyle={userSettings?.toneStyle}
                 answerLength={userSettings?.answerLength}
                 searchMode={userSettings?.searchMode}
@@ -867,7 +868,12 @@ const Index = () => {
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 shrink-0">
                       <div ref={leftColumnRef} className="flex flex-col gap-3">
                         <div data-guide="work-life-helper" className="flex-1">
-                          <HRHelper />
+                          <HRHelper onItemClick={(label) => {
+                            const currentInput = prefillMessage.trim();
+                            const msg = currentInput ? `[${label}] ${currentInput}` : `[${label}]`;
+                            handleSendMessage(msg, label);
+                            setPrefillMessage("");
+                          }} />
                         </div>
                         <div data-guide="popular-questions">
                           <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
