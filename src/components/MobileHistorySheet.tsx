@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
-import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight } from "lucide-react";
+import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search } from "lucide-react";
+import ChatSearchModal from "@/components/ChatSearchModal";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -37,6 +38,7 @@ const MobileHistorySheet = ({
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const toggleGroup = (name: string) => {
     setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
@@ -92,6 +94,12 @@ const MobileHistorySheet = ({
           <SheetTitle className="flex items-center gap-2">
             <History className="w-5 h-5 text-primary" />
             채팅 히스토리
+            <button
+              onClick={() => setSearchOpen(true)}
+              className="ml-auto p-2 hover:bg-muted rounded-lg transition-colors"
+            >
+              <Search className="w-4.5 h-4.5 text-muted-foreground" />
+            </button>
           </SheetTitle>
         </SheetHeader>
 
@@ -309,6 +317,16 @@ const MobileHistorySheet = ({
             </div>
           )}
         </div>
+
+        <ChatSearchModal
+          open={searchOpen}
+          onClose={() => setSearchOpen(false)}
+          chatHistory={chatHistory}
+          onSelectChat={(chatId) => {
+            setSearchOpen(false);
+            handleSelect(chatId);
+          }}
+        />
       </SheetContent>
     </Sheet>
   );
