@@ -1,6 +1,7 @@
 import { useMemo, useRef, useEffect, useState } from "react";
 import ChatMessage, { Source } from "@/components/ChatMessage";
 import ChatInput from "@/components/ChatInput";
+import { Settings } from "lucide-react";
 
 interface Message {
   id: string;
@@ -32,6 +33,7 @@ interface ChatViewProps {
   userName?: string;
   isMobile?: boolean;
   selectedChatbot?: SelectedChatbot | null;
+  onChatbotSettings?: () => void;
 }
 
 const suggestionsMap: Record<string, string[]> = {
@@ -72,6 +74,7 @@ const ChatView = ({
   userName,
   isMobile = false,
   selectedChatbot,
+  onChatbotSettings,
 }: ChatViewProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isNearBottom, setIsNearBottom] = useState(true);
@@ -122,12 +125,40 @@ const ChatView = ({
 
   return (
     <div className={isMobile ? "flex flex-col h-full" : "flex flex-col h-[calc(100vh-120px)] max-h-[calc(100vh-120px)]"}>
-      {/* Chatbot Header - Only show when a chatbot is selected and no messages yet */}
+      {/* Chatbot Header - Always show at top when chatbot is selected */}
+      {selectedChatbot && (
+        <div className={`flex items-center gap-3 px-4 py-3 border-b border-border shrink-0 ${messages.length === 0 ? 'hidden' : ''}`}>
+          <span className="text-2xl">{selectedChatbot.icon}</span>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-bold text-foreground">{selectedChatbot.name}</h3>
+            <p className="text-xs text-muted-foreground truncate">{selectedChatbot.description}</p>
+          </div>
+          {onChatbotSettings && (
+            <button
+              onClick={onChatbotSettings}
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
+            >
+              <Settings className="w-4 h-4 text-muted-foreground" />
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Chatbot Intro - Centered when no messages */}
       {selectedChatbot && messages.length === 0 && (
         <div className="flex flex-col items-center justify-center flex-1 px-4 pb-8">
           <span className="text-5xl mb-4">{selectedChatbot.icon}</span>
           <h2 className="text-xl font-bold text-foreground mb-2">{selectedChatbot.name}</h2>
           <p className="text-sm text-primary text-center max-w-md">{selectedChatbot.description}</p>
+          {onChatbotSettings && (
+            <button
+              onClick={onChatbotSettings}
+              className="mt-3 flex items-center gap-1.5 px-3 py-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
+            >
+              <Settings className="w-3.5 h-3.5" />
+              설정
+            </button>
+          )}
         </div>
       )}
       
