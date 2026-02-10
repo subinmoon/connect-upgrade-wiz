@@ -22,6 +22,7 @@ interface ChatMessageProps {
   sources?: Source[];
   searchMode?: string;
   workItemLabel?: string;
+  isChatbotMode?: boolean;
 }
 
 const getSearchModeLabel = (mode?: string) => {
@@ -36,7 +37,7 @@ const getSearchModeLabel = (mode?: string) => {
   }
 };
 
-const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources, searchMode, workItemLabel }: ChatMessageProps) => {
+const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, sources, searchMode, workItemLabel, isChatbotMode }: ChatMessageProps) => {
   const isUser = role === "user";
   const [copied, setCopied] = useState(false);
   const [feedback, setFeedback] = useState<"like" | "dislike" | null>(null);
@@ -69,8 +70,8 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         </div>
       )}
       <div className="flex flex-col max-w-[80%]">
-        {/* Tags: search mode or work item (work item takes priority) */}
-        {(searchMode || workItemLabel) && (
+        {/* Tags: search mode or work item (hidden in chatbot mode) */}
+        {!isChatbotMode && (searchMode || workItemLabel) && (
           <div className={cn("flex gap-1.5 mb-1.5 flex-wrap", isUser ? "justify-end" : "justify-start")}>
             {workItemLabel ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
