@@ -47,7 +47,7 @@ const HRHelper = ({ onItemClick }: HRHelperProps = {}) => {
         </h2>
         <button
           onClick={() => setShowSettings(true)}
-          className="p-1.5 rounded-lg hover:bg-muted transition-colors"
+          className="hidden lg:block p-1.5 rounded-lg hover:bg-muted transition-colors"
           title="업무 바로가기 설정"
         >
           <Settings className="w-4 h-4 text-muted-foreground" />
