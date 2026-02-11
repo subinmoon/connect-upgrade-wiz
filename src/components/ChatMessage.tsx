@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
 import logoIcon from "@/assets/logo-icon.png";
+import { allWorkItems } from "@/components/WorkItemSettingsModal";
 
 export interface Source {
   title: string;
@@ -73,12 +74,19 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         {/* Tags: search mode or work item (hidden in chatbot mode) */}
         {!isChatbotMode && (searchMode || workItemLabel) && (
           <div className={cn("flex gap-1.5 mb-1.5 flex-wrap", isUser ? "justify-end" : "justify-start")}>
-            {workItemLabel ? (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
-                <span>📌</span>
-                <span>{workItemLabel}</span>
-              </span>
-            ) : searchMode ? (
+            {workItemLabel ? (() => {
+              const workItem = allWorkItems.find(item => item.label === workItemLabel);
+              const WorkItemIcon = workItem?.icon;
+              return (
+                <span className={cn(
+                  "inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-medium border",
+                  workItem ? workItem.color + " border-current/30" : "bg-primary/10 text-primary border-primary/30"
+                )}>
+                  {WorkItemIcon ? <WorkItemIcon className="w-3 h-3" /> : <span>📌</span>}
+                  <span>{workItemLabel}</span>
+                </span>
+              );
+            })() : searchMode ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
                 <span>{modeInfo.icon}</span>
                 <span>{modeInfo.label}</span>
