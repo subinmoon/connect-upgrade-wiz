@@ -2,6 +2,7 @@ import { useMemo, useRef, useEffect, useState } from "react";
 import ChatMessage, { Source } from "@/components/ChatMessage";
 import ChatInput from "@/components/ChatInput";
 import { Settings } from "lucide-react";
+import logoIcon from "@/assets/logo-icon.png";
 
 interface Message {
   id: string;
@@ -181,20 +182,46 @@ const ChatView = ({
             isChatbotMode={!!selectedChatbot}
           />
         ))}
-        {isLoading && (
-          <div className="flex gap-3">
-            <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-              <div className="w-5 h-5 rounded-full bg-primary/40 animate-pulse" />
-            </div>
-            <div className="bg-muted rounded-2xl px-4 py-3">
-              <div className="flex gap-1">
-                <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-2 h-2 bg-muted-foreground/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+        {isLoading && (() => {
+          const lastUserMsg = [...messages].reverse().find(m => m.role === "user");
+          const currentMode = lastUserMsg?.searchMode || searchMode || "general";
+          const isThinking = currentMode !== "general";
+          return (
+            <div className="flex gap-3 items-start">
+              <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
+                <img src={logoIcon} alt="AI" className="w-5 h-5" />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                {isThinking ? (
+                  <div className="bg-card border border-border rounded-2xl px-4 py-3 shadow-soft">
+                    <div className="flex items-center gap-2">
+                      <div className="relative w-4 h-4">
+                        <div className="absolute inset-0 rounded-full border-2 border-primary/20" />
+                        <div className="absolute inset-0 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                      </div>
+                      <span className="text-sm text-muted-foreground font-medium">생각하는 중...</span>
+                    </div>
+                    <div className="mt-2 space-y-1.5">
+                      <div className="h-2 bg-muted rounded-full animate-pulse w-48" />
+                      <div className="h-2 bg-muted rounded-full animate-pulse w-32" style={{ animationDelay: "150ms" }} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-card border border-border rounded-2xl px-4 py-3 shadow-soft">
+                    <div className="flex items-center gap-2">
+                      <div className="flex gap-1">
+                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+                        <span className="w-2 h-2 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
+                      </div>
+                      <span className="text-sm text-muted-foreground font-medium">응답 생성 중...</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
 
       {/* Fixed bottom area for mobile: Suggestions + Input */}
