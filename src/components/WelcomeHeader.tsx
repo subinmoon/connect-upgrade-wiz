@@ -69,7 +69,7 @@ const greetingMessages = [
   "반갑습니다! ✨",
 ];
 
-const WelcomeHeader = ({ userName = "현민", onSelectAction }: WelcomeHeaderProps) => {
+const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderProps) => {
   const [greeting, setGreeting] = useState("");
 
   useEffect(() => {

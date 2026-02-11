@@ -187,7 +187,7 @@ const Sidebar = ({
           <div className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-              <span className="font-bold text-foreground">pear link</span>
+              <span className="font-bold text-foreground">AI PORTAL</span>
             </div>
             <button 
               onClick={onToggle}
