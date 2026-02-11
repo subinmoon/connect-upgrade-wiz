@@ -755,7 +755,7 @@ const Index = () => {
           {sidebarOpen && (
             <div className="flex items-center gap-2 shrink-0 px-4 py-2 w-64 bg-card">
               <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-              <span className="font-bold text-foreground">ISU GPT</span>
+              <span className="font-bold text-foreground">AI PORTAL</span>
               <button onClick={() => setSidebarOpen(false)} className="ml-auto p-1.5 hover:bg-muted rounded-lg transition-colors">
                 <PanelLeftClose className="w-4 h-4 text-muted-foreground" />
               </button>
@@ -837,10 +837,10 @@ const Index = () => {
             />
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
-                {userSettings?.assistantName?.[0] || "문"}
+                {userSettings?.assistantName?.[0] || "이"}
               </div>
               <span className="text-sm font-medium text-foreground hidden sm:block">
-                {userSettings?.assistantName || "문수빈"}
+                {userSettings?.assistantName || "이수 GPT"}
               </span>
             </div>
           </div>
