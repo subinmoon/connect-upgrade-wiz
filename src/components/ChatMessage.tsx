@@ -76,7 +76,7 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
             {workItemLabel ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
                 <span>📌</span>
-                <span>업무 바로가기</span>
+                <span>{workItemLabel}</span>
               </span>
             ) : searchMode ? (
               <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-medium bg-primary/10 text-primary border border-primary/30">
