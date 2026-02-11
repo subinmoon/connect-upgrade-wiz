@@ -893,12 +893,12 @@ const Index = () => {
               ) : (
                 <div className="flex flex-col h-full">
                   {/* Fixed top: Welcome + Quick Actions */}
-                  <div className="shrink-0 mb-4">
+                  <div className="shrink-0 mb-6">
                     <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
                   </div>
 
                   {/* Scrollable: Grid content */}
-                  <div className="flex-1 min-h-0 overflow-y-auto">
+                  <div className="flex-1 min-h-0 overflow-y-auto pt-2">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                       <div ref={leftColumnRef} className="flex flex-col gap-3">
                         <div data-guide="work-life-helper" className="flex-1">
