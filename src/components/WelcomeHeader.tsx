@@ -94,7 +94,7 @@ const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderPro
       </div>
 
       {/* Quick Actions */}
-      <div className="flex flex-wrap gap-2" data-guide="quick-actions">
+      <div className="flex gap-2 overflow-x-auto scrollbar-hide" data-guide="quick-actions">
         {actions.map((action) => (
           <button
             key={action.id}
