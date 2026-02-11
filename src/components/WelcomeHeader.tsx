@@ -93,8 +93,8 @@ const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderPro
         </h1>
       </div>
 
-      {/* Quick Actions */}
-      <div className="flex gap-2" data-guide="quick-actions">
+      {/* Quick Actions - Full labels */}
+      <div className="hidden md:flex gap-2" data-guide="quick-actions">
         {actions.map((action) => (
           <button
             key={action.id}
@@ -106,6 +106,24 @@ const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderPro
             </div>
             <span className="text-sm font-medium text-foreground whitespace-nowrap">
               {action.label}
+            </span>
+          </button>
+        ))}
+      </div>
+
+      {/* Quick Actions - Compact (icon + short label) */}
+      <div className="flex md:hidden gap-1.5" data-guide="quick-actions">
+        {actions.map((action) => (
+          <button
+            key={action.id}
+            onClick={() => handleActionClick(action)}
+            className="flex-1 bg-card border border-border rounded-full py-1.5 px-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
+          >
+            <div className={`${action.iconColor}`}>
+              {action.icon}
+            </div>
+            <span className="text-[10px] font-medium text-foreground whitespace-nowrap">
+              {action.label.length > 3 ? action.label.slice(0, 3) : action.label}
             </span>
           </button>
         ))}
