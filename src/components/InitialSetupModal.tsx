@@ -278,7 +278,7 @@ export function InitialSetupModal({ open, onComplete }: InitialSetupModalProps) 
               
               {step === 3 ? (
                 <div className="space-y-2 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-300" style={{ animationDelay: "200ms" }}>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-3 gap-2">
                     {topicOptions.map((topic, idx) => (
                       <button
                         key={topic.id}
