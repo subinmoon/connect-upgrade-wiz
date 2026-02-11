@@ -397,7 +397,7 @@ const ChatbotsPage = () => {
         {sidebarOpen && (
           <div className="flex items-center gap-2 shrink-0 px-4 py-2 w-64 bg-card">
             <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-            <span className="font-bold text-foreground">ISU GPT</span>
+            <span className="font-bold text-foreground">AI PORTAL</span>
             <button
               onClick={() => setSidebarOpen(false)}
               className="ml-auto p-1.5 hover:bg-muted rounded-lg transition-colors"
