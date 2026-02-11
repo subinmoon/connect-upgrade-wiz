@@ -239,3 +239,40 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* Custom purple translucent scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(262, 60%, 55%, 0.25);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsla(262, 60%, 55%, 0.4);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsla(262, 60%, 60%, 0.3);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsla(262, 60%, 60%, 0.5);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsla(262, 60%, 55%, 0.25) transparent;
+}
+
+.dark * {
+  scrollbar-color: hsla(262, 60%, 60%, 0.3) transparent;
+}

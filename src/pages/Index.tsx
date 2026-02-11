@@ -892,7 +892,8 @@ const Index = () => {
                 />
               ) : (
                 <div className="flex flex-col h-full">
-                  <div className="flex-1 flex flex-col justify-center min-h-0 overflow-y-auto">
+                  <div className="flex-1 min-h-0 overflow-y-auto">
+                    <div className="flex flex-col justify-center min-h-full">
                     <div className="shrink-0 mb-4">
                       <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
                     </div>
@@ -922,6 +923,7 @@ const Index = () => {
                           onNewsChat={prompt => setPrefillMessage(prompt)} 
                         />
                       </div>
+                    </div>
                     </div>
                   </div>
                   
