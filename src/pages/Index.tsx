@@ -840,7 +840,7 @@ const Index = () => {
                 {userSettings?.assistantName?.[0] || "이"}
               </div>
               <span className="text-sm font-medium text-foreground hidden sm:block">
-                {userSettings?.assistantName || "이수 GPT"}
+                {userSettings?.assistantName || "이수"}
               </span>
             </div>
           </div>
