@@ -173,12 +173,12 @@ export function InitialSetupModal({ open, onComplete }: InitialSetupModalProps) 
 
   return (
     <Dialog open={open}>
-      <DialogContent className="sm:max-w-[440px] max-h-[85vh] overflow-hidden p-0 border-none bg-background" aria-describedby={undefined}>
+      <DialogContent className="sm:max-w-[440px] max-h-[85vh] overflow-hidden p-0 border-none bg-background flex flex-col" aria-describedby={undefined}>
         <VisuallyHidden>
           <DialogTitle>초기 설정</DialogTitle>
         </VisuallyHidden>
         {/* Header with warm welcome */}
-        <div className="relative bg-gradient-to-r from-primary via-primary/90 to-primary/70 px-5 py-5 text-center overflow-hidden">
+        <div className="relative bg-gradient-to-r from-primary via-primary/90 to-primary/70 px-5 py-5 text-center overflow-hidden shrink-0">
           {/* Sparkle decorations */}
           <div className="absolute top-2 left-4 animate-pulse">
             <Sparkles className="w-4 h-4 text-primary-foreground/60" />
@@ -218,7 +218,7 @@ export function InitialSetupModal({ open, onComplete }: InitialSetupModalProps) 
         </div>
 
         {/* Chat area */}
-        <div className="px-5 py-4 space-y-4 min-h-[280px] max-h-[350px] overflow-y-auto">
+        <div className="px-5 py-4 space-y-4 flex-1 min-h-0 overflow-y-auto">
           {/* Step 1: User Name */}
           <AssistantMessage>
             반가워요! 👋 저는 <strong>이수 GPT</strong>예요~
@@ -445,7 +445,7 @@ export function InitialSetupModal({ open, onComplete }: InitialSetupModalProps) 
         </div>
 
         {/* Bottom action */}
-        <div className="px-5 py-4 border-t border-border bg-card">
+        <div className="px-5 py-4 border-t border-border bg-card shrink-0">
           {step < 6 ? (
             <Button
               onClick={nextStep}
