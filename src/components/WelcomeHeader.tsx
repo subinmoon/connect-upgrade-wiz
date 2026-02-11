@@ -93,37 +93,37 @@ const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderPro
         </h1>
       </div>
 
-      {/* Quick Actions - Full labels */}
-      <div className="hidden md:flex gap-2" data-guide="quick-actions">
+      {/* Quick Actions - Full labels (wide screens) */}
+      <div className="hidden lg:flex gap-2" data-guide="quick-actions">
         {actions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleActionClick(action)}
-            className="flex-1 bg-card border border-border rounded-full py-2 px-4 flex items-center justify-center gap-2 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
+            className="flex-1 min-w-0 bg-card border border-border rounded-full py-2 px-3 flex items-center justify-center gap-1.5 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
           >
-            <div className={`${action.iconColor}`}>
+            <div className={`shrink-0 ${action.iconColor}`}>
               {action.icon}
             </div>
-            <span className="text-sm font-medium text-foreground whitespace-nowrap">
+            <span className="text-sm font-medium text-foreground truncate">
               {action.label}
             </span>
           </button>
         ))}
       </div>
 
-      {/* Quick Actions - Compact (icon + short label) */}
-      <div className="flex md:hidden gap-1.5" data-guide="quick-actions">
+      {/* Quick Actions - Compact (narrow screens) */}
+      <div className="flex lg:hidden gap-1.5" data-guide="quick-actions">
         {actions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleActionClick(action)}
-            className="flex-1 bg-card border border-border rounded-full py-1.5 px-2 flex flex-col items-center justify-center gap-0.5 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
+            className="flex-1 min-w-0 bg-card border border-border rounded-xl py-2 px-1.5 flex flex-col items-center justify-center gap-1 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
           >
             <div className={`${action.iconColor}`}>
               {action.icon}
             </div>
-            <span className="text-[10px] font-medium text-foreground whitespace-nowrap">
-              {action.label.length > 3 ? action.label.slice(0, 3) : action.label}
+            <span className="text-[10px] font-medium text-foreground truncate max-w-full">
+              {action.label}
             </span>
           </button>
         ))}
