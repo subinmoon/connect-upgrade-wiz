@@ -259,7 +259,6 @@ const ChatInput = ({
                       if (message.trim() && onSendMessage) {
                         onSendMessage(message.trim(), selectedWorkItem?.label);
                         setMessage("");
-                        setSelectedWorkItem(null);
                       }
                     }
                   }}
@@ -481,7 +480,6 @@ const ChatInput = ({
             if (message.trim() && onSendMessage) {
               onSendMessage(message.trim(), selectedWorkItem?.label);
               setMessage("");
-              setSelectedWorkItem(null);
             }
           }}
         >
