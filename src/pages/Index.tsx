@@ -892,14 +892,14 @@ const Index = () => {
                 />
               ) : (
                 <div className="flex flex-col h-full">
+                  {/* Fixed top: Welcome + Quick Actions */}
+                  <div className="shrink-0 mb-4">
+                    <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
+                  </div>
+
+                  {/* Scrollable: Grid content */}
                   <div className="flex-1 min-h-0 overflow-y-auto">
-                    <div className="flex flex-col justify-center min-h-full">
-                    <div className="shrink-0 mb-4">
-                      <WelcomeHeader userName={userSettings?.userName || "사용자"} onSelectAction={template => setPrefillMessage(template)} />
-                    </div>
-                    
-                    {/* Main Content Grid - 2 columns, matched height */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4 shrink-0">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                       <div ref={leftColumnRef} className="flex flex-col gap-3">
                         <div data-guide="work-life-helper" className="flex-1">
                           <HRHelper onItemClick={(label) => {
@@ -923,7 +923,6 @@ const Index = () => {
                           onNewsChat={prompt => setPrefillMessage(prompt)} 
                         />
                       </div>
-                    </div>
                     </div>
                   </div>
                   
