@@ -94,12 +94,12 @@ const WelcomeHeader = ({ userName = "이수", onSelectAction }: WelcomeHeaderPro
       </div>
 
       {/* Quick Actions */}
-      <div className="flex gap-2 overflow-x-auto scrollbar-hide" data-guide="quick-actions">
+      <div className="flex gap-2" data-guide="quick-actions">
         {actions.map((action) => (
           <button
             key={action.id}
             onClick={() => handleActionClick(action)}
-            className="bg-card border border-border rounded-full py-2 px-4 flex items-center justify-center gap-2 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
+            className="flex-1 bg-card border border-border rounded-full py-2 px-4 flex items-center justify-center gap-2 transition-all duration-200 hover:shadow-soft hover:bg-muted/50 active:scale-[0.98]"
           >
             <div className={`${action.iconColor}`}>
               {action.icon}
