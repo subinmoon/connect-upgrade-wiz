@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { History, Pin, MoreHorizontal, Share2, Trash2, MessageCircle, Bot, ChevronDown, ChevronRight, Search, X, FolderArchive } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -27,8 +27,6 @@ interface MobileHistorySheetProps {
   onArchiveChat?: (chatId: string, chatTitle: string) => void;
 }
 
-const LONG_PRESS_DURATION = 500;
-
 const MobileHistorySheet = ({
   open,
   onClose,
@@ -43,48 +41,26 @@ const MobileHistorySheet = ({
 }: MobileHistorySheetProps) => {
   const [activeFilter, setActiveFilter] = useState<HistoryFilter>("all");
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
+  
   const [searchQuery, setSearchQuery] = useState("");
-  const [longPressMenuChatId, setLongPressMenuChatId] = useState<string | null>(null);
-  const longPressTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const longPressTriggered = useRef(false);
 
   const toggleGroup = (name: string) => {
     setOpenGroups(prev => ({ ...prev, [name]: !prev[name] }));
   };
 
-  const isGroupOpen = (name: string) => openGroups[name] !== false;
-
-  const handleTouchStart = useCallback((chatId: string) => {
-    longPressTriggered.current = false;
-    longPressTimer.current = setTimeout(() => {
-      longPressTriggered.current = true;
-      setLongPressMenuChatId(chatId);
-    }, LONG_PRESS_DURATION);
-  }, []);
-
-  const handleTouchEnd = useCallback(() => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  }, []);
-
-  const handleTouchMove = useCallback(() => {
-    if (longPressTimer.current) {
-      clearTimeout(longPressTimer.current);
-      longPressTimer.current = null;
-    }
-  }, []);
+  const isGroupOpen = (name: string) => openGroups[name] !== false; // default open
 
   const q = searchQuery.trim().toLowerCase();
 
   const displayHistory = chatHistory.filter((c) => {
     if (c.archived) return false;
     if (!q) return true;
+    // Search in title and messages
     if (c.title.toLowerCase().includes(q)) return true;
     return c.messages.some((m) => m.content.toLowerCase().includes(q));
   });
 
+  // General (non-chatbot) chats
   const generalChats = displayHistory.filter((c) => !c.chatbotId);
   const chatbotChats = displayHistory.filter((c) => !!c.chatbotId);
 
@@ -94,6 +70,7 @@ const MobileHistorySheet = ({
     return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
   });
 
+  // Group chatbot chats by chatbot name
   const chatbotGroups = chatbotChats.reduce((acc, chat) => {
     const key = chat.chatbotInfo?.name || "알 수 없는 챗봇";
     if (!acc[key]) acc[key] = { icon: chat.chatbotInfo?.icon || "🤖", chats: [] };
@@ -101,8 +78,10 @@ const MobileHistorySheet = ({
     return acc;
   }, {} as Record<string, { icon: string; chats: ChatSession[] }>);
 
+  // For "all" and "general" filters, use sortedGeneral
   const sortedHistory = activeFilter === "chatbot" ? [] : sortedGeneral;
 
+  // Counts for filter badges
   const counts = {
     all: displayHistory.length,
     general: displayHistory.filter((c) => !c.chatbotId).length,
@@ -110,7 +89,6 @@ const MobileHistorySheet = ({
   };
 
   const handleSelect = (chatId: string) => {
-    if (longPressTriggered.current) return;
     onSelectChat(chatId);
     onClose();
   };
@@ -120,47 +98,6 @@ const MobileHistorySheet = ({
     { key: "general", label: "기본 모델", icon: <MessageCircle className="w-3.5 h-3.5" /> },
     { key: "chatbot", label: "챗봇", icon: <Bot className="w-3.5 h-3.5" /> },
   ];
-
-  const renderChatItem = (chat: ChatSession) => (
-    <DropdownMenu
-      key={chat.id}
-      open={longPressMenuChatId === chat.id}
-      onOpenChange={(isOpen) => {
-        if (!isOpen) setLongPressMenuChatId(null);
-      }}
-    >
-      <DropdownMenuTrigger asChild>
-        <div
-          className={cn(
-            "flex items-center gap-2 p-3 rounded-xl transition-colors select-none",
-            currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
-          )}
-          onTouchStart={() => handleTouchStart(chat.id)}
-          onTouchEnd={handleTouchEnd}
-          onTouchMove={handleTouchMove}
-          onClick={() => handleSelect(chat.id)}
-        >
-          <div className="flex-1 text-left min-w-0">
-            <div className="flex items-center gap-2">
-              {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
-              <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
-                {chat.title}
-              </span>
-            </div>
-            <p className="text-xs text-muted-foreground mt-0.5">
-              {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
-            </p>
-          </div>
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-36 bg-card">
-        <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
-        <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
 
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -224,6 +161,7 @@ const MobileHistorySheet = ({
 
         <div className="overflow-y-auto h-[calc(100%-100px)] -mx-6 px-6">
           {activeFilter === "chatbot" ? (
+            // Chatbot filter: group by chatbot name
             (() => {
               const chatbotChats = displayHistory.filter(c => !!c.chatbotId);
               if (chatbotChats.length === 0) {
@@ -258,7 +196,40 @@ const MobileHistorySheet = ({
                           if (a.pinned && !b.pinned) return -1;
                           if (!a.pinned && b.pinned) return 1;
                           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                        }).map(chat => renderChatItem(chat))}
+                        }).map(chat => (
+                          <div
+                            key={chat.id}
+                            className={cn(
+                              "flex items-center gap-2 p-3 rounded-xl transition-colors",
+                              currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
+                            )}
+                          >
+                            <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
+                              <div className="flex items-center gap-2">
+                                {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                                <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
+                                  {chat.title}
+                                </span>
+                              </div>
+                              <p className="text-xs text-muted-foreground mt-0.5">
+                                {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                              </p>
+                            </button>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
+                                  <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                                </button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end" className="w-36 bg-card">
+                                <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </div>
+                        ))}
                       </div>}
                     </div>
                   ))}
@@ -281,8 +252,43 @@ const MobileHistorySheet = ({
             </div>
           ) : (
             <div className="space-y-3">
-              {sortedHistory.map((chat) => renderChatItem(chat))}
+              {/* General chats */}
+              {sortedHistory.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={cn(
+                    "flex items-center gap-2 p-3 rounded-xl transition-colors",
+                    currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
+                  )}
+                >
+                  <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
+                    <div className="flex items-center gap-2">
+                      {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                      <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
+                        {chat.title}
+                      </span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                    </p>
+                  </button>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
+                        <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                      </button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="w-36 bg-card">
+                       <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
+                       <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
+              ))}
 
+              {/* Chatbot groups (shown in "all" filter) */}
               {activeFilter === "all" && Object.entries(chatbotGroups).map(([botName, group]) => (
                 <div key={botName}>
                   <button
@@ -299,7 +305,40 @@ const MobileHistorySheet = ({
                       if (a.pinned && !b.pinned) return -1;
                       if (!a.pinned && b.pinned) return 1;
                       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-                    }).map(chat => renderChatItem(chat))}
+                    }).map(chat => (
+                      <div
+                        key={chat.id}
+                        className={cn(
+                          "flex items-center gap-2 p-3 rounded-xl transition-colors",
+                          currentChatId === chat.id ? "bg-primary/10" : "hover:bg-muted/50 active:bg-muted"
+                        )}
+                      >
+                        <button onClick={() => handleSelect(chat.id)} className="flex-1 text-left min-w-0">
+                          <div className="flex items-center gap-2">
+                            {chat.pinned && <Pin className="w-3 h-3 text-primary shrink-0" />}
+                            <span className={cn("text-sm truncate", currentChatId === chat.id ? "text-primary font-medium" : "text-foreground")}>
+                              {chat.title}
+                            </span>
+                          </div>
+                          <p className="text-xs text-muted-foreground mt-0.5">
+                            {new Date(chat.createdAt).toLocaleDateString("ko-KR", { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
+                          </p>
+                        </button>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <button className="p-2 hover:bg-muted rounded-lg transition-colors shrink-0">
+                              <MoreHorizontal className="w-4 h-4 text-muted-foreground" />
+                            </button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end" className="w-36 bg-card">
+                             <DropdownMenuItem onClick={() => onShareChat(chat.id)}><Share2 className="w-4 h-4 mr-2" />공유</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onPinChat(chat.id)}><Pin className="w-4 h-4 mr-2" />{chat.pinned ? "고정 해제" : "고정"}</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onArchiveChat?.(chat.id, chat.title)}><FolderArchive className="w-4 h-4 mr-2" />아카이브</DropdownMenuItem>
+                             <DropdownMenuItem onClick={() => onDeleteChat(chat.id)} className="text-destructive focus:text-destructive"><Trash2 className="w-4 h-4 mr-2" />삭제</DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                    ))}
                   </div>}
                 </div>
               ))}
@@ -307,6 +346,7 @@ const MobileHistorySheet = ({
           )}
         </div>
 
+        {/* Search empty state */}
         {q && displayHistory.length === 0 && (
           <div className="flex flex-col items-center justify-center h-40 text-muted-foreground -mt-40">
             <Search className="w-10 h-10 mb-2 opacity-50" />
