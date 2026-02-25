@@ -14,6 +14,7 @@ interface ChatSearchModalProps {
 interface SearchResult {
   type: "content" | "title";
   chatId: string;
+  chatTitle: string;
   text: string;
   date: Date;
   searchMode?: string;
@@ -57,25 +58,16 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
     const items: SearchResult[] = [];
 
     chatHistory.forEach((chat) => {
-      // Title match
-      if (chat.title.toLowerCase().includes(q)) {
-        items.push({
-          type: "title",
-          chatId: chat.id,
-          text: chat.title,
-          date: chat.createdAt,
-          isChatbot: !!chat.chatbotId,
-          chatbotName: chat.chatbotInfo?.name,
-          chatbotIcon: chat.chatbotInfo?.icon,
-        });
-      }
+      const titleMatch = chat.title.toLowerCase().includes(q);
 
-      // Content match (user messages)
+      // Content matches
+      const contentMatches: SearchResult[] = [];
       chat.messages.forEach((msg) => {
         if (msg.content.toLowerCase().includes(q)) {
-          items.push({
+          contentMatches.push({
             type: "content",
             chatId: chat.id,
+            chatTitle: chat.title,
             text: msg.content,
             date: msg.timestamp instanceof Date ? msg.timestamp : new Date(msg.timestamp),
             searchMode: msg.searchMode,
@@ -85,6 +77,24 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
           });
         }
       });
+
+      if (contentMatches.length > 0) {
+        // Content match found — show content results (title is shown inside each card)
+        // If title also matches, we merge it into content results instead of duplicating
+        items.push(...contentMatches);
+      } else if (titleMatch) {
+        // Only title matched, no content match
+        items.push({
+          type: "title",
+          chatId: chat.id,
+          chatTitle: chat.title,
+          text: chat.title,
+          date: chat.createdAt,
+          isChatbot: !!chat.chatbotId,
+          chatbotName: chat.chatbotInfo?.name,
+          chatbotIcon: chat.chatbotInfo?.icon,
+        });
+      }
     });
 
     return items;
@@ -132,7 +142,13 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
               }}
               className="w-full flex flex-col gap-1.5 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left border border-border"
             >
-              {/* First line: tags + date */}
+              {/* Chat title */}
+              <p className="text-xs text-muted-foreground font-medium truncate">
+                {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "💬"}{" "}
+                {result.chatTitle}
+              </p>
+
+              {/* Tags + date */}
               <div className="flex items-center gap-1.5">
                 <span
                   className={`shrink-0 text-xs font-medium px-2.5 py-0.5 rounded-md ${
@@ -149,18 +165,13 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
                     {searchModeLabel[result.searchMode] || result.searchMode}
                   </span>
                 )}
-                {result.type === "title" && (
-                  <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1.5">
-                    {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "기본 모델 채팅"}
-                  </span>
-                )}
 
                 <span className="text-[11px] text-muted-foreground ml-auto shrink-0">
                   {format(result.date, "yyyy.MM.dd")}
                 </span>
               </div>
 
-              {/* Second line: text */}
+              {/* Matched text */}
               <p className="text-sm text-foreground truncate pl-0.5">
                 <HighlightedText text={result.text} query={query} />
               </p>
