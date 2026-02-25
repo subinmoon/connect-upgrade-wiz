@@ -142,16 +142,21 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
               }}
               className="w-full flex flex-col gap-1.5 p-3 rounded-xl hover:bg-muted/60 transition-colors text-left border border-border"
             >
-              {/* Chat title */}
-              <p className="text-xs text-muted-foreground font-medium truncate">
-                {result.isChatbot ? `${result.chatbotIcon || "🤖"} ${result.chatbotName}` : "💬"}{" "}
-                {result.chatTitle}
-              </p>
+              {/* Chat title - prominent */}
+              <div className="flex items-center justify-between gap-2">
+                <p className="text-[13px] font-semibold text-foreground truncate">
+                  {result.isChatbot && <span className="mr-1">{result.chatbotIcon || "🤖"}</span>}
+                  {result.chatTitle}
+                </p>
+                <span className="text-[11px] text-muted-foreground shrink-0">
+                  {format(result.date, "yyyy.MM.dd")}
+                </span>
+              </div>
 
-              {/* Tags + date */}
+              {/* Tags row */}
               <div className="flex items-center gap-1.5">
                 <span
-                  className={`shrink-0 text-xs font-medium px-2.5 py-0.5 rounded-md ${
+                  className={`shrink-0 text-[11px] font-medium px-2 py-0.5 rounded-md ${
                     result.type === "content"
                       ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400"
                       : "bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400"
@@ -160,19 +165,21 @@ const ChatSearchModal = ({ open, onClose, chatHistory, onSelectChat }: ChatSearc
                   {result.type === "content" ? "내용" : "제목"}
                 </span>
 
-                {result.type === "content" && result.searchMode && (
-                  <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1.5">
-                    {searchModeLabel[result.searchMode] || result.searchMode}
+                {result.isChatbot && result.chatbotName && (
+                  <span className="text-[11px] text-muted-foreground">
+                    {result.chatbotName}
                   </span>
                 )}
 
-                <span className="text-[11px] text-muted-foreground ml-auto shrink-0">
-                  {format(result.date, "yyyy.MM.dd")}
-                </span>
+                {result.type === "content" && result.searchMode && (
+                  <span className="text-[11px] text-muted-foreground before:content-['·'] before:mr-1">
+                    {searchModeLabel[result.searchMode] || result.searchMode}
+                  </span>
+                )}
               </div>
 
               {/* Matched text */}
-              <p className="text-sm text-foreground truncate pl-0.5">
+              <p className="text-[13px] text-muted-foreground truncate">
                 <HighlightedText text={result.text} query={query} />
               </p>
             </button>
