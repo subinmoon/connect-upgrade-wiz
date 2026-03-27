@@ -73,7 +73,7 @@ export default {
         },
       },
       boxShadow: {
-        'soft': '0 2px 15px -3px rgba(0, 0, 0, 0.07), 0 10px 20px -2px rgba(0, 0, 0, 0.04)',
+        'soft': '0 2px 20px -4px rgba(0, 0, 0, 0.1), 0 8px 24px -4px rgba(0, 0, 0, 0.06)',
         'card': '0 4px 20px -4px rgba(138, 99, 210, 0.12)',
       },
       borderRadius: {
