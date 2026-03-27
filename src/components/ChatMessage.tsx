@@ -98,10 +98,9 @@ const ChatMessage = ({ role, content, timestamp, onRegenerate, isLastAssistant, 
         <div className={cn("flex items-end gap-2", isUser && "flex-row-reverse")}>
           <div
             className={cn(
-              "rounded-2xl px-4 py-3",
               isUser
-                ? "bg-primary text-primary-foreground"
-                : "bg-card text-foreground border border-border shadow-soft"
+                ? "rounded-2xl px-4 py-3 bg-primary text-primary-foreground"
+                : "text-foreground"
             )}
           >
             <p className="text-body whitespace-pre-wrap">{content}</p>
