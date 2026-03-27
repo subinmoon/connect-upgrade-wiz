@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 240 20% 98%;
+    --background: 0 0% 100%;
     --foreground: 240 10% 15%;
 
     --card: 0 0% 100%;
@@ -47,7 +47,7 @@
     --peach: 25 90% 92%;
     --peach-dark: 25 80% 55%;
 
-    --sidebar-background: 0 0% 100%;
+    --sidebar-background: 240 20% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 262 60% 55%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -99,7 +99,7 @@
     --peach: 25 30% 20%;
     --peach-dark: 25 80% 70%;
 
-    --sidebar-background: 240 15% 10%;
+    --sidebar-background: 240 15% 13%;
     --sidebar-foreground: 240 5% 95%;
     --sidebar-primary: 262 60% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
