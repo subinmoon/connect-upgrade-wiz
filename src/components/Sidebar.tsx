@@ -179,7 +179,7 @@ const Sidebar = ({
       data-guide="sidebar"
       className={`${
         isOpen ? "w-64" : "w-0"
-      } bg-card flex flex-col transition-all duration-300 overflow-hidden shrink-0`}
+      } bg-sidebar flex flex-col transition-all duration-300 overflow-hidden shrink-0`}
     >
       <div className="min-w-64 flex flex-col h-full">
         {/* Header - conditionally rendered */}
