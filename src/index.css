@@ -58,7 +58,7 @@
   }
 
   .dark {
-    --background: 240 15% 13%;
+    --background: 240 15% 10%;
     --foreground: 0 0% 95%;
 
     --card: 240 15% 13%;
@@ -99,7 +99,7 @@
     --peach: 25 30% 20%;
     --peach-dark: 25 80% 70%;
 
-    --sidebar-background: 240 15% 10%;
+    --sidebar-background: 240 15% 13%;
     --sidebar-foreground: 240 5% 95%;
     --sidebar-primary: 262 60% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
