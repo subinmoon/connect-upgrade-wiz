@@ -30,7 +30,9 @@ export type TutorialStep = "greeting" // STEP 1: 첫 인사
 | "intro-ask" // STEP 2: 소개 여부 묻기
 | "intro-skip" // STEP 2-1: 괜찮아 선택
 | "intro-show-1" // STEP 2-2: 알려줘 선택 - 첫번째 소개
-| "intro-show-2" // STEP 2-2: 알려줘 선택 - 두번째 소개
+| "intro-show-2" // STEP 2-2: 두번째 소개
+| "intro-show-3" // STEP 2-2: 이미지 생성 소개
+| "intro-show-4" // STEP 2-2: 모바일 호환 소개
 | "user-info-ask" // STEP 3: 사용자 정보 설정 여부
 | "user-info-skip" // STEP 3-1: 싫어 선택
 | "user-info-settings" // STEP 3-2: 좋아 선택 - 설정 시작
@@ -50,7 +52,7 @@ const stepPhases = [{
 }, {
   id: "intro",
   label: "소개",
-  steps: ["intro-ask", "intro-skip", "intro-show-1", "intro-show-2"]
+  steps: ["intro-ask", "intro-skip", "intro-show-1", "intro-show-2", "intro-show-3", "intro-show-4"]
 }, {
   id: "user-info",
   label: "설정",
@@ -424,11 +426,61 @@ export function TutorialModal({
             value: "back",
             variant: "secondary"
           }, {
+            label: "다음",
+            value: "next"
+          }]} onSelect={value => {
+            if (value === "back") {
+              setStep("intro-show-1");
+            } else {
+              setStep("intro-show-3");
+            }
+          }} delay={300} />
+          </div>;
+
+      // STEP 2-2: 이미지 생성 소개
+      case "intro-show-3":
+        return <div className="flex flex-col items-center gap-6 py-8">
+            <MascotCharacter emotion="excited" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MessageBubble>
+              텍스트 답변뿐만 아니라<br />
+              <strong className="text-primary">이미지 생성</strong>도 할 수 있어요! 🎨<br />
+              원하는 이미지를 말로 설명해 주시면 만들어 드릴게요.
+            </MessageBubble>
+            <ChoiceButtons choices={[{
+            label: "이전",
+            value: "back",
+            variant: "secondary"
+          }, {
+            label: "다음",
+            value: "next"
+          }]} onSelect={value => {
+            if (value === "back") {
+              setStep("intro-show-2");
+            } else {
+              setStep("intro-show-4");
+            }
+          }} delay={300} />
+          </div>;
+
+      // STEP 2-2: 모바일 호환 소개
+      case "intro-show-4":
+        return <div className="flex flex-col items-center gap-6 py-8">
+            <MascotCharacter emotion="happy" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MessageBubble>
+              PC뿐만 아니라 <strong className="text-primary">모바일</strong>에서도<br />
+              동일하게 사용할 수 있어요! 📱<br />
+              언제 어디서든 편하게 이용해 주세요.
+            </MessageBubble>
+            <ChoiceButtons choices={[{
+            label: "이전",
+            value: "back",
+            variant: "secondary"
+          }, {
             label: "화면 둘러보기 🚀",
             value: "start-guide"
           }]} onSelect={value => {
             if (value === "back") {
-              setStep("intro-show-1");
+              setStep("intro-show-3");
             } else if (onStartGuide) {
               onStartGuide();
             } else {
@@ -673,7 +725,9 @@ export function TutorialModal({
       "intro-skip": "intro-ask",
       "intro-show-1": "intro-ask",
       "intro-show-2": "intro-show-1",
-      "user-info-ask": step === "intro-skip" ? "intro-skip" : "intro-show-2",
+      "intro-show-3": "intro-show-2",
+      "intro-show-4": "intro-show-3",
+      "user-info-ask": step === "intro-skip" ? "intro-skip" : "intro-show-4",
       "user-info-skip": "user-info-ask",
       "user-info-settings": "user-info-ask",
       "settings-name": "user-info-settings",
