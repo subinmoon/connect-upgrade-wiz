@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Sparkles, Palette, Smartphone } from "lucide-react";
 import confetti from "canvas-confetti";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 interface TutorialModalProps {
@@ -122,14 +122,14 @@ function MascotCharacter({
   emotion = "happy"
 }: {
   className?: string;
-  emotion?: "happy" | "wave" | "excited" | "thinking";
+  emotion?: "happy" | "wave" | "excited" | "thinking" | "artist" | "mobile";
 }) {
   return <div className={cn("relative", className)}>
       {/* 그림자 */}
       <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-28 h-4 bg-black/10 rounded-[100%] blur-md" />
       
       {/* 메인 캐릭터 컨테이너 */}
-      <div className={cn("relative transition-transform duration-300", emotion === "wave" && "animate-[bounce_1s_ease-in-out_infinite]", emotion === "excited" && "animate-[wiggle_0.5s_ease-in-out_infinite]")}>
+      <div className={cn("relative transition-transform duration-300", emotion === "wave" && "animate-[bounce_1s_ease-in-out_infinite]", emotion === "excited" && "animate-[wiggle_0.5s_ease-in-out_infinite]", emotion === "artist" && "animate-[wiggle_2s_ease-in-out_infinite]")}>
         {/* 캐릭터 몸통 */}
         <div className="w-32 h-32 relative">
           {/* 메인 바디 - 3D 효과 */}
@@ -146,9 +146,9 @@ function MascotCharacter({
           <div className="absolute top-10 left-1/2 -translate-x-1/2 flex gap-5">
             {/* 왼쪽 눈 */}
             <div className="relative">
-              <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5")}>
+              <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5", (emotion === "artist" || emotion === "mobile") && "h-6")}>
                 {/* 눈동자 */}
-                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 translate-x-0.5", emotion === "excited" && "scale-110")}>
+                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 translate-x-0.5", emotion === "excited" && "scale-110", emotion === "artist" && "scale-110 -translate-y-0.5")}>
                   {/* 눈 반짝임 */}
                   <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full" />
                 </div>
@@ -160,7 +160,7 @@ function MascotCharacter({
             {/* 오른쪽 눈 */}
             <div className="relative">
               <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5")}>
-                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 -translate-x-0.5", emotion === "excited" && "scale-110")}>
+                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 -translate-x-0.5", emotion === "excited" && "scale-110", emotion === "artist" && "scale-110 -translate-y-0.5")}>
                   <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full" />
                 </div>
               </div>
@@ -182,6 +182,10 @@ function MascotCharacter({
                 <div className="w-5 h-3 bg-pink-300 rounded-full" />
               </div>}
             {emotion === "thinking" && <div className="w-4 h-4 bg-white/70 rounded-full" />}
+            {emotion === "artist" && <div className="w-10 h-5 bg-white/90 rounded-b-xl rounded-t-sm flex items-center justify-center">
+                <div className="w-4 h-2 bg-pink-300 rounded-full mt-1" />
+              </div>}
+            {emotion === "mobile" && <div className="w-8 h-4 border-b-[3px] border-white rounded-b-full" />}
           </div>
         </div>
         
@@ -209,6 +213,53 @@ function MascotCharacter({
         {emotion === "thinking" && <div className="absolute -top-4 -right-2 animate-bounce">
             <span className="text-2xl font-bold text-primary drop-shadow-md">?</span>
           </div>}
+
+        {/* 아티스트 효과 - 팔레트 & 붓 */}
+        {emotion === "artist" && <>
+            <div className="absolute -right-8 top-4 animate-[wiggle_1.5s_ease-in-out_infinite]">
+              <div className="relative">
+                {/* 붓 */}
+                <div className="w-2 h-16 bg-gradient-to-b from-[#8B6914] to-[#D4A017] rounded-full shadow-md transform rotate-[-20deg]">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-4 bg-gradient-to-b from-primary to-primary/70 rounded-t-full" />
+                </div>
+              </div>
+            </div>
+            <div className="absolute -left-8 top-2 animate-[sparkle_2s_ease-in-out_infinite]">
+              <Palette className="w-8 h-8 text-primary drop-shadow-lg" />
+            </div>
+            {/* 떠다니는 색상 점들 */}
+            <div className="absolute -top-4 left-0 animate-[float_2s_ease-in-out_infinite]">
+              <div className="w-3 h-3 bg-pink-400 rounded-full shadow-md" />
+            </div>
+            <div className="absolute -top-6 right-4 animate-[float_2s_ease-in-out_infinite_0.5s]">
+              <div className="w-2.5 h-2.5 bg-yellow-400 rounded-full shadow-md" />
+            </div>
+            <div className="absolute -top-3 right-0 animate-[float_2s_ease-in-out_infinite_1s]">
+              <div className="w-2 h-2 bg-primary rounded-full shadow-md" />
+            </div>
+          </>}
+
+        {/* 모바일 효과 - 스마트폰 */}
+        {emotion === "mobile" && <>
+            <div className="absolute -right-10 top-3 animate-[bounce_2s_ease-in-out_infinite]">
+              <div className="bg-gray-800 rounded-xl w-8 h-14 shadow-xl flex items-center justify-center p-1 border border-gray-600">
+                <div className="bg-gradient-to-br from-[#3BB8E8] to-primary w-full h-full rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+              </div>
+            </div>
+            <div className="absolute -left-6 top-6 animate-[sparkle_1.5s_ease-in-out_infinite]">
+              <Smartphone className="w-6 h-6 text-primary drop-shadow-lg" />
+            </div>
+            {/* Wi-Fi 신호 효과 */}
+            <div className="absolute -top-5 right-2">
+              <div className="flex flex-col items-center gap-0.5 animate-pulse">
+                <div className="w-6 h-1.5 border-t-2 border-primary/60 rounded-t-full" />
+                <div className="w-4 h-1 border-t-2 border-primary/80 rounded-t-full" />
+                <div className="w-2 h-1 bg-primary rounded-full" />
+              </div>
+            </div>
+          </>}
       </div>
     </div>;
 }
@@ -440,7 +491,7 @@ export function TutorialModal({
       // STEP 2-2: 이미지 생성 소개
       case "intro-show-3":
         return <div className="flex flex-col items-center gap-6 py-8">
-            <MascotCharacter emotion="excited" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MascotCharacter emotion="artist" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
             <MessageBubble>
               텍스트 답변뿐만 아니라<br />
               <strong className="text-primary">이미지 생성</strong>도 할 수 있어요! 🎨<br />
@@ -465,7 +516,7 @@ export function TutorialModal({
       // STEP 2-2: 모바일 호환 소개
       case "intro-show-4":
         return <div className="flex flex-col items-center gap-6 py-8">
-            <MascotCharacter emotion="happy" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MascotCharacter emotion="mobile" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
             <MessageBubble>
               PC뿐만 아니라 <strong className="text-primary">모바일</strong>에서도<br />
               동일하게 사용할 수 있어요! 📱<br />
