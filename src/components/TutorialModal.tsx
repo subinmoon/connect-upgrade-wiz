@@ -30,7 +30,9 @@ export type TutorialStep = "greeting" // STEP 1: 첫 인사
 | "intro-ask" // STEP 2: 소개 여부 묻기
 | "intro-skip" // STEP 2-1: 괜찮아 선택
 | "intro-show-1" // STEP 2-2: 알려줘 선택 - 첫번째 소개
-| "intro-show-2" // STEP 2-2: 알려줘 선택 - 두번째 소개
+| "intro-show-2" // STEP 2-2: 두번째 소개
+| "intro-show-3" // STEP 2-2: 이미지 생성 소개
+| "intro-show-4" // STEP 2-2: 모바일 호환 소개
 | "user-info-ask" // STEP 3: 사용자 정보 설정 여부
 | "user-info-skip" // STEP 3-1: 싫어 선택
 | "user-info-settings" // STEP 3-2: 좋아 선택 - 설정 시작
@@ -50,7 +52,7 @@ const stepPhases = [{
 }, {
   id: "intro",
   label: "소개",
-  steps: ["intro-ask", "intro-skip", "intro-show-1", "intro-show-2"]
+  steps: ["intro-ask", "intro-skip", "intro-show-1", "intro-show-2", "intro-show-3", "intro-show-4"]
 }, {
   id: "user-info",
   label: "설정",
