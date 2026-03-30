@@ -182,6 +182,10 @@ function MascotCharacter({
                 <div className="w-5 h-3 bg-pink-300 rounded-full" />
               </div>}
             {emotion === "thinking" && <div className="w-4 h-4 bg-white/70 rounded-full" />}
+            {emotion === "artist" && <div className="w-10 h-5 bg-white/90 rounded-b-xl rounded-t-sm flex items-center justify-center">
+                <div className="w-4 h-2 bg-pink-300 rounded-full mt-1" />
+              </div>}
+            {emotion === "mobile" && <div className="w-8 h-4 border-b-[3px] border-white rounded-b-full" />}
           </div>
         </div>
         
@@ -209,6 +213,53 @@ function MascotCharacter({
         {emotion === "thinking" && <div className="absolute -top-4 -right-2 animate-bounce">
             <span className="text-2xl font-bold text-primary drop-shadow-md">?</span>
           </div>}
+
+        {/* 아티스트 효과 - 팔레트 & 붓 */}
+        {emotion === "artist" && <>
+            <div className="absolute -right-8 top-4 animate-[wiggle_1.5s_ease-in-out_infinite]">
+              <div className="relative">
+                {/* 붓 */}
+                <div className="w-2 h-16 bg-gradient-to-b from-[#8B6914] to-[#D4A017] rounded-full shadow-md transform rotate-[-20deg]">
+                  <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-4 bg-gradient-to-b from-primary to-primary/70 rounded-t-full" />
+                </div>
+              </div>
+            </div>
+            <div className="absolute -left-8 top-2 animate-[sparkle_2s_ease-in-out_infinite]">
+              <Palette className="w-8 h-8 text-primary drop-shadow-lg" />
+            </div>
+            {/* 떠다니는 색상 점들 */}
+            <div className="absolute -top-4 left-0 animate-[float_2s_ease-in-out_infinite]">
+              <div className="w-3 h-3 bg-pink-400 rounded-full shadow-md" />
+            </div>
+            <div className="absolute -top-6 right-4 animate-[float_2s_ease-in-out_infinite_0.5s]">
+              <div className="w-2.5 h-2.5 bg-yellow-400 rounded-full shadow-md" />
+            </div>
+            <div className="absolute -top-3 right-0 animate-[float_2s_ease-in-out_infinite_1s]">
+              <div className="w-2 h-2 bg-primary rounded-full shadow-md" />
+            </div>
+          </>}
+
+        {/* 모바일 효과 - 스마트폰 */}
+        {emotion === "mobile" && <>
+            <div className="absolute -right-10 top-3 animate-[bounce_2s_ease-in-out_infinite]">
+              <div className="bg-gray-800 rounded-xl w-8 h-14 shadow-xl flex items-center justify-center p-1 border border-gray-600">
+                <div className="bg-gradient-to-br from-[#3BB8E8] to-primary w-full h-full rounded-lg flex items-center justify-center">
+                  <Sparkles className="w-3 h-3 text-white" />
+                </div>
+              </div>
+            </div>
+            <div className="absolute -left-6 top-6 animate-[sparkle_1.5s_ease-in-out_infinite]">
+              <Smartphone className="w-6 h-6 text-primary drop-shadow-lg" />
+            </div>
+            {/* Wi-Fi 신호 효과 */}
+            <div className="absolute -top-5 right-2">
+              <div className="flex flex-col items-center gap-0.5 animate-pulse">
+                <div className="w-6 h-1.5 border-t-2 border-primary/60 rounded-t-full" />
+                <div className="w-4 h-1 border-t-2 border-primary/80 rounded-t-full" />
+                <div className="w-2 h-1 bg-primary rounded-full" />
+              </div>
+            </div>
+          </>}
       </div>
     </div>;
 }
