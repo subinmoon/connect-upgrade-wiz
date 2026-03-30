@@ -904,27 +904,45 @@ const Index = () => {
                   <div className="flex-1 min-h-0 overflow-y-auto pt-2">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
                       <div ref={leftColumnRef} className="flex flex-col gap-3">
-                        <div data-guide="work-life-helper" className="flex-1">
-                          <HRHelper onItemClick={(label) => {
-                            const currentInput = prefillMessage.trim();
-                            const msg = currentInput ? `[${label}] ${currentInput}` : `[${label}]`;
-                            handleSendMessage(msg, label);
-                            setPrefillMessage("");
-                          }} />
-                        </div>
-                        <div data-guide="popular-questions">
-                          <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
-                            setPrefillMessage(question);
-                          }} />
-                        </div>
+                        <CollapsiblePanel
+                          title="대화로 업무 시작하기"
+                          direction="left"
+                          icon={<MessageCircle className="w-3.5 h-3.5 text-primary" />}
+                        >
+                          <div data-guide="work-life-helper" className="flex-1">
+                            <HRHelper onItemClick={(label) => {
+                              const currentInput = prefillMessage.trim();
+                              const msg = currentInput ? `[${label}] ${currentInput}` : `[${label}]`;
+                              handleSendMessage(msg, label);
+                              setPrefillMessage("");
+                            }} />
+                          </div>
+                        </CollapsiblePanel>
+                        <CollapsiblePanel
+                          title="최근 관심사"
+                          direction="left"
+                          icon={<TrendingUp className="w-3.5 h-3.5 text-primary" />}
+                        >
+                          <div data-guide="popular-questions">
+                            <RecentInterests hasHistory={chatHistory.length > 0} onQuestionClick={question => {
+                              setPrefillMessage(question);
+                            }} />
+                          </div>
+                        </CollapsiblePanel>
                       </div>
                       
                       {/* Right column - TodayContextCard */}
                       <div style={rightColumnStyle}>
-                        <TodayContextCard 
-                          onGetHelp={prompt => setPrefillMessage(prompt)} 
-                          onNewsChat={prompt => setPrefillMessage(prompt)} 
-                        />
+                        <CollapsiblePanel
+                          title="AI 데일리 체크"
+                          direction="right"
+                          icon={<Sparkles className="w-3.5 h-3.5 text-primary" />}
+                        >
+                          <TodayContextCard 
+                            onGetHelp={prompt => setPrefillMessage(prompt)} 
+                            onNewsChat={prompt => setPrefillMessage(prompt)} 
+                          />
+                        </CollapsiblePanel>
                       </div>
                     </div>
                   </div>
