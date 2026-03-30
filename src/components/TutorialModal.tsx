@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { cn } from "@/lib/utils";
-import { X, ChevronLeft, ChevronRight, Sparkles } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Sparkles, Palette, Smartphone } from "lucide-react";
 import confetti from "canvas-confetti";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 interface TutorialModalProps {
@@ -122,14 +122,14 @@ function MascotCharacter({
   emotion = "happy"
 }: {
   className?: string;
-  emotion?: "happy" | "wave" | "excited" | "thinking";
+  emotion?: "happy" | "wave" | "excited" | "thinking" | "artist" | "mobile";
 }) {
   return <div className={cn("relative", className)}>
       {/* 그림자 */}
       <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-28 h-4 bg-black/10 rounded-[100%] blur-md" />
       
       {/* 메인 캐릭터 컨테이너 */}
-      <div className={cn("relative transition-transform duration-300", emotion === "wave" && "animate-[bounce_1s_ease-in-out_infinite]", emotion === "excited" && "animate-[wiggle_0.5s_ease-in-out_infinite]")}>
+      <div className={cn("relative transition-transform duration-300", emotion === "wave" && "animate-[bounce_1s_ease-in-out_infinite]", emotion === "excited" && "animate-[wiggle_0.5s_ease-in-out_infinite]", emotion === "artist" && "animate-[wiggle_2s_ease-in-out_infinite]")}>
         {/* 캐릭터 몸통 */}
         <div className="w-32 h-32 relative">
           {/* 메인 바디 - 3D 효과 */}
@@ -148,7 +148,7 @@ function MascotCharacter({
             <div className="relative">
               <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5")}>
                 {/* 눈동자 */}
-                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 translate-x-0.5", emotion === "excited" && "scale-110")}>
+                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 translate-x-0.5", emotion === "excited" && "scale-110", emotion === "artist" && "scale-110 -translate-y-0.5")}>
                   {/* 눈 반짝임 */}
                   <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full" />
                 </div>
@@ -160,7 +160,7 @@ function MascotCharacter({
             {/* 오른쪽 눈 */}
             <div className="relative">
               <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5")}>
-                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 -translate-x-0.5", emotion === "excited" && "scale-110")}>
+                <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 -translate-x-0.5", emotion === "excited" && "scale-110", emotion === "artist" && "scale-110 -translate-y-0.5")}>
                   <div className="absolute top-0.5 left-0.5 w-1 h-1 bg-white rounded-full" />
                 </div>
               </div>
