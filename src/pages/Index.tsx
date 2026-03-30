@@ -861,7 +861,8 @@ const Index = () => {
             onArchiveChat={handleArchive} 
             onDeleteChat={handleDelete} 
             hideHeader 
-            onOpenSettings={() => setShowSettingsModal(true)} 
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenOnboarding={() => setShowSetupModal(true)}
           />
           
           {!sidebarOpen && <SidebarTrigger onClick={() => setSidebarOpen(true)} />}

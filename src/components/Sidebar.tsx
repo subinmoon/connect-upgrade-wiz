@@ -20,7 +20,8 @@ import {
   Heart,
   Star,
   Settings,
-  Bot
+  Bot,
+  GraduationCap
 } from "lucide-react";
 import { chatbotServices, ChatbotService } from "@/data/chatbotServices";
 import logoIcon from "@/assets/logo-icon.png";
@@ -52,6 +53,7 @@ interface SidebarProps {
   onDeleteChat?: (chatId: string) => void;
   hideHeader?: boolean;
   onOpenSettings?: () => void;
+  onOpenOnboarding?: () => void;
 }
 
 const defaultChatHistory = [
@@ -80,6 +82,7 @@ const Sidebar = ({
   onDeleteChat,
   hideHeader = false,
   onOpenSettings,
+  onOpenOnboarding,
 }: SidebarProps) => {
   const navigate = useNavigate();
   const [historyOpen, setHistoryOpen] = useState(true);
@@ -475,7 +478,14 @@ const Sidebar = ({
         </nav>
 
         {/* Settings at bottom */}
-        <div className="p-3 border-t border-border">
+        <div className="p-3 border-t border-border space-y-1">
+          <button 
+            onClick={onOpenOnboarding}
+            className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted rounded-xl transition-colors"
+          >
+            <GraduationCap className="w-4 h-4" />
+            시작 가이드
+          </button>
           <button 
             onClick={onOpenSettings}
             className="w-full flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-xl transition-colors"
