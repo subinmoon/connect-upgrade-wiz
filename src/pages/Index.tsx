@@ -5,6 +5,7 @@ import SidebarTrigger from "@/components/SidebarTrigger";
 import HeaderNav from "@/components/HeaderNav";
 import WelcomeHeader from "@/components/WelcomeHeader";
 import RecentInterests from "@/components/RecentInterests";
+import CollapsiblePanel from "@/components/CollapsiblePanel";
 import HRHelper from "@/components/HRHelper";
 import TodayContextCard from "@/components/TodayContextCard";
 import ChatInput from "@/components/ChatInput";
