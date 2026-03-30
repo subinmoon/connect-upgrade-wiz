@@ -146,7 +146,7 @@ function MascotCharacter({
           <div className="absolute top-10 left-1/2 -translate-x-1/2 flex gap-5">
             {/* 왼쪽 눈 */}
             <div className="relative">
-              <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5")}>
+              <div className={cn("w-6 h-7 bg-white rounded-full shadow-inner flex items-center justify-center transition-all duration-200", emotion === "thinking" && "h-5", (emotion === "artist" || emotion === "mobile") && "h-6")}>
                 {/* 눈동자 */}
                 <div className={cn("w-3 h-3 bg-gray-800 rounded-full relative transition-all duration-300", emotion === "thinking" && "translate-y-0.5 translate-x-0.5", emotion === "excited" && "scale-110", emotion === "artist" && "scale-110 -translate-y-0.5")}>
                   {/* 눈 반짝임 */}
