@@ -1,5 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { useLocation } from "react-router-dom";
+import { MessageCircle, Star, TrendingUp, Sparkles } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import SidebarTrigger from "@/components/SidebarTrigger";
 import HeaderNav from "@/components/HeaderNav";
