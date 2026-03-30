@@ -491,7 +491,7 @@ export function TutorialModal({
       // STEP 2-2: 이미지 생성 소개
       case "intro-show-3":
         return <div className="flex flex-col items-center gap-6 py-8">
-            <MascotCharacter emotion="excited" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MascotCharacter emotion="artist" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
             <MessageBubble>
               텍스트 답변뿐만 아니라<br />
               <strong className="text-primary">이미지 생성</strong>도 할 수 있어요! 🎨<br />
@@ -516,7 +516,7 @@ export function TutorialModal({
       // STEP 2-2: 모바일 호환 소개
       case "intro-show-4":
         return <div className="flex flex-col items-center gap-6 py-8">
-            <MascotCharacter emotion="happy" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
+            <MascotCharacter emotion="mobile" className="motion-safe:animate-in motion-safe:zoom-in-95 motion-safe:duration-500" />
             <MessageBubble>
               PC뿐만 아니라 <strong className="text-primary">모바일</strong>에서도<br />
               동일하게 사용할 수 있어요! 📱<br />
