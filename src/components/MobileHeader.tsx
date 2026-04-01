@@ -1,4 +1,4 @@
-import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell, FolderArchive, History, Bot, Settings, Menu } from "lucide-react";
+import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell, FolderArchive, History, Bot, Settings, Menu, MessageSquarePlus, Search, Sparkles, GraduationCap, ChevronDown, ChevronRight, Star } from "lucide-react";
 import { useState } from "react";
 import logoIcon from "@/assets/logo-icon.png";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { chatbotServices } from "@/data/chatbotServices";
 
 interface MobileHeaderProps {
   isChatMode: boolean;
