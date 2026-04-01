@@ -86,6 +86,7 @@ const subMessages = [
 
 const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSidebar }: MobileWelcomeHeaderProps) => {
   const [greeting, setGreeting] = useState("");
+  const [subMessage, setSubMessage] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const pages = [];
@@ -108,8 +109,8 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSid
   }, [emblaApi, onSelect]);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * greetingMessages.length);
-    setGreeting(greetingMessages[randomIndex]);
+    setGreeting(greetingMessages[Math.floor(Math.random() * greetingMessages.length)]);
+    setSubMessage(subMessages[Math.floor(Math.random() * subMessages.length)]);
   }, []);
 
   const handleActionClick = (action: QuickAction) => {
