@@ -152,17 +152,6 @@ const MobileHeader = ({
   }
 
 
-  const [myChatbotOpen, setMyChatbotOpen] = useState(false);
-  const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
-
-  const favoriteServices = chatbotServices.filter(s => {
-    const saved = localStorage.getItem("favoriteServices");
-    if (saved) {
-      const ids = JSON.parse(saved) as string[];
-      return ids.includes(s.id);
-    }
-    return s.isFavorite;
-  });
 
   return (
     <>
