@@ -7,7 +7,7 @@ interface HRHelperProps {
   onItemClick?: (label: string) => void;
 }
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 6;
 
 const HRHelper = ({ onItemClick }: HRHelperProps = {}) => {
   const [showSettings, setShowSettings] = useState(false);
@@ -49,7 +49,7 @@ const HRHelper = ({ onItemClick }: HRHelperProps = {}) => {
   }, [emblaApi, onSelect]);
 
   const renderGrid = (items: typeof displayItems) => (
-    <div className="grid grid-cols-4 gap-2">
+    <div className="grid grid-cols-3 gap-2">
       {items.map((item) => {
         const Icon = item.icon;
         const isFavorite = favoriteIds.includes(item.id);
