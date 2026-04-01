@@ -68,8 +68,6 @@ const MobileHeader = ({
   const setMenuOpen = onMenuOpenChange ?? setMenuOpenInternal;
   const [myChatbotOpen, setMyChatbotOpen] = useState(false);
   const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
-  const [myChatbotOpen, setMyChatbotOpen] = useState(false);
-  const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
 
   const favoriteServices = chatbotServices.filter(s => {
     const saved = localStorage.getItem("favoriteServices");
