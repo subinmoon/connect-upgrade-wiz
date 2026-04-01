@@ -16,6 +16,7 @@ interface MobileMainContentProps {
   onLengthChange?: (length: string) => void;
   onSearchModeChange?: (mode: string) => void;
   onClearPrefill?: () => void;
+  onOpenSidebar?: () => void;
 }
 
 const MobileMainContent = ({
@@ -31,6 +32,7 @@ const MobileMainContent = ({
   onLengthChange,
   onSearchModeChange,
   onClearPrefill,
+  onOpenSidebar,
 }: MobileMainContentProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-var(--mobile-header-height))] pb-[calc(env(safe-area-inset-bottom,0px)+var(--mobile-input-height))]">
@@ -39,7 +41,8 @@ const MobileMainContent = ({
         {/* Welcome Header */}
         <MobileWelcomeHeader 
           userName={userName} 
-          onSelectAction={onSelectAction} 
+          onSelectAction={onSelectAction}
+          onOpenSidebar={onOpenSidebar}
         />
 
         {/* HR Helper Card */}

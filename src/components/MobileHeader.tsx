@@ -35,6 +35,8 @@ interface MobileHeaderProps {
   onNewChat?: () => void;
   onOpenSearch?: () => void;
   onOpenOnboarding?: () => void;
+  menuOpen?: boolean;
+  onMenuOpenChange?: (open: boolean) => void;
 }
 
 const MobileHeader = ({
@@ -56,10 +58,16 @@ const MobileHeader = ({
   onNewChat,
   onOpenSearch,
   onOpenOnboarding,
+  menuOpen: menuOpenProp,
+  onMenuOpenChange,
 }: MobileHeaderProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState(chatTitle);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpenInternal, setMenuOpenInternal] = useState(false);
+  const menuOpen = menuOpenProp ?? menuOpenInternal;
+  const setMenuOpen = onMenuOpenChange ?? setMenuOpenInternal;
+  const [myChatbotOpen, setMyChatbotOpen] = useState(false);
+  const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
   const [myChatbotOpen, setMyChatbotOpen] = useState(false);
   const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
 
