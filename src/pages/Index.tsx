@@ -170,6 +170,7 @@ const Index = () => {
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
   const [showMobileSearchModal, setShowMobileSearchModal] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [archiveTargetChat, setArchiveTargetChat] = useState<{ id: string; title: string } | null>(null);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
