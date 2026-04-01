@@ -695,6 +695,17 @@ const Index = () => {
             onDeleteChat={handleDelete}
           />
 
+          {/* Mobile Search Modal */}
+          <ChatSearchModal
+            open={showMobileSearchModal}
+            onClose={() => setShowMobileSearchModal(false)}
+            chatHistory={chatHistory}
+            onSelectChat={(chatId) => {
+              handleSelectChat(chatId);
+              setShowMobileSearchModal(false);
+            }}
+          />
+
         </div>
       </>
     );
