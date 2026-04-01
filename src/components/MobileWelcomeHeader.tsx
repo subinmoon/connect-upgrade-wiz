@@ -71,12 +71,17 @@ const actions: QuickAction[] = [
 const ITEMS_PER_PAGE = 6;
 
 const greetingMessages = [
-  "오늘도 좋은 하루 보내고 계신가요? 무엇이든 도와드릴게요! ☀️",
-  "궁금한 게 있으시면 편하게 물어보세요, 함께 해결해요! 💬",
-  "오늘 할 일이 많으신가요? 제가 도와드릴게요! 💪",
-  "반가워요! 오늘도 멋진 하루를 만들어봐요 ✨",
-  "업무가 바쁘시죠? 빠르게 도와드릴 준비 됐어요! 🚀",
-  "좋은 하루 되세요! 필요한 게 있으면 언제든 말씀해주세요 😊",
+  "반가워요!",
+  "안녕하세요!",
+  "좋은 하루예요!",
+  "환영해요! ✨",
+];
+
+const subMessages = [
+  "오늘도 업무를 도와드릴 준비가 됐어요 💪",
+  "궁금한 게 있으면 편하게 물어보세요 💬",
+  "필요한 게 있으면 언제든 말씀해주세요 😊",
+  "빠르게 도와드릴게요, 시작해볼까요? 🚀",
 ];
 
 const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSidebar }: MobileWelcomeHeaderProps) => {
