@@ -88,6 +88,12 @@ const MobileHeader = ({
     return (
       <header className="flex items-center gap-2 px-3 py-2 bg-card border-b border-border">
         <button 
+          onClick={() => setMenuOpen(true)}
+          className="p-2 hover:bg-muted rounded-lg transition-colors"
+        >
+          <Menu className="w-5 h-5 text-muted-foreground" />
+        </button>
+        <button 
           onClick={onBack}
           className="p-2 hover:bg-muted rounded-lg transition-colors"
         >
