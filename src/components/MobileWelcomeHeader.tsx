@@ -71,16 +71,22 @@ const actions: QuickAction[] = [
 const ITEMS_PER_PAGE = 6;
 
 const greetingMessages = [
-  "오늘도 좋은 하루 보내고 계신가요? 무엇이든 도와드릴게요! ☀️",
-  "궁금한 게 있으시면 편하게 물어보세요, 함께 해결해요! 💬",
-  "오늘 할 일이 많으신가요? 제가 도와드릴게요! 💪",
-  "반가워요! 오늘도 멋진 하루를 만들어봐요 ✨",
-  "업무가 바쁘시죠? 빠르게 도와드릴 준비 됐어요! 🚀",
-  "좋은 하루 되세요! 필요한 게 있으면 언제든 말씀해주세요 😊",
+  "반가워요!",
+  "안녕하세요!",
+  "좋은 하루예요!",
+  "환영해요! ✨",
+];
+
+const subMessages = [
+  "오늘도 업무를 도와드릴 준비가 됐어요 💪",
+  "궁금한 게 있으면 편하게 물어보세요 💬",
+  "필요한 게 있으면 언제든 말씀해주세요 😊",
+  "빠르게 도와드릴게요, 시작해볼까요? 🚀",
 ];
 
 const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSidebar }: MobileWelcomeHeaderProps) => {
   const [greeting, setGreeting] = useState("");
+  const [subMessage, setSubMessage] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const pages = [];
@@ -103,8 +109,8 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSid
   }, [emblaApi, onSelect]);
 
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * greetingMessages.length);
-    setGreeting(greetingMessages[randomIndex]);
+    setGreeting(greetingMessages[Math.floor(Math.random() * greetingMessages.length)]);
+    setSubMessage(subMessages[Math.floor(Math.random() * subMessages.length)]);
   }, []);
 
   const handleActionClick = (action: QuickAction) => {
@@ -116,17 +122,20 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSid
   return (
     <div className="w-full px-4 pt-2 pb-3">
       {/* Welcome Message */}
-      <div className="flex items-center gap-2.5 mb-4">
+      <div className="flex items-start gap-2.5 mb-4">
         <button
           onClick={onOpenSidebar}
-          className="p-1.5 hover:bg-muted rounded-lg transition-colors -ml-1 shrink-0"
+          className="p-1.5 hover:bg-muted rounded-lg transition-colors -ml-1 shrink-0 mt-0.5"
         >
           <Menu className="w-5 h-5 text-muted-foreground" />
         </button>
-        <img src={logoIcon} alt="Logo" className="w-10 h-10" />
-        <h1 className="text-title text-foreground">
-          <span className="text-gradient-name">{userName}</span>님, {greeting}
-        </h1>
+        <img src={logoIcon} alt="Logo" className="w-10 h-10 shrink-0" />
+        <div className="min-w-0">
+          <h1 className="text-title text-foreground">
+            <span className="text-gradient-name">{userName}</span>님, {greeting}
+          </h1>
+          <p className="text-xs text-muted-foreground mt-0.5">{subMessage}</p>
+        </div>
       </div>
 
       {/* Quick Actions Card */}
