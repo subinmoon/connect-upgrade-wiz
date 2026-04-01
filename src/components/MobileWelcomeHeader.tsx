@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import logoIcon from "@/assets/logo-icon.png";
-import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu } from "lucide-react";
+import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu, FileText } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
 
 interface MobileWelcomeHeaderProps {
@@ -60,8 +60,14 @@ const actions: QuickAction[] = [
     iconColor: "text-violet-600",
     promptTemplate: "다음 내용을 구조화해주세요:\n\n[정리가 필요한 텍스트를 여기에 붙여넣으세요]\n\n원하는 형식: [예: 목록, 표, 마인드맵 형태, 개요]",
   },
+  {
+    id: "report",
+    icon: <FileText className="w-5 h-5" />,
+    label: "보고서",
+    iconColor: "text-orange-600",
+    promptTemplate: "다음 내용을 바탕으로 보고서를 작성해주세요:\n\n주제: [보고서 주제]\n목적: [보고서 작성 목적]\n주요 내용: [포함할 핵심 내용]",
+  },
 ];
-
 const ITEMS_PER_PAGE = 6;
 
 const greetingMessages = [
