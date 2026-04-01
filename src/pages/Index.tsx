@@ -170,6 +170,7 @@ const Index = () => {
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
   const [showMobileSearchModal, setShowMobileSearchModal] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [archiveTargetChat, setArchiveTargetChat] = useState<{ id: string; title: string } | null>(null);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
@@ -607,6 +608,8 @@ const Index = () => {
             onNewChat={handleNewChat}
             onOpenSearch={() => setShowMobileSearchModal(true)}
             onOpenOnboarding={() => setShowSetupModal(true)}
+            menuOpen={mobileSidebarOpen}
+            onMenuOpenChange={setMobileSidebarOpen}
           />
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
@@ -650,6 +653,7 @@ const Index = () => {
                 onToneChange={handleToneChange}
                 onLengthChange={handleLengthChange}
                 onSearchModeChange={handleSearchModeChange}
+                onOpenSidebar={() => setMobileSidebarOpen(true)}
               />
             )}
           </div>
