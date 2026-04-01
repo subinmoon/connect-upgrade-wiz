@@ -745,13 +745,6 @@ const ArchivePage = () => {
             </DndContext>
           </div>
 
-          {/* Mobile Bottom Navigation */}
-          <MobileBottomNav
-            onNewChat={() => navigate("/")}
-            onOpenSettings={() => setShowSettingsModal(true)}
-            onOpenChatbots={() => navigate("/chatbots")}
-            onOpenHistory={() => navigate("/")}
-          />
         </div>
       </>
     );

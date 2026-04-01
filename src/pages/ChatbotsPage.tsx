@@ -362,13 +362,6 @@ const ChatbotsPage = () => {
             )}
           </div>
 
-          {/* Mobile Bottom Navigation */}
-          <MobileBottomNav
-            onNewChat={() => navigate("/")}
-            onOpenSettings={() => setShowSettingsModal(true)}
-            onOpenChatbots={() => {}}
-            onOpenHistory={() => navigate("/")}
-          />
         </div>
 
         {/* 챗봇 생성/수정 모달 */}
