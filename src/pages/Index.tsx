@@ -700,8 +700,8 @@ const Index = () => {
             onDeleteChat={handleDelete}
           />
 
-          {/* Mobile Search Modal */}
-          <ChatSearchModal
+          {/* Mobile Search Sheet */}
+          <MobileChatSearchSheet
             open={showMobileSearchModal}
             onClose={() => setShowMobileSearchModal(false)}
             chatHistory={chatHistory}
