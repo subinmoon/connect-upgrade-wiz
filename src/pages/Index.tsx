@@ -169,6 +169,7 @@ const Index = () => {
   const [showHistorySheet, setShowHistorySheet] = useState(false);
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
+  const [showMobileSearchModal, setShowMobileSearchModal] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [archiveTargetChat, setArchiveTargetChat] = useState<{ id: string; title: string } | null>(null);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
