@@ -688,14 +688,6 @@ const Index = () => {
             onDeleteChat={handleDelete}
           />
 
-          {/* Mobile Bottom Navigation */}
-          <MobileBottomNav
-            onNewChat={handleNewChat}
-            onOpenSettings={() => setShowSettingsModal(true)}
-            onOpenChatbots={() => setShowChatbotsSheet(true)}
-            onOpenHistory={() => setShowHistorySheet(true)}
-            onOpenArchive={() => setShowArchiveSheet(true)}
-          />
         </div>
       </>
     );
