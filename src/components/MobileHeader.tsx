@@ -133,53 +133,69 @@ const MobileHeader = ({
     );
   }
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const menuItems = [
+    { icon: History, label: "히스토리", action: onOpenHistory },
+    { icon: Bot, label: "나만의 챗봇", action: onOpenChatbots },
+    { icon: FolderArchive, label: "아카이브", action: onOpenArchive },
+    { icon: Settings, label: "설정", action: onOpenSettings },
+  ];
+
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-      <div className="flex items-center gap-2">
-        <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-        <span className="font-bold text-foreground">AI PORTAL</span>
-      </div>
-      
-      <div className="flex items-center gap-1">
-        <button 
-          onClick={onNotificationClick}
-          className="p-2 hover:bg-muted rounded-lg transition-colors relative"
-        >
-          <Bell className="w-5 h-5 text-muted-foreground" />
-        </button>
-
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="p-2 hover:bg-muted rounded-lg transition-colors">
-              <Menu className="w-5 h-5 text-muted-foreground" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-44 bg-card">
-            <DropdownMenuItem onClick={onOpenHistory}>
-              <History className="w-4 h-4 mr-2" />
-              히스토리
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={onOpenChatbots}>
-              <Bot className="w-4 h-4 mr-2" />
-              나만의 챗봇
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={onOpenArchive}>
-              <FolderArchive className="w-4 h-4 mr-2" />
-              아카이브
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={onOpenSettings}>
-              <Settings className="w-4 h-4 mr-2" />
-              설정
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
-        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
-          {userName?.[0] || "U"}
+    <>
+      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setMenuOpen(true)}
+            className="p-2 hover:bg-muted rounded-lg transition-colors -ml-2"
+          >
+            <Menu className="w-5 h-5 text-foreground" />
+          </button>
+          <img src={logoIcon} alt="Logo" className="w-8 h-8" />
+          <span className="font-bold text-foreground">AI PORTAL</span>
         </div>
-      </div>
-    </header>
+        
+        <div className="flex items-center gap-1">
+          <button 
+            onClick={onNotificationClick}
+            className="p-2 hover:bg-muted rounded-lg transition-colors relative"
+          >
+            <Bell className="w-5 h-5 text-muted-foreground" />
+          </button>
+          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
+            {userName?.[0] || "U"}
+          </div>
+        </div>
+      </header>
+
+      {/* Floating Side Menu */}
+      <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
+        <SheetContent side="left" className="w-64 p-0">
+          <SheetHeader className="px-5 pt-6 pb-4 border-b border-border">
+            <div className="flex items-center gap-2.5">
+              <img src={logoIcon} alt="Logo" className="w-8 h-8" />
+              <SheetTitle className="text-base font-bold">AI PORTAL</SheetTitle>
+            </div>
+          </SheetHeader>
+          <nav className="flex flex-col py-2">
+            {menuItems.map((item) => (
+              <button
+                key={item.label}
+                onClick={() => {
+                  setMenuOpen(false);
+                  item.action?.();
+                }}
+                className="flex items-center gap-3 px-5 py-3.5 text-sm font-medium text-foreground hover:bg-muted/60 active:bg-muted transition-colors"
+              >
+                <item.icon className="w-5 h-5 text-muted-foreground" />
+                {item.label}
+              </button>
+            ))}
+          </nav>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 };
 
