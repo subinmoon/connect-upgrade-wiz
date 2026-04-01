@@ -602,6 +602,9 @@ const Index = () => {
             onOpenChatbots={() => setShowChatbotsSheet(true)}
             onOpenHistory={() => setShowHistorySheet(true)}
             onOpenArchive={() => setShowArchiveSheet(true)}
+            onNewChat={handleNewChat}
+            onOpenSearch={() => setShowSearchModal(true)}
+            onOpenOnboarding={() => setShowOnboarding(true)}
           />
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
