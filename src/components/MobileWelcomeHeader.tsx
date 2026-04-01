@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import logoIcon from "@/assets/logo-icon.png";
 import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu } from "lucide-react";
+import useEmblaCarousel from "embla-carousel-react";
 
 interface MobileWelcomeHeaderProps {
   userName?: string;
@@ -61,6 +62,8 @@ const actions: QuickAction[] = [
   },
 ];
 
+const ITEMS_PER_PAGE = 6;
+
 const greetingMessages = [
   "무엇이 궁금하세요?",
   "도와드릴까요?",
@@ -72,6 +75,26 @@ const greetingMessages = [
 
 const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSidebar }: MobileWelcomeHeaderProps) => {
   const [greeting, setGreeting] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const pages = [];
+  for (let i = 0; i < actions.length; i += ITEMS_PER_PAGE) {
+    pages.push(actions.slice(i, i + ITEMS_PER_PAGE));
+  }
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false });
+
+  const onSelect = useCallback(() => {
+    if (!emblaApi) return;
+    setSelectedIndex(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    onSelect();
+    emblaApi.on("select", onSelect);
+    return () => { emblaApi.off("select", onSelect); };
+  }, [emblaApi, onSelect]);
 
   useEffect(() => {
     const randomIndex = Math.floor(Math.random() * greetingMessages.length);
@@ -109,20 +132,59 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSid
           <h2 className="text-section-title text-foreground">빠른 시작</h2>
         </div>
 
-        <div className="grid grid-cols-3 gap-2">
-          {actions.map((action) => (
-            <button
-              key={action.id}
-              onClick={() => handleActionClick(action)}
-              className="bg-[hsl(var(--background))] rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 active:scale-[0.97]"
-            >
-              <span className={action.iconColor}>{action.icon}</span>
-              <span className="text-menu-label text-foreground whitespace-nowrap">
-                {action.label}
-              </span>
-            </button>
-          ))}
-        </div>
+        {pages.length > 1 ? (
+          <>
+            <div className="overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {pages.map((page, pageIdx) => (
+                  <div key={pageIdx} className="flex-[0_0_100%] min-w-0">
+                    <div className="grid grid-cols-3 gap-2">
+                      {page.map((action) => (
+                        <button
+                          key={action.id}
+                          onClick={() => handleActionClick(action)}
+                          className="bg-[hsl(var(--background))] rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 active:scale-[0.97]"
+                        >
+                          <span className={action.iconColor}>{action.icon}</span>
+                          <span className="text-menu-label text-foreground whitespace-nowrap">
+                            {action.label}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {/* Dots */}
+            <div className="flex justify-center gap-1.5 mt-2">
+              {pages.map((_, idx) => (
+                <button
+                  key={idx}
+                  className={`w-1.5 h-1.5 rounded-full transition-colors ${
+                    idx === selectedIndex ? "bg-primary" : "bg-muted-foreground/30"
+                  }`}
+                  onClick={() => emblaApi?.scrollTo(idx)}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-3 gap-2">
+            {actions.map((action) => (
+              <button
+                key={action.id}
+                onClick={() => handleActionClick(action)}
+                className="bg-[hsl(var(--background))] rounded-xl py-3 px-2 flex flex-col items-center gap-1.5 transition-all duration-200 active:scale-[0.97]"
+              >
+                <span className={action.iconColor}>{action.icon}</span>
+                <span className="text-menu-label text-foreground whitespace-nowrap">
+                  {action.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
