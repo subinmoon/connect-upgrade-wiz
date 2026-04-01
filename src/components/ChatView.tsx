@@ -228,7 +228,7 @@ const ChatView = ({
       {isMobile ? (
         <div 
           className="fixed left-0 right-0 z-40 bg-background border-t border-border"
-          style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + var(--mobile-bottom-nav-height))' }}
+          style={{ bottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
           {/* Suggestions - Horizontal scroll */}
           {!isLoading && messages.length > 0 && (
