@@ -52,7 +52,7 @@ const MobileHeader = ({
 }: MobileHeaderProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState(chatTitle);
-
+  const [menuOpen, setMenuOpen] = useState(false);
   const handleSaveTitle = () => {
     if (editTitleValue.trim()) {
       onTitleChange?.(editTitleValue.trim());
