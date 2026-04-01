@@ -55,7 +55,7 @@ const MobileMainContent = ({
 
       {/* Chat Input - Fixed above bottom nav */}
       <div className="fixed left-0 right-0 z-40 px-4 py-2 bg-background border-t border-border"
-           style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + var(--mobile-bottom-nav-height))' }}>
+           style={{ bottom: 'env(safe-area-inset-bottom, 0px)' }}>
         <ChatInput
           onSendMessage={(msg) => {
             onSendMessage(msg);

@@ -586,21 +586,23 @@ const Index = () => {
             chatTitle={archiveTargetChat?.title || chatTitle}
           />
 
-          {/* Mobile Header - Only show in chat mode for back navigation */}
-          {isChatMode && (
-            <MobileHeader
-              isChatMode={isChatMode}
-              chatTitle={chatTitle}
-              userName={userSettings?.assistantName}
-              onBack={handleBack}
-              onTitleChange={handleTitleChange}
-              onShare={() => currentChatId && handleShareChat(currentChatId)}
-              onPin={() => handlePin()}
-              onDelete={() => handleDelete()}
-              onArchive={() => setShowArchiveGroupSelect(true)}
-              isPinned={isPinned}
-            />
-          )}
+          {/* Mobile Header */}
+          <MobileHeader
+            isChatMode={isChatMode}
+            chatTitle={chatTitle}
+            userName={isChatMode ? userSettings?.assistantName : userSettings?.userName}
+            onBack={handleBack}
+            onTitleChange={handleTitleChange}
+            onShare={() => currentChatId && handleShareChat(currentChatId)}
+            onPin={() => handlePin()}
+            onDelete={() => handleDelete()}
+            onArchive={() => setShowArchiveGroupSelect(true)}
+            isPinned={isPinned}
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenChatbots={() => setShowChatbotsSheet(true)}
+            onOpenHistory={() => setShowHistorySheet(true)}
+            onOpenArchive={() => setShowArchiveSheet(true)}
+          />
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
               <div className="h-full pb-16">
