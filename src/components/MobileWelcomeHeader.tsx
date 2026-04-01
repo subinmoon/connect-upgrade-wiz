@@ -129,7 +129,7 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSid
         >
           <Menu className="w-5 h-5 text-muted-foreground" />
         </button>
-        <img src={logoIcon} alt="Logo" className="w-10 h-10 shrink-0" />
+        
         <div className="min-w-0">
           <h1 className="text-title text-foreground">
             <span className="text-gradient-name">{userName}</span>님, {greeting}
