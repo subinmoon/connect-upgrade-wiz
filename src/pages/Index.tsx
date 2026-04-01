@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import ChatSearchModal from "@/components/ChatSearchModal";
 import { useLocation } from "react-router-dom";
 import { MessageCircle, Star, TrendingUp, Sparkles } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
