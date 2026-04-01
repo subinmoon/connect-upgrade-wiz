@@ -608,6 +608,8 @@ const Index = () => {
             onNewChat={handleNewChat}
             onOpenSearch={() => setShowMobileSearchModal(true)}
             onOpenOnboarding={() => setShowSetupModal(true)}
+            menuOpen={mobileSidebarOpen}
+            onMenuOpenChange={setMobileSidebarOpen}
           />
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
