@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import logoIcon from "@/assets/logo-icon.png";
-import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree } from "lucide-react";
+import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu } from "lucide-react";
 
 interface MobileWelcomeHeaderProps {
   userName?: string;
   onSelectAction?: (promptTemplate: string) => void;
+  onOpenSidebar?: () => void;
 }
 
 interface QuickAction {
