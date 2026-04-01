@@ -155,30 +155,13 @@ const MobileHeader = ({
 
   return (
     <>
-      <header className="flex items-center justify-between px-4 py-3 bg-transparent">
-        <div className="flex items-center gap-2">
-          <button 
-            onClick={() => setMenuOpen(true)}
-            className="p-2 hover:bg-muted rounded-lg transition-colors -ml-2"
-          >
-            <Menu className="w-5 h-5 text-foreground" />
-          </button>
-          <img src={logoIcon} alt="Logo" className="w-8 h-8" />
-          <span className="font-bold text-foreground">AI PORTAL</span>
-        </div>
-        
-        <div className="flex items-center gap-1">
-          <button 
-            onClick={onNotificationClick}
-            className="p-2 hover:bg-muted rounded-lg transition-colors relative"
-          >
-            <Bell className="w-5 h-5 text-muted-foreground" />
-          </button>
-          <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
-            {userName?.[0] || "U"}
-          </div>
-        </div>
-      </header>
+      {/* Floating sidebar trigger button */}
+      <button
+        onClick={() => setMenuOpen(true)}
+        className="fixed top-4 left-4 z-50 p-2 bg-card/80 backdrop-blur-sm border border-border rounded-xl shadow-sm hover:bg-muted transition-colors"
+      >
+        <Menu className="w-5 h-5 text-foreground" />
+      </button>
 
       {/* Floating Side Menu - matching desktop sidebar structure */}
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>
