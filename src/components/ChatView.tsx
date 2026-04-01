@@ -167,7 +167,7 @@ const ChatView = ({
       <div 
         ref={scrollRef}
         onScroll={handleScroll}
-        className={`${selectedChatbot && messages.length === 0 ? 'hidden' : 'flex-1'} overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-6 pb-[calc(var(--mobile-input-height)+var(--mobile-bottom-nav-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pt-2 pb-4'}`}>
+        className={`${selectedChatbot && messages.length === 0 ? 'hidden' : 'flex-1'} overflow-y-auto space-y-2 min-h-0 px-4 ${isMobile ? 'pt-6 pb-[calc(var(--mobile-input-height)+env(safe-area-inset-bottom,0px)+48px)]' : 'pt-2 pb-4'}`}>
         {messages.map((message, index) => (
           <ChatMessage
             key={message.id}
@@ -228,7 +228,7 @@ const ChatView = ({
       {isMobile ? (
         <div 
           className="fixed left-0 right-0 z-40 bg-background border-t border-border"
-          style={{ bottom: 'calc(env(safe-area-inset-bottom, 0px) + var(--mobile-bottom-nav-height))' }}
+          style={{ bottom: 'env(safe-area-inset-bottom, 0px)' }}
         >
           {/* Suggestions - Horizontal scroll */}
           {!isLoading && messages.length > 0 && (

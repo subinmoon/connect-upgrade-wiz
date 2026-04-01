@@ -1,4 +1,4 @@
-import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell, FolderArchive } from "lucide-react";
+import { ArrowLeft, Pencil, Check, X, MoreHorizontal, Share2, Pin, Trash2, Bell, FolderArchive, History, Bot, Settings, Menu } from "lucide-react";
 import { useState } from "react";
 import logoIcon from "@/assets/logo-icon.png";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface MobileHeaderProps {
@@ -21,6 +22,10 @@ interface MobileHeaderProps {
   onArchive?: () => void;
   isPinned?: boolean;
   onNotificationClick?: () => void;
+  onOpenHistory?: () => void;
+  onOpenChatbots?: () => void;
+  onOpenArchive?: () => void;
+  onOpenSettings?: () => void;
 }
 
 const MobileHeader = ({
@@ -35,6 +40,10 @@ const MobileHeader = ({
   onArchive,
   isPinned,
   onNotificationClick,
+  onOpenHistory,
+  onOpenChatbots,
+  onOpenArchive,
+  onOpenSettings,
 }: MobileHeaderProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState(chatTitle);
@@ -126,13 +135,41 @@ const MobileHeader = ({
         <span className="font-bold text-foreground">AI PORTAL</span>
       </div>
       
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1">
         <button 
           onClick={onNotificationClick}
           className="p-2 hover:bg-muted rounded-lg transition-colors relative"
         >
           <Bell className="w-5 h-5 text-muted-foreground" />
         </button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button className="p-2 hover:bg-muted rounded-lg transition-colors">
+              <Menu className="w-5 h-5 text-muted-foreground" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44 bg-card">
+            <DropdownMenuItem onClick={onOpenHistory}>
+              <History className="w-4 h-4 mr-2" />
+              히스토리
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onOpenChatbots}>
+              <Bot className="w-4 h-4 mr-2" />
+              나만의 챗봇
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={onOpenArchive}>
+              <FolderArchive className="w-4 h-4 mr-2" />
+              아카이브
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={onOpenSettings}>
+              <Settings className="w-4 h-4 mr-2" />
+              설정
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-medium text-primary">
           {userName?.[0] || "U"}
         </div>
