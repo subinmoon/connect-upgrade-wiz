@@ -60,6 +60,17 @@ const MobileHeader = ({
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState(chatTitle);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [myChatbotOpen, setMyChatbotOpen] = useState(false);
+  const [favoriteChatbotOpen, setFavoriteChatbotOpen] = useState(false);
+
+  const favoriteServices = chatbotServices.filter(s => {
+    const saved = localStorage.getItem("favoriteServices");
+    if (saved) {
+      const ids = JSON.parse(saved) as string[];
+      return ids.includes(s.id);
+    }
+    return s.isFavorite;
+  });
   const handleSaveTitle = () => {
     if (editTitleValue.trim()) {
       onTitleChange?.(editTitleValue.trim());
