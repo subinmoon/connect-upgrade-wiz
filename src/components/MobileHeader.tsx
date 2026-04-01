@@ -155,13 +155,6 @@ const MobileHeader = ({
 
   return (
     <>
-      {/* Floating sidebar trigger button */}
-      <button
-        onClick={() => setMenuOpen(true)}
-        className="fixed top-4 left-4 z-50 p-2 bg-card/80 backdrop-blur-sm border border-border rounded-xl shadow-sm hover:bg-muted transition-colors"
-      >
-        <Menu className="w-5 h-5 text-foreground" />
-      </button>
 
       {/* Floating Side Menu - matching desktop sidebar structure */}
       <Sheet open={menuOpen} onOpenChange={setMenuOpen}>

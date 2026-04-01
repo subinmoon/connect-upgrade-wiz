@@ -70,7 +70,7 @@ const greetingMessages = [
   "반갑습니다! ✨",
 ];
 
-const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileWelcomeHeaderProps) => {
+const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction, onOpenSidebar }: MobileWelcomeHeaderProps) => {
   const [greeting, setGreeting] = useState("");
 
   useEffect(() => {
@@ -88,6 +88,12 @@ const MobileWelcomeHeader = ({ userName = "사용자", onSelectAction }: MobileW
     <div className="w-full px-4 pt-2 pb-3">
       {/* Welcome Message */}
       <div className="flex items-center gap-2.5 mb-4">
+        <button
+          onClick={onOpenSidebar}
+          className="p-1.5 hover:bg-muted rounded-lg transition-colors -ml-1 shrink-0"
+        >
+          <Menu className="w-5 h-5 text-muted-foreground" />
+        </button>
         <img src={logoIcon} alt="Logo" className="w-10 h-10" />
         <h1 className="text-title text-foreground">
           <span className="text-gradient-name">{userName}</span>님, {greeting}
