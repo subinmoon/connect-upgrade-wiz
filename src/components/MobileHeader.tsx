@@ -133,7 +133,6 @@ const MobileHeader = ({
     );
   }
 
-  const [menuOpen, setMenuOpen] = useState(false);
 
   const menuItems = [
     { icon: History, label: "히스토리", action: onOpenHistory },
