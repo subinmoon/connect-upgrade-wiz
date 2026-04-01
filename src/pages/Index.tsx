@@ -653,6 +653,7 @@ const Index = () => {
                 onToneChange={handleToneChange}
                 onLengthChange={handleLengthChange}
                 onSearchModeChange={handleSearchModeChange}
+                onOpenSidebar={() => setMobileSidebarOpen(true)}
               />
             )}
           </div>
