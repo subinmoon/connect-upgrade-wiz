@@ -32,6 +32,9 @@ interface MobileHeaderProps {
   onOpenChatbots?: () => void;
   onOpenArchive?: () => void;
   onOpenSettings?: () => void;
+  onNewChat?: () => void;
+  onOpenSearch?: () => void;
+  onOpenOnboarding?: () => void;
 }
 
 const MobileHeader = ({
@@ -50,6 +53,9 @@ const MobileHeader = ({
   onOpenChatbots,
   onOpenArchive,
   onOpenSettings,
+  onNewChat,
+  onOpenSearch,
+  onOpenOnboarding,
 }: MobileHeaderProps) => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [editTitleValue, setEditTitleValue] = useState(chatTitle);
