@@ -7,7 +7,7 @@ interface HRHelperProps {
   onItemClick?: (label: string) => void;
 }
 
-const ITEMS_PER_PAGE = 8;
+const ITEMS_PER_PAGE = 6;
 
 const HRHelper = ({ onItemClick }: HRHelperProps = {}) => {
   const [showSettings, setShowSettings] = useState(false);
