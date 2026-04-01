@@ -1,4 +1,5 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import ChatSearchModal from "@/components/ChatSearchModal";
 import { useLocation } from "react-router-dom";
 import { MessageCircle, Star, TrendingUp, Sparkles } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
@@ -168,6 +169,7 @@ const Index = () => {
   const [showHistorySheet, setShowHistorySheet] = useState(false);
   const [showChatbotsSheet, setShowChatbotsSheet] = useState(false);
   const [showArchiveSheet, setShowArchiveSheet] = useState(false);
+  const [showMobileSearchModal, setShowMobileSearchModal] = useState(false);
   const [showArchiveGroupSelect, setShowArchiveGroupSelect] = useState(false);
   const [archiveTargetChat, setArchiveTargetChat] = useState<{ id: string; title: string } | null>(null);
   const [editingChatbot, setEditingChatbot] = useState<Chatbot | null>(null);
@@ -602,6 +604,9 @@ const Index = () => {
             onOpenChatbots={() => setShowChatbotsSheet(true)}
             onOpenHistory={() => setShowHistorySheet(true)}
             onOpenArchive={() => setShowArchiveSheet(true)}
+            onNewChat={handleNewChat}
+            onOpenSearch={() => setShowMobileSearchModal(true)}
+            onOpenOnboarding={() => setShowSetupModal(true)}
           />
           <div className="flex-1 overflow-hidden">
             {isChatMode ? (
@@ -688,6 +693,17 @@ const Index = () => {
             onSelectChat={handleSelectChat}
             onUnarchiveChat={handleUnarchive}
             onDeleteChat={handleDelete}
+          />
+
+          {/* Mobile Search Modal */}
+          <ChatSearchModal
+            open={showMobileSearchModal}
+            onClose={() => setShowMobileSearchModal(false)}
+            chatHistory={chatHistory}
+            onSelectChat={(chatId) => {
+              handleSelectChat(chatId);
+              setShowMobileSearchModal(false);
+            }}
           />
 
         </div>
