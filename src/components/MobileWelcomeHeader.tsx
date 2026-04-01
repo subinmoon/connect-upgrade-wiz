@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import logoIcon from "@/assets/logo-icon.png";
-import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu } from "lucide-react";
-import useEmblaCarousel from "embla-carousel-react";
+import { MessageSquare, Sparkles, Mail, Languages, Zap, TrendingUp, ListTree, Menu, FileText } from "lucide-react";
+import EmblaCarousel from "embla-carousel-react";
 
 interface MobileWelcomeHeaderProps {
   userName?: string;
